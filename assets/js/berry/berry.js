@@ -508,6 +508,11 @@ Berry = function(options, obj) {
 		});
 	}
 
+this.each(function(){
+
+	this.trigger('change');
+})
+
 	// if(typeof Berry.instances[this.options.name] !== 'undefined') {
 	// 	Berry.instances[this.options.name].on('destroyed', $.proxy(function(){
 	// 		Berry.instances[this.options.name] = this;
@@ -800,7 +805,7 @@ $.extend(Berry.field.prototype, {
 
 		this.createAttributes();
 		this.setup();
-		if(this.show) {
+		if(typeof this.show !== 'undefined') {
 			this.showConditions = Berry.processConditions.call(this, this.show,
 				function(bool, token) {
 					this.showConditions[token] = bool;

@@ -1,4 +1,6 @@
 @font-face {
     font-family: myFirstFont;
     src: url(../font/fontawesome-webfont.woff);
+}.checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"]{
+top: 7px
 }
