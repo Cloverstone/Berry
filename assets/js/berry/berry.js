@@ -886,13 +886,13 @@ $.extend(Berry.field.prototype, {
 		if(this.displayAs !== undefined) {
 			if(this.item.template !== undefined) {
 				this.display = this.displayAs();
-				return ich[this.item.template](this)[0];
+				return Berry.render(this.item.template, this)[0];// ich[this.item.template](this)[0];
 			} else {
 				return this.displayAs() || 'Empty';
 			}
 		}else{
 			if(this.item.template !== undefined) {
-				return ich[this.item.template](this)[0];
+				return Berry.render(this.item.template, this)[0];//ich[this.item.template](this)[0];
 			} else {
 				return this.lastSaved || 'Empty';
 			}
@@ -1038,7 +1038,8 @@ $((function($){
 })(jQuery));
 
 Berry.render = function(name , data) {
-	return (ich[name] || ich['berry_text'])(data);
+//	return (ich[name] || ich['berry_text'])(data);
+	return (templates.[name] || templates.['berry_text']).render(data);
 };
 Berry.renderers = {
 	base: function(owner) {
