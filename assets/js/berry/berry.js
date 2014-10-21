@@ -1039,7 +1039,7 @@ $((function($){
 
 Berry.render = function(name , data) {
 //	return (ich[name] || ich['berry_text'])(data);
-	return (templates.[name] || templates.['berry_text']).render(data);
+	return (templates[name] || templates['berry_text']).render(data);
 };
 Berry.renderers = {
 	base: function(owner) {
