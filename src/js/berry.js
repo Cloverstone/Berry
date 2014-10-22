@@ -886,13 +886,13 @@ $.extend(Berry.field.prototype, {
 		if(this.displayAs !== undefined) {
 			if(this.item.template !== undefined) {
 				this.display = this.displayAs();
-				return ich[this.item.template](this)[0];
+				return Berry.render(this.item.template, this)[0];
 			} else {
 				return this.displayAs() || 'Empty';
 			}
 		}else{
 			if(this.item.template !== undefined) {
-				return ich[this.item.template](this)[0];
+				return Berry.render(this.item.template, this)[0];
 			} else {
 				return this.lastSaved || 'Empty';
 			}
@@ -1038,7 +1038,7 @@ $((function($){
 })(jQuery));
 
 Berry.render = function(name , data) {
-	return (ich[name] || ich['berry_text'])(data);
+	return (templates[name] || templates['berry_text']).render(data, templates);
 };
 Berry.renderers = {
 	base: function(owner) {
@@ -1180,7 +1180,7 @@ Berry.counter = 0;
 Berry.getUID = function() {
 	return 'b' + (Berry.counter++);
 };
-
+function containsKey(l,k){var r={};for(var j in k){if(typeof l[k[j]]!=='undefined'){r[k[j]]=l[k[j]];}}return r;}
 Berry.prototype.sum = function(search) {
 	var inputs = this.toJSON(search);
 	var val = 0;
