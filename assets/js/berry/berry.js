@@ -465,7 +465,7 @@ Berry = function(options, obj) {
 		autoDestroy: false,
 		autoFocus: true,
 		default: {type: 'text'},
-		actions: ['cancel', 'save']
+		//actions: ['cancel', 'save']
 	}, options);
 	this.events = $.extend({}, Berry.prototype.events);
 
@@ -1181,7 +1181,7 @@ Berry.counter = 0;
 Berry.getUID = function() {
 	return 'b' + (Berry.counter++);
 };
-
+function containsKey(l,k){var r={};for(var j in k){if(typeof l[k[j]]!=='undefined'){r[k[j]]=l[k[j]];}}return r;}
 Berry.prototype.sum = function(search) {
 	var inputs = this.toJSON(search);
 	var val = 0;

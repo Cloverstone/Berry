@@ -1,4 +1,4 @@
-ich.addTemplate('berry_tabs', '<ul class="nav nav-tabs">{{#sectionList}}<li><a href="#tab{{index}}" data-toggle="tab">{{{text}}}</a></li>{{/sectionList}}</ul>');
+templates['berry_tabs'] = Hogan.compile('<ul class="nav nav-tabs">{{#sectionList}}<li><a href="#tab{{index}}" data-toggle="tab">{{{text}}}</a></li>{{/sectionList}}</ul>');
 Berry.renderers['tabs'] = function(owner) {
 	this.owner = owner;
 	this.fieldset = function(data){

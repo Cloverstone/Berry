@@ -1,12 +1,4 @@
-function containsKey( list , keys ){
-	var returnArray = {};
-	for (var key in keys) {
-		if(typeof list[keys[key]] !== 'undefined'){
-			returnArray[keys[key]] = list[keys[key]];
-		}
-	}
-	return returnArray;
-}
+
 document.addEventListener('DOMContentLoaded', function(){
 
 	editor = ace.edit("editor");
@@ -29,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function(){
         return false;
     }
 	});
-			var stuff = JSON.parse(Cookies.get('form'));
+			var stuff = JSON.parse((Cookies.get('form') || "{}"));
 			for(var i in stuff){
 				delete stuff[i].widgetType;
 			}
