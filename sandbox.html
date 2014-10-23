@@ -14,24 +14,48 @@
 		<link rel='stylesheet' type='text/css' href='assets/css/style.css'>
 	</head>
 
-	<body>
-		<div class="container">
-			<div class="dropdown pull-right" style="margin-top:15px">
-				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-					Forms
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="basic">Basic</a></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="conditional">Conditional</a></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="duplicate">Duplicate</a></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="nonfields">Non Fields</a></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="builder">Builder</a></li>
-				</ul>
-			</div>
-			<a style="margin-top:15px;margin-right:15px" class="pull-right btn btn-success" href="editor.html"><i class="fa fa-pencil"></i> Editor</a>
-			<h2>Berry Fields Test</h2>
-		</div>
+	<body>		
+		<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="./" style="line-height: 40px;font-size:10px;">
+						<span style="color: rgb(186, 125, 16);float:left">
+							<div style="line-height: 10px;height: 0px;margin-top: 5px;"><i class="fa-white fa fa-circle-o"></i> <i class="fa-white fa fa-circle-o" style="color: rgb(255, 182, 47);"></i></div>
+							<div style="line-height: 10px; height: 0px; margin-top: 10px;margin-left: -6px;"><i class="fa fa-circle-o" style="color: rgb(255, 182, 47);"></i> <i class="fa fa-circle-o" style="color: rgb(255, 182, 47);"></i> <i class="fa fa-circle-o"></i></div>
+							<div style="margin-top: -6px;height: 0px;"><i class="fa fa-circle-o" style="color: rgb(255, 182, 47);"></i> <i class="fa fa-circle-o"></i></div>
+						</span> <span style="line-height: 40px;margin-left:10px;font-size: 20px;font-weight: 200;color: #cccccf;">Berry.js</span>
+					</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="./documentation.html"><i class="fa fa-pencil-square-o"></i> Documentation</a></li>
+						<li class="active"><a href="./sandbox.html"><i class="fa fa-flask"></i> Sandbox</a></li>
+						<li><a href="./editor.html"><i class="fa fa-check-square-o"></i> Editor</a></li>
+
+					</ul>
+					<div class="dropdown pull-right" style="margin-top:15px">
+						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+							Sample Forms
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="basic">Basic</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="conditional">Conditional</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="duplicate">Duplicate</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="nonfields">Non Fields</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="builder">Builder</a></li>
+						</ul>
+					</div>
+				</div><!-- /.nav-collapse -->
+			</div><!-- /.container -->
+		</div><!-- /.navbar -->
+		<div class="container"></div>
 		<div id="editor"></div>
 		<div class="target"></div>
 		<div class="result"></div>
