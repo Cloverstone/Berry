@@ -4,7 +4,7 @@ top: 7px
 
 #editor { 
 	position: absolute;
-	top: 74px;
+	top: 84px;
 	width: 48%;
 	/*right: 0;*/
 	bottom: 200px;
@@ -12,12 +12,12 @@ top: 7px
 }
 .target { 
 	position: absolute;
-	top: 74px;
+	top: 84px;
 	width: 48%;
 	/*right: 0;*/
 	bottom: 200px;
 	right: 0;
-	overflow: auto;
+	/*overflow: auto;*/
 }
 .target form{margin-right:50px;}
 .result pre{
