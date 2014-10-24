@@ -65,6 +65,127 @@
 					</ul>
 				</div><!--/span-->
 				<div class="col-xs-12 col-sm-9">
+					<h2>BerryJS Field Guide</H2>
+					<div class="alert alert-danger">NOTE: This is a beta version, likely still containing bugs and the api may 
+					still change slightly.</div>
+					<h4>What is it?</h4>
+					<p>
+					Berry is an extensible JavaScript/jQuery library with an included set of CSS rules.
+					</p>
+					<p>
+					The core library does very little besides establish the framework without at least one plugin. Each input type is defined with a plugin allowing for many more input types than are normally available in plain html and more can be created as the need arises.
+					</p>
+					<p>
+					The basics include hidden, text, textarea, select, checkbox, radio, password and file upload.
+					</p>
+					<p>
+					HTML5 adds quite a few more but it is difficult to rely on them since support in older browsers is sketchy at best, this is where Berry comes in. With berry steps in, with the proper plugin you can trust that the input will look, act and validate correctly. Its even possible to create input types that don't exist in any spec but accept the same set up parameters.
+					</p>
+					<br/>
+					<h4>API</h4>
+					<pre>object.toJSON([name]);</pre>
+					</p>
+					<p>
+						an object will be returned containing a serialized list of all fields maintained in the Berry tree. If the optional 'name' parameter is supplied then only the object with that name is returned.
+					</p>
+					<p>
+						<pre>object.destroy();</pre>
+						this will remove the form and clean up any residuals and and remove all events
+					</p>
+					<p>
+						<pre>object.find(path);</pre>
+						the Berry field that the path leads to is returned, for first level fields the path is just the name if it is contained within a fieldset the path would be <code>'fieldset_name.field_name'</code>
+					</p>
+					<p>
+
+					<br/>
+					<h4>Berry API</h4>
+
+					<pre>$(selector).berry(properties);</pre>
+					<ul>
+						<li>Legend</li>
+						<li>Target</li>
+						<li>Defaults</li>
+						<li>field options</li>
+						<li>autoDestroy</li>
+						<li>model</li>
+						<li>renderer</li>
+					</ul>
+
+						
+					<br/>
+					<h4>Field API</h4>
+					<pre>object.toJSON([name]);</pre>
+					<pre>object.list();</pre>
+					<pre>Berry.field.toJSON();</pre>
+					<pre>Berry.field.update();</pre>
+					<pre>Berry.field.$el</pre>
+
+					<br/>
+					<h4>Events</h4>
+					<pre>object.on(event, callback, [context]);</pre>
+					<p>
+						<b>Main</b>
+						<ul>
+							<li>initialize</li>
+							<li>change</li>
+							<li>changed</li>
+							<li>destroy</li>
+							<li>destroyed</li>
+						</ul>
+					</p>
+					<p>
+						<b>Plugins</b>
+						<ul>
+							<li>cancel</li>
+							<li>save</li>
+							<li>saveing</li>
+							<li>saved</li>
+						</ul>
+					</p>
+
+					<br/>
+					<h4>Common Field Options</h4>
+					<ul>
+						<li>Type (Text)</li>
+						<li>Target (Parent)</li>
+						<li>ID (UUID)</li>
+						<li>Name (ID)</li>
+						<li>Label ("")</li>
+						<li>Text</li>
+						<li>Bool (label will be hidden when false)</li>
+						<li>Value ("")</li>
+						<li>Text</li>
+						<li>Function</li>
+						<li>Enabled (True)</li>
+						<li>Bool</li>
+						<li>Conditions Object</li>
+						<li>Function</li>
+						<li>Display (True)</li>
+						<li>Bool</li>
+						<li>Conditions Object</li>
+						<li>Function</li>
+						<li>Parse (True)</li>
+						<li>Bool</li>
+						<li>Conditions Object</li>
+						<li>Function</li>
+						<li>Validate (False)</li>
+						<li>Bool (True is shorthand for {required : true})</li>
+						<li>Validations Object</li>
+						<li>Function</li>
+
+						<li>OnChange (none)</li>
+						<li>Multiple:</li>
+						<li>Enabled(False)</li>
+						<li>Duplicate(True)</li>
+						<li>Append(False)</li>
+						<li>Delete(True)</li>
+						<li>Min(1)</li>
+						<li>Max(-1)</li>
+						<li>Mask</li>
+						<li>choices</li>
+						<li>options</li>
+					</ul>
 
 				</div><!--/span-->
 
