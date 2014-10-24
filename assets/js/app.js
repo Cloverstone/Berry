@@ -54,11 +54,7 @@ editor.setValue(JSON.stringify({"fields": [
     "name": "candy",
     "type": "select",
     "value": "",
-    "choices": [
-      "Lolipops",
-      "Chocolate",
-      "Other"
-    ]
+    "choices": "./data/days.json"
   }
 ]}
 , undefined, 2));
