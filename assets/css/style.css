@@ -20,23 +20,24 @@ border-color: #080808;
 background: #2f353e;
 border: #24292f;
 height: 80px;
-/*-webkit-box-shadow: 0 1px 8px rgba(34,34,34,0.6);
--moz-box-shadow: 0 1px 8px rgba(34,34,34,0.6);
-box-shadow: 0 1px 8px rgba(34,34,34,0.6);*/
 border-top: 10px solid #191c21;
+opacity: .95
 }
 
-.navbar .navbar-nav>li>a {
+.navbar-inverse .navbar-nav>li>a {
 background: #2f353e;
 padding-top: 25px;
 padding-bottom: 25px;
-font-weight: bold;
+color: #ccc;
 }
-
 .navbar .navbar-nav>li>a:hover{
 	background: #2f353e;
 } 
-.navbar-header{height: 61px;
+.navbar-header{height: 65px;}
+@media (max-width:768px){
+	.navbar-nav {
+		margin: .5px -15px;
+	}
 }
 
 .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"]{
