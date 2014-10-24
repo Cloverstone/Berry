@@ -1,0 +1,13 @@
+<div class="row clearfix formitem" name="{{name}}">
+	{{>berry__label}}
+	{{#label}}
+	{{#inline}}<div class="col-md-12" {{#advanced}}style="padding:0px 13px"{{/advanced}}>{{/inline}}
+	{{^inline}}<div class="col-md-8" {{#advanced}}style="padding:0px 13px"{{/advanced}}>{{/inline}}
+	{{/label}}
+	{{^label}}
+	<div class="col-md-12" {{#advanced}}style="padding:0px 13px"{{/advanced}}>
+	{{/label}}
+		<div class="formcontrol" style="height:auto"><div placeholder="{{placeholder}}" style="outline:none;{{^unstyled}}background:#fff;padding:10px{{/unstyled}}">{{content}}{{value}}</div></div>
+			{{>berry__addons}}
+	</div>
+</div>

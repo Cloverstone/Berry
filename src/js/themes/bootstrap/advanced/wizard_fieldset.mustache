@@ -1,0 +1,10 @@
+<div class="step-pane" id="step{{owner.section_count}}">
+	<h3><strong>Step {{owner.section_count}} </strong>{{#item.legend}} - {{item.legend}}{{/item.legend}}</h3>
+	<!-- wizard form starts here -->
+	<fieldset data-type="fieldset" name="{{name}}" id="{{id}}" class="{{#multiple.duplicate}}dupable" data-min="{{multiple.min}}" data-max="{{multiple.max}}{{/multiple.duplicate}}" >
+	{{#multiple.duplicate}}
+		<div class="duplicate add btn btn-default"><i class="fa fa-plus"></i></div>
+		<div class="btn btn-default remove"><i class="fa fa-minus"></i></div>
+	{{/multiple.duplicate}}
+	</fieldset>
+</div>
