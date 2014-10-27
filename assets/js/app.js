@@ -4,18 +4,17 @@ document.addEventListener('DOMContentLoaded', function(){
 	editor = ace.edit("editor");
 	//	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/javascript");
-
+  editor.getSession().setTabSize(2);
 	editor.getSession().on('change', function(e) {
     try {
 			for(var i in Berry.instances){
 				Berry.instances[i].destroy();
 			}
-
       $('.target').berry(
       	$.extend({autoFocus: false, actions: false}, JSON.parse(editor.getValue())) ).on('change', function(){
 				console.clear();
 				console.log(this.toJSON(null, true));
-				$('.result').html("<pre>"+JSON.stringify(this.toJSON(), undefined, 2)+"</pre>");
+				$('.result').html("<pre>"+JSON.stringify(this.toJSON(), undefined, "\t")+"</pre>");
 			}).trigger("change");
     } catch (e) {
         return false;
@@ -26,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				delete stuff[i].widgetType;
 			}
 //	editor.setValue('{\n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
-	editor.setValue('{\n"fields": '+JSON.stringify(stuff, undefined, 2)+'\n}');
+	editor.setValue(JSON.stringify({fields: stuff}, undefined, "\t"));
 	//editor.setValue();
 	// $('.target').berry({autoFocus: false, actions: false,
 	// 	fields: JSON.parse(editor.getValue())
@@ -57,7 +56,7 @@ editor.setValue(JSON.stringify({"fields": [
     "choices": "./data/days.json"
   }
 ]}
-, undefined, 2));
+, undefined, "\t"));
 });
 
 $('#conditional').on('click', function(){
@@ -89,7 +88,7 @@ editor.setValue(JSON.stringify({"fields": [
   },
 	{"label": "Reason", "name": "reason", "type": "textarea", "show": {"matches": {"name": "candy", "value": "Chocolate"}}}  
 ]}
-, undefined, 2));
+, undefined, "\t"));
 
 
 
@@ -115,7 +114,7 @@ editor.setValue(JSON.stringify({"fields": [
 		}
   }}}
 ]}
-, undefined, 2));
+, undefined, "\t"));
 
 
 });
@@ -151,7 +150,7 @@ editor.setValue(JSON.stringify(
   }
 ]
 }
-, undefined, 2));
+, undefined, "\t"));
 });
 $('#builder').on('click',function() {
 	//editor.setValue('{\n\t"attributes":{"name": "Adam Smallcomb"},\n\t"options":{"inline": false}, \n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
@@ -160,5 +159,5 @@ $('#builder').on('click',function() {
 				delete stuff[i].widgetType;
 			}
 //	editor.setValue('{\n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
-	editor.setValue(JSON.stringify({"fields": stuff}, undefined, 2));
+	editor.setValue(JSON.stringify({"fields": stuff}, undefined, "\t"));
 });

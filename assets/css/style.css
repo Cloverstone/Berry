@@ -52,6 +52,9 @@ top: 7px
 	/*right: 0;*/
 	bottom: 200px;
 	left: 0;
+	overflow-y: auto;
+
+	overflow-x: hidden;
 }
 
 .target { 
@@ -73,6 +76,7 @@ top: 7px
 	right: 0px;
 	height: 200px;
 	overflow: auto;
+	z-index: 10;
 }
 
 h2, h3, h4{font-weight: 200;color:#BA7D10;}
