@@ -1,0 +1,12 @@
+<div class="row clearfix {{modifiers}}" name="{{name}}">
+	{{>berry__label}}
+	{{#label}}
+	{{#inline}}<div class="col-md-12" style="margin:0px 0px 15px">{{/inline}}
+	{{^inline}}<div class="col-md-8" style="margin:6px 0 15px">{{/inline}}
+	{{/label}}
+	{{^label}}
+	<div class="col-md-12" style="margin:0px 0px 15px">
+	{{/label}}
+		<div {{#alert}}class="alert alert-{{alert}}" style="margin-bottom: 5px;"{{/alert}}>{{{value}}}</div>
+	</div>
+</div>

@@ -1,5 +1,6 @@
 (function(b,$){
 	b.register({type: 'text' });
+	b.register({type: 'raw' });
 	b.register({type: 'password' });
 
 	b.register({type: 'hidden',

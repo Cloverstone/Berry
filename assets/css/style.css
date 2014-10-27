@@ -40,20 +40,16 @@ color: #ccc;
 	}
 }
 
-.checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"]{
-top: 7px
-}
-
 
 #editor { 
 	position: absolute;
-	top: 95px;
+	top: 85px;
 	width: 48%;
 	/*right: 0;*/
 	bottom: 200px;
 	left: 0;
+	padding: 1px;
 	overflow-y: auto;
-
 	overflow-x: hidden;
 }
 
@@ -64,6 +60,8 @@ top: 7px
 	/*right: 0;*/
 	bottom: 200px;
 	right: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
 	/*overflow: auto;*/
 }
 
