@@ -486,6 +486,7 @@ Berry = function(options, obj) {
 	this.processfields(this.options.fields, this.target, null);
 
 	if(typeof this.options.attributes !== 'undefined'){
+		if(this.options.attributes === 'hash'){this.options.attributes = window.location.hash.replace('#', '').split('&').map(function(val){return val.split('=');}).reduce(function ( total, current ) {total[ current[0] ] = current[1];return total;}, {});}
 		this.source = $.extend(true, {}, this.options.attributes);
 
 		if(this.options.flatten){
