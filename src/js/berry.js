@@ -508,10 +508,9 @@ Berry = function(options, obj) {
 		});
 	}
 
-this.each(function(){
-
-	this.trigger('change');
-})
+	this.each(function(){
+		this.trigger('change');
+	})
 
 	// if(typeof Berry.instances[this.options.name] !== 'undefined') {
 	// 	Berry.instances[this.options.name].on('destroyed', $.proxy(function(){
