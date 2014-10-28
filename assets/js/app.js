@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function(){
         return false;
     }
 	});
-			var stuff = JSON.parse((Cookies.get('form') || "{}"));
+			var stuff = JSON.parse(($.jStorage.get('form') || "{}"));
 			for(var i in stuff){
 				delete stuff[i].widgetType;
 			}
@@ -155,7 +155,7 @@ editor.setValue(JSON.stringify(
 });
 $('#builder').on('click',function() {
 	//editor.setValue('{\n\t"attributes":{"name": "Adam Smallcomb"},\n\t"options":{"inline": false}, \n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
-			var stuff = JSON.parse(Cookies.get('form'));
+			var stuff = JSON.parse($.jStorage.get('form'));
 			for(var i in stuff){
 				delete stuff[i].widgetType;
 			}
