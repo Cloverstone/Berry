@@ -8,6 +8,11 @@ $('.form').berry({
 		{name: 'enabled', label: 'Enabled', type: 'checkbox'},
 		{name: 'choose', label: 'Choose', type: 'radio', max: 5, min: 1, step: 2},
 		{name: 'slot', label: 'Slot', type: 'select', choices: ['First', {name: 'Second', value: '2',}]},
+
+		{name: 'source', label: 'Source', type: 'number'},
+		{name: 'result', label: 'Result', value: function(){
+			return 6+(parseInt(this.source , 10) || 0);
+		}},
 	]
 })
 //This event is triggered when the field with the name 'name' changes
