@@ -31,6 +31,7 @@
 
 	b.register({ type: 'number',
 		defaults: { elType: 'text' },
+		value: 0,
 		getValue: function() {
 			var temp = this.$el.val();
 			if( $.isNumeric( temp ) ){
