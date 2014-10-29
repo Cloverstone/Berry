@@ -653,7 +653,11 @@ Berry.field = function(item, owner){
 			} else if(typeof this.item.value === 'string' && this.item.value.indexOf('=') === 0 && typeof math !== 'undefined'){
 				this.template =  Hogan.compile(this.item.value.substr(1),{delimiters: '{ }'});
 				this.liveValue = function() {
-					return math.eval(this.template.render(this.owner.toJSON(), templates)).toFixed((this.item.precision || 2));
+					var temp = math.eval(this.template.render(this.owner.toJSON(), templates))
+					if(jQuery.isNumeric(temp)){
+						return temp.toFixed((this.item.precision || 0));
+					}
+					return temp;
 				};
 				item.value = this.item.value = this.liveValue();
 				this.owner.on('change', $.proxy(function(){
