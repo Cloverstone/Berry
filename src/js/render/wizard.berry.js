@@ -1,6 +1,3 @@
-//ich.addTemplate('berry_wizard_steps', '{{#sectionList}}<li data-target="#step{{index}}" class="{{state}}" ><span class="badge">{{index}}</span>Step {{index}}<span class="chevron"></span></li>{{/sectionList}}');
-ich.addTemplate('berry_wizard_steps', '{{#sectionList}}<li data-target="#step{{index}}" class="{{state}}" ><span class="badge">{{index}}</span>{{text}}<span class="chevron"></span></li>{{/sectionList}}');
-
 Berry.renderers['wizard'] = function(owner) {
 	this.owner = owner;
 	this.fieldset = function(data){
