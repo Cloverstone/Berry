@@ -16,7 +16,7 @@ Berry.register({
 				//myDropzone.removeAllFiles();
 
 				//this.setValue(response[this.name]);
-				this.setValue(response.name);
+				this.setValue(response);
 				this.trigger('change');
 			}, this)});
 			// myDropzone.on("complete", function(file) {
