@@ -1121,7 +1121,8 @@ Berry.processOpts = function(item) {
 					type: 'get',
 					success: $.proxy(function(data) {
 						Berry.collections[item.choices] = data;
-						this.update({choices: data});
+						this.update({choices: data, value: this.owner.options.attributes[this.getPath()]});
+						
 					}, item)
 				});
 				item.options = [];

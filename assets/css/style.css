@@ -62,7 +62,7 @@ color: #ccc;
 	/*overflow: auto;*/
 }
 
-.source { 
+#alt-sidebar { 
 	position: absolute;
 	top: 85px;
 	width: 48%;
