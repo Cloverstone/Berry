@@ -337,12 +337,15 @@ Berry = function(options, obj) {
 		if(field.type in Berry.types) {
 			var current = addField(field, parent, target, insert);
 			if(current.fieldset === undefined) { current.fieldset = target; }
+
 			if(insert == 'before') {
 				$(target).before(current.render());
 			} else if(insert == 'after') {
 				$(target).after(current.render());
 			} else {
-				$(current.fieldset).append(current.render());
+				currentRow = $(Berry.render('berry_row', {id: Berry.getUID}));
+				$(current.fieldset).append(currentRow.append(current.render()));
+//				$(current.fieldset).append(current.render());
 			}
 			current.initialize();
 			return current;
