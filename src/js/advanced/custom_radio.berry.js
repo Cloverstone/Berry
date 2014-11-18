@@ -7,8 +7,8 @@
 			this.$el = this.self.find('.custom-group');
 			this.$el.children('.btn').off();
 			this.$el.children('.btn').on('click', $.proxy(function(e){
-				this.$el.children('.btn-success').toggleClass('btn-success btn-white');
-				$(e.target).closest('.btn').toggleClass('btn-success btn-white');
+				this.$el.children('.btn-success').toggleClass('btn-success btn-default');
+				$(e.target).closest('.btn').toggleClass('btn-success btn-default');
 				if(typeof this.onchange === 'function'){
 					this.onchange();
 				}

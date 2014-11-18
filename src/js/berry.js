@@ -1,4 +1,4 @@
-//		BerryJS 0.9.1.0
+//		BerryJS 0.9.2.0
 //		(c) 2011-2014 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -343,8 +343,22 @@ Berry = function(options, obj) {
 			} else if(insert == 'after') {
 				$(target).after(current.render());
 			} else {
-				currentRow = $(Berry.render('berry_row', {id: Berry.getUID}));
-				$(current.fieldset).append(currentRow.append(current.render()));
+				if(typeof this.currentRow === 'undefined' || (this.currentRow.used + current.size) > 12){
+					var temp = Berry.getUID;
+					this.currentRow = this.rows[temp];
+					this.currentRow = {};
+					this.currentRow.id = temp;
+					this.currentRow.items = [];
+					this.currentRow.used = 0;
+					this.currentRow.ref = $(Berry.render('berry_row', {id: temp}));
+					$(current.fieldset).append(this.currentRow.ref);
+				}
+
+				this.currentRow.used += current.size;
+				this.currentRow.items.push(current);
+				this.currentRow.ref.append( $('<div/>').addClass('col-md-'+current.size).append(current.render()) );
+				//currentRow = 
+				//$(current.fieldset).append(currentRow.append( ));
 //				$(current.fieldset).append(current.render());
 			}
 			current.initialize();
@@ -454,6 +468,7 @@ Berry = function(options, obj) {
 	var self = this;
 	this.$el = obj;
 	this.fieldsets = [];
+	this.rows = {};
 	this.section_count = 0;
 	this.sections = [];
 	this.sectionList = [];
@@ -705,6 +720,7 @@ Berry.field = function(item, owner){
 
 $.extend(Berry.field.prototype, {
 	type: 'text',
+	size: 12,
 	version: '1.0',
 	isContainer: false,
 	instance_id: null,
