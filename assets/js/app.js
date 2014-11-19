@@ -12,10 +12,11 @@ document.addEventListener('DOMContentLoaded', function(){
 			}
       $('.target').berry(
       	$.extend({autoFocus: false, actions: false, attributes: 'hash', name: 'myForm'}, JSON.parse(editor.getValue())) ).on('change', function(){
-				console.clear();
-				console.log(this.toJSON(null, true));
-				$('.result').html("<pre>"+JSON.stringify(this.toJSON(), undefined, "\t")+"</pre>");
-        window.location.hash = '#'+$.param(this.toJSON());
+				// console.clear();
+				// console.log(this.toJSON(null, true));
+        var json = this.toJSON();
+				$('.result').html("<pre>"+JSON.stringify(json, undefined, "\t")+"</pre>");
+        location.hash = '#'+$.param(json);
 			}).trigger("change");
     } catch (e) {
         return false;

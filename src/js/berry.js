@@ -343,23 +343,23 @@ Berry = function(options, obj) {
 			} else if(insert == 'after') {
 				$(target).after(current.render());
 			} else {
-				if(typeof this.currentRow === 'undefined' || (this.currentRow.used + current.size) > 12){
-					var temp = Berry.getUID;
-					this.currentRow = this.rows[temp];
-					this.currentRow = {};
-					this.currentRow.id = temp;
-					this.currentRow.items = [];
-					this.currentRow.used = 0;
-					this.currentRow.ref = $(Berry.render('berry_row', {id: temp}));
-					$(current.fieldset).append(this.currentRow.ref);
+				var currentRow;
+				if(typeof $(current.fieldset).children('.row').last().attr('id') !== 'undefined') {
+					currentRow = this.rows[$(current.fieldset).children('.row').last().attr('id')];		
 				}
+				debugger;
+				if(typeof currentRow === 'undefined' || (currentRow.used + parseInt(current.columns,10) + parseInt(current.offset,10)) > 12){
+					var temp = Berry.getUID();
+					currentRow = {};
+					currentRow.used = 0;
+					currentRow.ref = $(Berry.render('berry_row', {id: temp}));
+					this.rows[temp] = currentRow;
+					$(current.fieldset).append(currentRow.ref);
+				}
+				currentRow.used += parseInt(current.columns,10);
+				currentRow.used += parseInt(current.offset,10);
+				currentRow.ref.append( $('<div/>').addClass('col-md-' + current.columns).addClass('col-md-offset-' + current.offset).append(current.render()) );
 
-				this.currentRow.used += current.size;
-				this.currentRow.items.push(current);
-				this.currentRow.ref.append( $('<div/>').addClass('col-md-'+current.size).append(current.render()) );
-				//currentRow = 
-				//$(current.fieldset).append(currentRow.append( ));
-//				$(current.fieldset).append(current.render());
 			}
 			current.initialize();
 			return current;
@@ -603,6 +603,26 @@ Berry.prototype.on = function(topic, func, execute) {
 	}
 	return this;
 };
+// Berry.prototype.delay = function(topic, func, execute, delay) {
+// 	var eventSplitter = /\s+/;
+// 	if(eventSplitter.test(topic)){
+// 		var list = topic.split(eventSplitter);
+// 		for (var t in list) {
+// 			this.addSub(list[t], func);
+// 		}
+// 	}else{
+// 		this.lastToken = this.addSub(topic, func);
+// 	}
+// 	if(execute){
+// 		func.call(this, null, topic);
+// 	}
+// 	return this;
+
+
+// 	clearTimeout(filterTimer);
+// 	filterTimer=setTimeout(processFilter,300);
+// 	return this;
+// };
 Berry.prototype.off = function(token) {
 	for (var m in this.events) {
 		if (this.events[m]) {
@@ -720,7 +740,8 @@ Berry.field = function(item, owner){
 
 $.extend(Berry.field.prototype, {
 	type: 'text',
-	size: 12,
+	columns: 12,
+	offset: 0,
 	version: '1.0',
 	isContainer: false,
 	instance_id: null,
