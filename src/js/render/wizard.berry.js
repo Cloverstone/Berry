@@ -132,6 +132,7 @@ Berry.prototype.events.initialize.push({
 	token: Berry.getUID(),
 	func: function(){
 		if(this.options.renderer == 'wizard') {
+			this.sectionsEnabled = true;
 			this.options.actions = ['cancel', 'finish', 'next', 'previous'];
 		}
 	}

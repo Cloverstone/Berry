@@ -7,6 +7,7 @@ Berry.renderers['tabs'] = function(owner) {
 		return Berry.render('berry_base_fieldset', data);
 	};
 	this.render = function(){
+
 		this.owner.$el.html(Berry.render('berry_base_form', this.owner.options));
 		return this.owner.$el.find('form');
 	};
@@ -27,6 +28,7 @@ Berry.prototype.events.initialize.push({
 	token: Berry.getUID(),
 	func: function() {
 		if(this.options.renderer == 'tabs') {
+			this.sectionsEnabled = true;
 			this.options.modifiers += " tab-content";
 		}
 	}

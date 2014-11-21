@@ -343,12 +343,13 @@ Berry = function(options, obj) {
 			} else if(insert == 'after') {
 				$(target).after(current.render());
 			} else {
+				if(current.item.type !== 'fieldset' ||  current.isChild() || !this.sectionsEnabled){
 				var currentRow;
 				if(typeof $(current.fieldset).children('.row').last().attr('id') !== 'undefined') {
 					currentRow = this.rows[$(current.fieldset).children('.row').last().attr('id')];		
 				}
-				debugger;
-				if(typeof currentRow === 'undefined' || (currentRow.used + parseInt(current.columns,10) + parseInt(current.offset,10)) > 12){
+				//debugger;
+				if(typeof currentRow === 'undefined' || (currentRow.used + parseInt(current.columns,10) + parseInt(current.offset,10)) > this.options.columns){
 					var temp = Berry.getUID();
 					currentRow = {};
 					currentRow.used = 0;
@@ -359,7 +360,10 @@ Berry = function(options, obj) {
 				currentRow.used += parseInt(current.columns,10);
 				currentRow.used += parseInt(current.offset,10);
 				currentRow.ref.append( $('<div/>').addClass('col-md-' + current.columns).addClass('col-md-offset-' + current.offset).append(current.render()) );
-
+				}else{
+					$(current.fieldset).append(current.render() );
+					
+				}
 			}
 			current.initialize();
 			return current;
@@ -470,8 +474,10 @@ Berry = function(options, obj) {
 	this.fieldsets = [];
 	this.rows = {};
 	this.section_count = 0;
+	this.sectionsEnabled = false;
 	this.sections = [];
 	this.sectionList = [];
+	//debugger;
 	this.options = $.extend(true, {
 		name: Berry.getUID(),
 		errorClass: 'has-error',
@@ -480,6 +486,7 @@ Berry = function(options, obj) {
 		modifiers: '',
 		renderer: 'base',
 		flatten: true,
+		columns: 12,
 		autoDestroy: false,
 		autoFocus: true,
 		default: {type: 'text'},
@@ -736,11 +743,12 @@ Berry.field = function(item, owner){
 			}
 			return this.getValue();
 		};
+		this.columns = (this.columns || this.owner.options.columns);
+		if(this.columns > this.owner.options.columns){this.columns = this.owner.options.columns}
 };
 
 $.extend(Berry.field.prototype, {
 	type: 'text',
-	columns: 12,
 	offset: 0,
 	version: '1.0',
 	isContainer: false,
