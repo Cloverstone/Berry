@@ -698,11 +698,15 @@ Berry.field = function(item, owner){
 			} else if(typeof this.item.value === 'string' && this.item.value.indexOf('=') === 0 && typeof math !== 'undefined'){
 				this.template =  Hogan.compile(this.item.value.substr(1),{delimiters: '{ }'});
 				this.liveValue = function() {
-					var temp = math.eval(this.template.render(this.owner.toJSON(), templates))
-					if(jQuery.isNumeric(temp)){
-						return temp.toFixed((this.item.precision || 0));
+					try{
+						var temp = math.eval(this.template.render(this.owner.toJSON(), templates))
+						if(jQuery.isNumeric(temp)){
+							return temp.toFixed((this.item.precision || 0));
+						}
+						return temp;
+					}catch(e){
+						return this.template.render();
 					}
-					return temp;
 				};
 				item.value = this.item.value = this.liveValue();
 				this.owner.on('change', $.proxy(function(){
@@ -756,6 +760,7 @@ $.extend(Berry.field.prototype, {
 	path:'',
 	defaults: {},
 	parent: null,
+	enabled: true,
 	// parse: function(){
 	// 	return true;
 	// },
@@ -884,6 +889,10 @@ $.extend(Berry.field.prototype, {
 					}
 				}
 			);
+
+			if(typeof this.showConditions === 'boolean'){
+				this.self.toggle(this.showConditions);
+			}
 		}
 		if(typeof this.enabled !== 'undefined') {
 			this.enabledConditions = Berry.processConditions.call(this, this.enabled,
