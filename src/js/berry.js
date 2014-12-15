@@ -1231,7 +1231,7 @@ Berry.btn = {
 	save: {
 		label: 'Save',
 		icon:'check',
-		id: 'submit',
+		id: 'berry-submit',
 		modifier: 'success pull-right',
 		click: function() {
 			if(this.options.autoDestroy) {
@@ -1243,7 +1243,7 @@ Berry.btn = {
 	cancel: {
 		label: 'Cancel',
 		icon: 'times',
-		id: 'close',
+		id: 'berry-close',
 		modifier:'default pull-left',
 		click: function() {
 			if(this.options.autoDestroy) {this.destroy();}
