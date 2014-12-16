@@ -11,13 +11,13 @@ document.addEventListener('DOMContentLoaded', function(){
 				Berry.instances[i].destroy();
 			}
       $('.target').berry(
-      	$.extend({autoFocus: false, actions: false, attributes: 'hash', name: 'myForm'}, JSON.parse(editor.getValue())) ).on('change', function(){
+      	$.extend({autoFocus: false, actions: false, attributes: 'hash', name: 'myForm'}, JSON.parse(editor.getValue())) ).delay('change', function(){
 				// console.clear();
 				// console.log(this.toJSON(null, true));
         var json = this.toJSON();
 				$('.result').html("<pre>"+JSON.stringify(json, undefined, "\t")+"</pre>");
         location.hash = '#'+$.param(json);
-			}).trigger("change");
+			}, true);//.trigger("change");
     } catch (e) {
         return false;
     }

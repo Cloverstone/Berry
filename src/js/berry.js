@@ -610,26 +610,33 @@ Berry.prototype.on = function(topic, func, execute) {
 	}
 	return this;
 };
-// Berry.prototype.delay = function(topic, func, execute, delay) {
-// 	var eventSplitter = /\s+/;
-// 	if(eventSplitter.test(topic)){
-// 		var list = topic.split(eventSplitter);
-// 		for (var t in list) {
-// 			this.addSub(list[t], func);
-// 		}
-// 	}else{
-// 		this.lastToken = this.addSub(topic, func);
-// 	}
-// 	if(execute){
-// 		func.call(this, null, topic);
-// 	}
-// 	return this;
 
+Berry.prototype.delay = function(topic, func, execute, delay) {
+	funcname = Berry.getUID();
+	this.events[funcname] = {func: func, timer: null};
 
-// 	clearTimeout(filterTimer);
-// 	filterTimer=setTimeout(processFilter,300);
-// 	return this;
-// };
+	var temp = function(){
+		clearTimeout(this.events[funcname].timer);
+		this.events[funcname].timer = setTimeout($.proxy(function(){
+			this.events[funcname].func.call(this);
+		},this) , 200);
+	};
+
+	var eventSplitter = /\s+/;
+	if(eventSplitter.test(topic)){
+		var list = topic.split(eventSplitter);
+		for (var t in list) {
+			this.addSub(list[t], temp);
+		}
+	}else{
+		this.lastToken = this.addSub(topic, temp);
+	}
+	if(execute){
+		func.call(this, null, topic);
+	}
+	return this;
+
+};
 Berry.prototype.off = function(token) {
 	for (var m in this.events) {
 		if (this.events[m]) {
@@ -913,6 +920,9 @@ $.extend(Berry.field.prototype, {
 	},
 	on: function(topic, func){
 		this.owner.on(topic + ':' + this.name, func);
+	},
+	delay: function(topic, func){
+		this.owner.delay(topic + ':' + this.name, func);
 	},
 	trigger: function(topic) {
 		this.value = this.getValue();
