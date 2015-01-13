@@ -611,6 +611,7 @@ Berry.prototype.on = function(topic, func, execute) {
 	return this;
 };
 
+//add code to handle parameters and cancelation of events for objects/forms that are deleted
 Berry.prototype.delay = function(topic, func, execute, delay) {
 	funcname = Berry.getUID();
 	this.events[funcname] = {func: func, timer: null};
@@ -619,7 +620,7 @@ Berry.prototype.delay = function(topic, func, execute, delay) {
 		clearTimeout(this.events[funcname].timer);
 		this.events[funcname].timer = setTimeout($.proxy(function(){
 			this.events[funcname].func.call(this);
-		},this) , 200);
+		},this) , 250);
 	};
 
 	var eventSplitter = /\s+/;
@@ -687,75 +688,75 @@ Berry.prototype.trigger = function(topic, args) {
 Berries = Berry.instances = {};
 
 Berry.field = function(item, owner){
-		this.children = {};
-		this.owner = owner;
-		this.hidden = false;
-		this.item = $.extend(true, {}, this.defaults, item);
-		$.extend(this, this.owner.options.options, this.item);
-		if(item.value !== 0){
-			if(typeof item.value === 'function') {
-				this.valueFunc = item.value;
-				this.liveValue = function() {
-					return this.valueFunc.call(this.owner.toJSON());
-				};
-				item.value = this.item.value = this.liveValue();
-				this.owner.on('change', $.proxy(function(){
-					this.set(this.liveValue());
-				},this));
-			} else if(typeof this.item.value === 'string' && this.item.value.indexOf('=') === 0 && typeof math !== 'undefined'){
-				this.template =  Hogan.compile(this.item.value.substr(1),{delimiters: '{ }'});
-				this.liveValue = function() {
-					try{
-						var temp = math.eval(this.template.render(this.owner.toJSON(), templates))
-						if(jQuery.isNumeric(temp)){
-							return temp.toFixed((this.item.precision || 0));
-						}
-						return temp;
-					}catch(e){
-						return this.template.render();
+	this.children = {};
+	this.owner = owner;
+	this.hidden = false;
+	this.item = $.extend(true, {}, this.defaults, item);
+	$.extend(this, this.owner.options.options, this.item);
+	if(item.value !== 0){
+		if(typeof item.value === 'function') {
+			this.valueFunc = item.value;
+			this.liveValue = function() {
+				return this.valueFunc.call(this.owner.toJSON());
+			};
+			item.value = this.item.value = this.liveValue();
+			this.owner.on('change', $.proxy(function(){
+				this.set(this.liveValue());
+			},this));
+		} else if(typeof this.item.value === 'string' && this.item.value.indexOf('=') === 0 && typeof math !== 'undefined'){
+			this.template =  Hogan.compile(this.item.value.substr(1),{delimiters: '{ }'});
+			this.liveValue = function() {
+				try{
+					var temp = math.eval(this.template.render(this.owner.toJSON(), templates))
+					if(jQuery.isNumeric(temp)){
+						return temp.toFixed((this.item.precision || 0));
 					}
-				};
-				item.value = this.item.value = this.liveValue();
-				this.owner.on('change', $.proxy(function(){
-					this.set(this.liveValue());
-				}, this));
+					return temp;
+				}catch(e){
+					return this.template.render();
+				}
+			};
+			item.value = this.item.value = this.liveValue();
+			this.owner.on('change', $.proxy(function(){
+				this.set(this.liveValue());
+			}, this));
 
-				// this.getValue = function() { return this.value; }
-				// this.set = function(value) {}
-				// this.setValue = function(value) {}
-				// this.set(this.value);
-			} else {
-				this.value = (item.value || this.value || item.default || '');
-			}
+			// this.getValue = function() { return this.value; }
+			// this.set = function(value) {}
+			// this.setValue = function(value) {}
+			// this.set(this.value);
 		} else {
-			this.value = 0;
+			this.value = (item.value || this.value || item.default || '');
 		}
-		this.lastSaved = this.liveValue();
-		this.id = (item.id || Berry.getUID());//?
-		this.self = undefined;
-		this.fieldset = undefined;
-		if(this.item.fieldset !== undefined && $('.' + this.item.fieldset).length > 0){
-			//this.owner.fieldsets.push(this.item.fieldset);
-			this.fieldset = $('.' + this.item.fieldset)[0];
-			this.owner.fieldsets.push(this.fieldset);
-		}else{
-			if(this.item.fieldset !== undefined && $('[name=' + this.item.fieldset + ']').length > 0){
+	} else {
+		this.value = 0;
+	}
+	this.lastSaved = this.liveValue();
+	this.id = (item.id || Berry.getUID());//?
+	this.self = undefined;
+	this.fieldset = undefined;
+	if(this.item.fieldset !== undefined && $('.' + this.item.fieldset).length > 0){
+		//this.owner.fieldsets.push(this.item.fieldset);
+		this.fieldset = $('.' + this.item.fieldset)[0];
+		this.owner.fieldsets.push(this.fieldset);
+	}else{
+		if(this.item.fieldset !== undefined && $('[name=' + this.item.fieldset + ']').length > 0){
 //				this.owner.fieldsets.push(this.item.fieldset);
-				this.fieldset = $('[name=' + this.item.fieldset + ']')[0];
-				this.owner.fieldsets.push(this.fieldset);
-			}
+			this.fieldset = $('[name=' + this.item.fieldset + ']')[0];
+			this.owner.fieldsets.push(this.fieldset);
 		}
-		// if(this.fieldset === undefined && typeof this.item.target === 'object'){
-		// 	this.fieldset = this.item.target;
-		// }
-		this.val = function(value){
-			if(typeof value !== 'undefined'){
-				this.set(value);
-			}
-			return this.getValue();
-		};
-		this.columns = (this.columns || this.owner.options.columns);
-		if(this.columns > this.owner.options.columns){this.columns = this.owner.options.columns}
+	}
+	// if(this.fieldset === undefined && typeof this.item.target === 'object'){
+	// 	this.fieldset = this.item.target;
+	// }
+	this.val = function(value){
+		if(typeof value !== 'undefined'){
+			this.set(value);
+		}
+		return this.getValue();
+	};
+	this.columns = (this.columns || this.owner.options.columns);
+	if(this.columns > this.owner.options.columns){this.columns = this.owner.options.columns}
 };
 
 $.extend(Berry.field.prototype, {
