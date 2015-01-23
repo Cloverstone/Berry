@@ -18,7 +18,7 @@ Berry.register({
 	  this.editor = new Pen({
 	  	editor: this.$el[0], // {DOM Element} [required]
 	  	//textarea: '<textarea name="content"></textarea>', // fallback for old browsers
-	  	list: ['bold', 'italic', 'underline'] // editor menu list
+	  	//list: ['bold', 'italic', 'underline'] // editor menu list
 		});
 
 //var editor = new Pen(options);

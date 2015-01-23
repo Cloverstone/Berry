@@ -1167,7 +1167,7 @@ Berry.processOpts = function(item) {
 	}
 	/* 
 	If max is set on the item, assume a number set is desired. 
-	min defaults to 0 and the step defualts to 1.
+	min defaults to 0 and the step defaults to 1.
 	*/
 	if(typeof item.max !== 'undefined'){
 		item.min = (item.min || 0);
@@ -1189,8 +1189,7 @@ Berry.processOpts = function(item) {
 					type: 'get',
 					success: $.proxy(function(data) {
 						Berry.collections[item.choices] = data;
-						this.update({choices: data, value: this.owner.options.attributes[this.getPath()]});
-						
+						this.update({choices: data, value: this.owner.search(this.owner.attributes,this.getPath())});
 					}, item)
 				});
 				item.options = [];
@@ -1215,7 +1214,6 @@ Berry.processOpts = function(item) {
 			var cOpt = item.options[o];
 			if(typeof cOpt === 'string' || typeof cOpt === 'number') {
 				cOpt = {label: cOpt};
-				// if(item.useName) {
 				if(item.key !== 'index'){
 					cOpt.value = cOpt.label;
 				}
