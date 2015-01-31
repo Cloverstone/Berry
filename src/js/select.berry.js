@@ -13,9 +13,6 @@
 		getValue: function() {
 			return this.$el.children('option:selected').attr('value');
 		},
-		setValue: function(val) {
-			return this.$el.children('[data-value="'+val+'"]').click();
-		},
 		displayAs: function() {
 			for(var i in this.options) {
 				if(this.options[i].value == this.lastSaved) {
