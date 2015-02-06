@@ -34,6 +34,7 @@ Berry.renderers['popins'] = function(owner) {
 				field.toJSON();
 				$('[name=' + $(this).data('name') + '].popins').html(field.display).popover('hide');
 				fl.trigger('updated');
+				fl.trigger('save');
 			}else{
 				field.focus();
 			}

@@ -972,13 +972,13 @@ $.extend(Berry.field.prototype, {
 		if(this.displayAs !== undefined) {
 			if(this.item.template !== undefined) {
 				this.display = this.displayAs();
-				return Berry.render(this.item.template, this)[0];
+				return Berry.render(this.item.template, this);
 			} else {
 				return this.displayAs() || 'Empty';
 			}
 		}else{
 			if(this.item.template !== undefined) {
-				return Berry.render(this.item.template, this)[0];
+				return Berry.render(this.item.template, this);
 			} else {
 				return this.lastSaved || 'Empty';
 			}
