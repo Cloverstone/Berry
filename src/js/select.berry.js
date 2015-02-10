@@ -14,9 +14,10 @@
 			return this.$el.children('option:selected').attr('value');
 		},
 		displayAs: function() {
-			for(var i in this.options) {
-				if(this.options[i].value == this.lastSaved) {
-					return this.options[i].label;
+			var o = this.options;
+			for(var i in o) {
+				if(o[i].value == this.lastSaved) {
+					return o[i].label;
 				}
 			}
 		}

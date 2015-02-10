@@ -348,7 +348,6 @@ Berry = function(options, obj) {
 				if(typeof $(current.fieldset).children('.row').last().attr('id') !== 'undefined') {
 					currentRow = this.rows[$(current.fieldset).children('.row').last().attr('id')];		
 				}
-				//debugger;
 				if(typeof currentRow === 'undefined' || (currentRow.used + parseInt(current.columns,10) + parseInt(current.offset,10)) > this.options.columns){
 					var temp = Berry.getUID();
 					currentRow = {};
@@ -362,7 +361,6 @@ Berry = function(options, obj) {
 				currentRow.ref.append( $('<div/>').addClass('col-md-' + current.columns).addClass('col-md-offset-' + current.offset).append(current.render()) );
 				}else{
 					$(current.fieldset).append(current.render() );
-					
 				}
 			}
 			current.initialize();
@@ -582,6 +580,10 @@ Berry = function(options, obj) {
 			}
 		});
 };
+
+/*********************************/
+/*             Events            */
+/*********************************/
 Berry.prototype.events = {initialize:[]};
 	//pub/sub service
 Berry.prototype.addSub = function(topic, func){
@@ -661,7 +663,6 @@ Berry.prototype.processTopic = function(topic, args){
 	}
 }
 Berry.prototype.trigger = function(topic, args) {
-//	alert(topic);
 	if (this.events[topic]) {
 		var t = this.events[topic],
 			len = t ? t.length : 0;
@@ -684,6 +685,10 @@ Berry.prototype.trigger = function(topic, args) {
 
 	return this;
 };
+/*********************************/
+/*         End  Events           */
+/*********************************/
+
 
 Berries = Berry.instances = {};
 
@@ -815,7 +820,7 @@ $.extend(Berry.field.prototype, {
 		this.setValue(this.value);
 	},
 	hasChildren: function() {return !$.isEmptyObject(this.children);},
-	create: function(source) {return Berry.render('berry_' + (this.elType || this.type), this);},
+	create: function() {return Berry.render('berry_' + (this.elType || this.type), this);},
 	render: function() {
 		if(typeof this.self === 'undefined') {
 			this.self = $(this.create()).attr('data-Berry',this.owner.options.name);
@@ -974,13 +979,13 @@ $.extend(Berry.field.prototype, {
 				this.display = this.displayAs();
 				return Berry.render(this.item.template, this);
 			} else {
-				return this.displayAs() || 'Empty';
+				return this.displayAs() || this.item.default || 'Empty';
 			}
 		}else{
 			if(this.item.template !== undefined) {
 				return Berry.render(this.item.template, this);
 			} else {
-				return this.lastSaved || 'Empty';
+				return this.lastSaved || this.item.default ||  'Empty';
 			}
 		}
 	},

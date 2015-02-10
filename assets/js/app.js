@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				Berry.instances[i].destroy();
 			}
       $('.target').berry(
-      	$.extend({autoFocus: false, actions: false, attributes: 'hash', name: 'myForm'}, JSON.parse(editor.getValue())) ).delay('change', function(){
+      	$.extend({autoFocus: false, actions: false, name: 'myForm'}, JSON.parse(editor.getValue())) ).delay('change', function(){
 				// console.clear();
 				// console.log(this.toJSON(null, true));
         var json = this.toJSON();

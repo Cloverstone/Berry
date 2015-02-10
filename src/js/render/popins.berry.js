@@ -56,7 +56,7 @@ Berry.renderers['popins'] = function(owner) {
 };
 
 Berry.renderers.popins.prototype.create = function(field){
-	var pOpts = $.extend({title:(field.prompt || field.label), content: field.self, html: true, placement: 'top', template: '<div class="popover berry"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'}, field.owner.options.popins, field.popins);
+	var pOpts = $.extend({title:(field.prompt || field.label), content: field.self, html: true, placement: 'top', template: '<div class="popover berry"><div class="arrow"></div><h3 class="popover-title"></h3><div style="min-width:270px" class="popover-content"></div></div>'}, field.owner.options.popins, field.popins);
 	var target = $('[name=' + field.name + '].popins');
 	target.popover(pOpts);
 	target.on('hidden.bs.popover', function () {
