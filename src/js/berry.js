@@ -619,30 +619,28 @@ Berry.prototype.on = function(topic, func, execute) {
 
 //add code to handle parameters and cancelation of events for objects/forms that are deleted
 Berry.prototype.delay = function(topic, func, execute, delay) {
-	funcname = Berry.getUID();
-	this.events[funcname] = {func: func, timer: null};
-
-	var temp = function(){
-		clearTimeout(this.events[funcname].timer);
-		this.events[funcname].timer = setTimeout($.proxy(function(){
-			this.events[funcname].func.call(this);
-		},this) , 250);
+	var temp = function(args, topic, token){
+		clearTimeout(this.events[token].timer);
+		this.events[token].timer = setTimeout($.proxy(function(){
+			this.events[token].func.call(this);
+		},this) , (delay || 250));
 	};
 
 	var eventSplitter = /\s+/;
 	if(eventSplitter.test(topic)){
 		var list = topic.split(eventSplitter);
 		for (var t in list) {
-			this.addSub(list[t], temp);
+			this.lastToken = this.addSub(list[t], temp);
+			this.events[this.lastToken] = {func: func, timer: null};
 		}
 	}else{
 		this.lastToken = this.addSub(topic, temp);
+		this.events[this.lastToken] = {func: func, timer: null};
 	}
 	if(execute){
 		func.call(this, null, topic);
 	}
 	return this;
-
 };
 Berry.prototype.off = function(token) {
 	for (var m in this.events) {
