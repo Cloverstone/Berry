@@ -12,8 +12,10 @@ Berry = function(options, obj) {
 		}
 		temp = [];
 		this.each(function(list){
-			console.log(this.getPath());
-			list.push(this.getPath());
+			//console.log(this.getPath());
+			if(this.type !== 'fieldset'){
+				list.push({path: this.getPath(), label: this.label});
+			}
 		}, temp, fields);
 		return temp;
 	};

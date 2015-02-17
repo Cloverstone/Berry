@@ -15,7 +15,7 @@
 		{{^pre}}{{#post}}<div class="input-group">{{/post}}{{/pre}}
 			<div class="custom-group"  name="{{name}}" style="max-height:200px;overflow-y:scroll;">
 			{{#options}}
-				<a href="javascript:void(0);" class="btn{{^selected}} btn-default{{/selected}}{{#selected}} btn-success{{/selected}}" data-value="{{value}}">
+				<a href="javascript:void(0);" class="btn{{^selected}} {{defaultClass}}{{/selected}}{{#selected}} {{selectedClass}}{{/selected}}" data-value="{{value}}">
 					{{{label}}}
 				</a>&nbsp;
 			{{/options}}

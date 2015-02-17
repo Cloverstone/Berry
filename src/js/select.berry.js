@@ -10,9 +10,9 @@
 			}
 			this.$el.change($.proxy(function(){this.trigger('change');}, this));
 		},
-		getValue: function() {
-			return this.$el.children('option:selected').attr('value');
-		},
+		// getValue: function() {
+		// 	return this.$el.children('option:selected').attr('value');
+		// },
 		displayAs: function() {
 			var o = this.options;
 			for(var i in o) {
