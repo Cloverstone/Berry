@@ -25,6 +25,14 @@
 		defaults: {
 			pre: '<i></i>' ,
 			type: 'text'
+		},	
+		setValue: function(value) {
+			if(typeof this.lastSaved === 'undefined'){
+				this.lastSaved = value;
+			}
+			this.value = value;
+			this.$el.parent().colorpicker('setValue', this.value)
+			return this.$el.val(value);
 		},
 		setup: function() {
 				this.$el = this.self.find('input');
@@ -32,7 +40,7 @@
 				if(this.onchange !== undefined){ this.$el.on('input', this.onchange);}
 				this.$el.on('input', $.proxy(function() {this.trigger('change');}, this));
 				this.$el.attr('type','text');
-				this.$el.parent().colorpicker().on('changeColor', $.proxy(function(ev){
+				this.$el.parent().colorpicker({format: 'hex'}).on('changeColor', $.proxy(function(ev){
 				  this.trigger('change');
 				}, this));
 			}
