@@ -21,7 +21,22 @@
 			placeholder: '+1'
 		}
 	});
-
+	b.register({ type: 'color',
+		defaults: {
+			pre: '<i></i>' ,
+			type: 'text'
+		},
+		setup: function() {
+				this.$el = this.self.find('input');
+				this.$el.off();
+				if(this.onchange !== undefined){ this.$el.on('input', this.onchange);}
+				this.$el.on('input', $.proxy(function() {this.trigger('change');}, this));
+				this.$el.attr('type','text');
+				this.$el.parent().colorpicker().on('changeColor', $.proxy(function(ev){
+				  this.trigger('change');
+				}, this));
+			}
+	});
 	b.register({ type: 'email',
 		defaults: {
 		post: '<i class="fa fa-envelope"></i>' ,
