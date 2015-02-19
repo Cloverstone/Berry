@@ -77,12 +77,13 @@ color: #ccc;
 
 .result pre{
 	position:absolute;
-	bottom: -10px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	height: 200px;
 	overflow: auto;
 	z-index: 10;
+	margin-bottom: 0;
 }
 
 h2, h3, h4{font-weight: 200;color:#BA7D10;}
