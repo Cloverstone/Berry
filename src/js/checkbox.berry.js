@@ -5,7 +5,7 @@
 			return f.render('berry_checkbox',this);
 		},
 		checkStatus: function(value){
-			if(value === true || value === "true" || value === 1 || value === "on" || value == this.truestate){
+			if(value === true || value === "true" || value === 1 || value === "1" || value === "on" || value == this.truestate){
 				this.value = true;
 			}else{
 				this.value = false;

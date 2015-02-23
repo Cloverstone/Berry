@@ -6,7 +6,6 @@ describe('Berry Initialization', function () {
 	});
 
 	it('creates a form', function () {
-		myBerry = new Berry({fields:{test:{value: 'hello', type:'hidden'}}}, $('#berry'));
 		expect($('form')[0]).toBeDefined();
 	});
 
