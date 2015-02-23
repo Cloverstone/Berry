@@ -10,8 +10,21 @@ describe('Berry Initialization', function () {
 	});
 
 	it('creates an input correctly', function () {
+		myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'));
 		expect($('input[name=test]')[0]).toBeDefined();
 	});
+
+	it('creates a hidden input correctly', function () {
+		myBerry = new Berry({fields:{test:{value: 'hello', type: 'hidden'}}}, $('#berry'));
+		expect($('input[name=test]')[0]).toBeDefined();
+	});
+
+
+	it('creates a checkbox correctly', function () {
+		myBerry = new Berry({attributes:{test: 't'},fields:{test:{type: 'checkbox', truestate: 't'}}}, $('#berry'));
+		expect($('input[name=test]')[0]).toBeDefined();
+	});
+
 
 	it('creates field reference', function () {
 		expect(myBerry.fields.test).toBeDefined();

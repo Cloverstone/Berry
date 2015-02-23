@@ -2,7 +2,7 @@
 	f.register({ type: 'checkbox',
 		create: function() {
 			this.checkStatus(this.value);
-			return f.render('berry_checkbox',this);
+			return f.render('berry_checkbox', this);
 		},
 		checkStatus: function(value){
 			if(value === true || value === "true" || value === 1 || value === "1" || value === "on" || value == this.truestate){
@@ -19,7 +19,11 @@
 			this.$el.change($.proxy(function(){this.trigger('change');},this));
 		},
 		getValue: function() {
-			return this.self.find('[type="checkbox"]').is(':checked');
+			if(this.self.find('[type="checkbox"]').is(':checked')){
+				return this.truestate || true
+			}else{
+				return this.falsestate;
+			};
 		},
 		setValue: function(value) {
 			this.checkStatus(value);

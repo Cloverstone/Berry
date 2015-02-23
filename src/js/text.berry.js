@@ -5,7 +5,7 @@
 
 	b.register({type: 'hidden',
 		create: function() {
-			return '<div><input type="hidden"  name="'+this.name+'" value="'+this.value+'" /></div>';}
+			return '<input type="hidden"  name="'+this.name+'" value="'+this.value+'" />';}
 	});
 
 	b.register({ type: 'url',
