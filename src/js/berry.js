@@ -1172,7 +1172,7 @@ Berry.processOpts = function(item) {
 	If a function is defined for choices use that.
 	*/
 	if(typeof item.choices === 'function'){
-		return item.choices.call(this);
+		item.choices = item.choices.call(item);
 	}
 	/* 
 	If max is set on the item, assume a number set is desired. 
