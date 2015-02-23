@@ -1,4 +1,4 @@
-//		BerryJS 0.9.2.0
+//		BerryJS 0.9.2.1
 //		(c) 2011-2014 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -206,7 +206,7 @@ Berry = function(options, obj) {
 						this.owner.attributes[this.name] = $.extend({},this.owner.source[this.name]);
 					}
 				}else{
-					this.owner.attributes[this.name] = this.owner.source[this.name];
+					this.owner.attributes[this.name] = this.owner.source[this.name] || this.owner.attributes[this.name] || '';
 				}
 			}
 		});
@@ -517,7 +517,6 @@ Berry = function(options, obj) {
 
 	if(typeof this.options.attributes !== 'undefined'){
 
-	debugger;
 		if(this.options.attributes === 'hash'){this.options.attributes = window.location.hash.replace('#', '').split('&').map(function(val){return val.split('=');}).reduce(function ( total, current ) {total[ current[0] ] = current[1];return total;}, {});}
 		this.source = $.extend(true, {}, this.options.attributes);
 
