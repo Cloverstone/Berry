@@ -127,8 +127,8 @@ Berry = function(options, obj) {
 			if(this.multiple) {
 				var temp = {};
 					//test the effects of changing this
-					//temp = this.owner.toJSON(this.getPath());
-					temp = this.owner.search(this.owner.source, this.getPath());
+					temp = this.owner.toJSON(this.getPath());
+					//temp = this.owner.search(this.owner.source, this.getPath());
 				if(temp) {
 					var skip = true;
 					for(var i in temp) {
@@ -143,8 +143,8 @@ Berry = function(options, obj) {
 		self.each(function() {
 			if(!this.isContainer) {
 				//test the effects of changing this
-				//var temp = this.owner.toJSON(this.getPath());
-				var temp = this.owner.search(this.owner.source, this.getPath());
+				var temp = this.owner.toJSON(this.getPath());
+				//var temp = this.owner.search(this.owner.source, this.getPath());
 				this.setValue(temp || '');
 				this.trigger('change');
 				this.toJSON();
@@ -174,7 +174,7 @@ Berry = function(options, obj) {
 
 				var root = this.owner.attributes[this.name];
 				if(this.isChild()){
-					root = this.owner.search(this.owner.attributes, this.getSearchPath());
+					root = this.owner.search(this.owner.attributes, this.getPath(true));
 				}
 				if(root) {
 				//if(this.name in this.owner.source) {
@@ -787,24 +787,25 @@ $.extend(Berry.field.prototype, {
 	// show: function(){
 	// 	return true;
 	// }
-	getPath: function(){
+	getPath: function(force){
 		var path = '';
 		if(this.parent !== null && this.parent !== undefined) {
-			path = this.parent.getPath() + '.';
-			if(this.parent.multiple){
+			path = this.parent.getPath(force) + '.';
+			if(this.parent.multiple || force){
 				path += this.parent.instance_id + '.';
 			}
 		}
 		return path + this.name;
 	},
-	getSearchPath: function(){
-		var path = '';
-		if(this.parent !== null && this.parent !== undefined) {
-			path = this.parent.getSearchPath() + '.';
-			path += this.parent.instance_id + '.';
-		}
-		return path + this.name;
-	},
+	// getSearchPath: function(){
+	// 	return getPath(true);
+	// 	// var path = '';
+	// 	// if(this.parent !== null && this.parent !== undefined) {
+	// 	// 	path = this.parent.getSearchPath() + '.';
+	// 	// 	path += this.parent.instance_id + '.';
+	// 	// }
+	// 	// return path + this.name;
+	// },
 	isActive: function(){
 		return this.parent === null || this.parent.enabled !== false;
 	},
@@ -813,15 +814,15 @@ $.extend(Berry.field.prototype, {
 	},
 	set: function(value){
 		if(this.value != value){
-			this.value = value;
-			this.setValue(this.value);
+			//this.value = value;
+			this.setValue(value);
 			this.trigger('change');
 		}
 	},
 	revert: function(){
-		this.value = this.lastSaved;
+		//this.value = this.lastSaved;
 		this.item.value = this.lastSaved;
-		this.setValue(this.value);
+		this.setValue(this.lastSaved);
 	},
 	hasChildren: function() {return !$.isEmptyObject(this.children);},
 	create: function() {return Berry.render('berry_' + (this.elType || this.type), this);},
