@@ -199,14 +199,16 @@ Berry = function(options, obj) {
 					}
 				}
 			} else {
-				if(typeof this.owner.source[this.name] === 'object' && this.owner.source[this.name] !== null){
-					if($.isArray(this.owner.source[this.name])){
-						this.owner.attributes[this.name] = $.extend([],this.owner.source[this.name]);
+				if(this.owner.source[this.name] !== null){
+					if(typeof this.owner.source[this.name] === 'object'){
+						if($.isArray(this.owner.source[this.name])){
+							this.owner.attributes[this.name] = $.extend([],this.owner.source[this.name]);
+						}else{
+							this.owner.attributes[this.name] = $.extend({},this.owner.source[this.name]);
+						}
 					}else{
-						this.owner.attributes[this.name] = $.extend({},this.owner.source[this.name]);
+						this.owner.attributes[this.name] = this.owner.source[this.name];
 					}
-				}else{
-					this.owner.attributes[this.name] = this.owner.source[this.name] || this.owner.attributes[this.name] || '';
 				}
 			}
 		});

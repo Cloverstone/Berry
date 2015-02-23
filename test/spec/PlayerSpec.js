@@ -6,6 +6,7 @@ describe('Berry Initialization', function () {
 	});
 
 	it('creates a form', function () {
+		myBerry = new Berry({fields:{test:{value: 'hello', type:'hidden'}}}, $('#berry'));
 		expect($('form')[0]).toBeDefined();
 	});
 
@@ -29,27 +30,24 @@ describe('Berry in action', function () {
 		expect(myBerry.toJSON()).toEqual({test: 'hello'});
 	});
 
-	it('set value - set', function () {
+	it('sets value with set', function () {
 		myBerry.fields.test.set('test');
 		expect(myBerry.fields.test.value).toEqual('test');
 		expect(myBerry.toJSON()).toEqual({test: 'test'});
 	});
 
-	it('set value - setValue', function () {
+	it('sets value with setValue', function () {
 		myBerry.fields.test.setValue('test');
 		expect(myBerry.fields.test.value).toEqual('test');
 		expect(myBerry.toJSON()).toEqual({test: 'test'});
 	});
 
-	it('handle null', function () {
+	it('will handle null attributes', function () {
 		myBerry = new Berry({attributes: {test: null}, fields:{test:{value: null}}}, $('#berry'));
 		expect(myBerry.fields.test.value).toEqual('');
 		expect(myBerry.toJSON()).toEqual({test: ''});
 
-		//myBerry = new Berry({fields:{test:{value: null}}}, $('#berry'));
-
 		myBerry = new Berry({attributes: {test: null}, fields:{test:{type: 'select', choices: ['hello', 'stuff'],value: null }}}, $('#berry'));
-//		expect(myBerry.fields.test.value).toEqual('hello');
 		expect(myBerry.toJSON()).toEqual({test: 'hello'});
 	});
 

@@ -4,7 +4,8 @@
 	b.register({type: 'password' });
 
 	b.register({type: 'hidden',
-		render: function() {return '<input type="hidden"  name="'+this.name+'" value="'+this.value+'" />';}
+		create: function() {
+			return '<div><input type="hidden"  name="'+this.name+'" value="'+this.value+'" /></div>';}
 	});
 
 	b.register({ type: 'url',
