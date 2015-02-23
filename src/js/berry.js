@@ -199,7 +199,7 @@ Berry = function(options, obj) {
 					}
 				}
 			} else {
-				if(typeof this.owner.source[this.name] === 'object'){
+				if(typeof this.owner.source[this.name] === 'object' && this.owner.source[this.name] !== null){
 					if($.isArray(this.owner.source[this.name])){
 						this.owner.attributes[this.name] = $.extend([],this.owner.source[this.name]);
 					}else{
@@ -512,9 +512,12 @@ Berry = function(options, obj) {
 	if(this.options.legend && this.options.legendTarget){
 		this.options.legendTarget.append(this.options.legend);
 	}
+
 	this.processfields(this.options.fields, this.target, null);
 
 	if(typeof this.options.attributes !== 'undefined'){
+
+	debugger;
 		if(this.options.attributes === 'hash'){this.options.attributes = window.location.hash.replace('#', '').split('&').map(function(val){return val.split('=');}).reduce(function ( total, current ) {total[ current[0] ] = current[1];return total;}, {});}
 		this.source = $.extend(true, {}, this.options.attributes);
 
