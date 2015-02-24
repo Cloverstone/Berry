@@ -1,17 +1,17 @@
-describe('Text Input', function () {
+describe('Textarea', function () {
 	var myBerry;
 
 	beforeEach(function() {
     triggerOnChange = jasmine.createSpy('onChange');
-		myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry')).on('change:test', triggerOnChange);
+		myBerry = new Berry({fields:{test:{value: 'hello', type: 'textarea'}}}, $('#berry')).on('change:test', triggerOnChange);
 	});
 
   afterEach(function() {
     myBerry.destroy();
   });
 
-	it('should create a text input correctly', function () {
-		expect($('input[name=test]')[0]).toBeDefined();
+	it('should create a textarea correctly', function () {
+		expect($('textarea[name=test]')[0]).toBeDefined();
 	});
 
 	it('should return expected json', function () {

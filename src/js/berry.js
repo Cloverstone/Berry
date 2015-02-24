@@ -54,7 +54,8 @@ Berry = function(options, obj) {
 	this.toJSON = function(s, validate) {
 		if(validate){this.validate()};
 		if(typeof s === 'string'){
-			return this.search(this.attributes, s);
+			// return this.search(this.attributes, s);
+			return this.find(s).getValue();
 		} else {
 			parsefields();
 			this.working = $.extend(true, {}, this.attributes);

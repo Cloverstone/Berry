@@ -19,15 +19,16 @@
 			this.$el.change($.proxy(function(){this.trigger('change');},this));
 		},
 		getValue: function() {
-			if(this.self.find('[type="checkbox"]').is(':checked')){
+			if(this.$el.is(':checked')){
 				return this.truestate || true
 			}else{
-				return this.falsestate;
+				return this.falsestate || false;
 			};
 		},
 		setValue: function(value) {
 			this.checkStatus(value);
-			this.self.find('[name="'+this.name+'"]').prop('checked', this.value);
+			this.$el.prop('checked', this.value);
+			this.value = value;
 		},
 		displayAs: function() {
 			for(var i in this.item.options) {
@@ -37,7 +38,7 @@
 			}
 		},
 		focus: function(){
-			this.self.find('[type="checkbox"]:checked').focus();
+			this.$el.focus();
 		}
 	});
 })(Berry, jQuery);

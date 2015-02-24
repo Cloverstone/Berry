@@ -48,14 +48,18 @@ describe('Berry in action', function () {
 	var myBerry;
 
 	beforeEach(function() {
-		myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'));
+		//myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'));
 	});
 
+  afterEach(function() {
+    myBerry.destroy();
+  });
 
 	it('will handle null attributes', function () {
 		myBerry = new Berry({attributes: {test: null}, fields:{test:{value: null}}}, $('#berry'));
 		expect(myBerry.fields.test.value).toEqual('');
 		expect(myBerry.toJSON()).toEqual({test: ''});
+		myBerry.destroy();
 
 		myBerry = new Berry({attributes: {test: null}, fields:{test:{type: 'select', choices: ['hello', 'stuff'],value: null }}}, $('#berry'));
 		expect(myBerry.toJSON()).toEqual({test: 'hello'});
@@ -73,18 +77,18 @@ describe('Berry in action', function () {
 
 });
 
-describe('Select Input', function () {
-  var myBerry;
+// describe('Select Input', function () {
+//   var myBerry;
 
-  beforeEach(function() {
-    myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'));
-  });
-});
+//   beforeEach(function() {
+//     myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'));
+//   });
+// });
 
-describe('Radio Input', function () {
-  var myBerry;
+// describe('Radio Input', function () {
+//   var myBerry;
 
-  beforeEach(function() {
-    myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'));
-  });
-});
+//   beforeEach(function() {
+//     myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'));
+//   });
+// });

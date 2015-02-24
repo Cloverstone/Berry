@@ -1,17 +1,19 @@
-describe('Text Input', function () {
+describe('Select Input', function () {
 	var myBerry;
 
 	beforeEach(function() {
     triggerOnChange = jasmine.createSpy('onChange');
-		myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry')).on('change:test', triggerOnChange);
+
+    myBerry = new Berry({fields:{test:{type: 'select', choices: ['hello', 'stuff'] }}}, $('#berry')).on('change:test', triggerOnChange);
+//		myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'))
 	});
 
   afterEach(function() {
     myBerry.destroy();
   });
 
-	it('should create a text input correctly', function () {
-		expect($('input[name=test]')[0]).toBeDefined();
+	it('should create a select input correctly', function () {
+		expect($('select[name=test]')[0]).toBeDefined();
 	});
 
 	it('should return expected json', function () {
@@ -24,49 +26,49 @@ describe('Text Input', function () {
 
   it('sets value with set', function () {
 		expect(myBerry.toJSON('test')).toEqual('hello');
-    myBerry.fields.test.set('test');
-    expect(myBerry.fields.test.value).toEqual('test');
+    myBerry.fields.test.set('stuff');
+    expect(myBerry.fields.test.value).toEqual('stuff');
   });
 
 	it('sets value with set - get value from name', function () {
 		expect(myBerry.toJSON('test')).toEqual('hello');
-		myBerry.fields.test.set('test');
-		expect(myBerry.toJSON('test')).toEqual('test');
+		myBerry.fields.test.set('stuff');
+		expect(myBerry.toJSON('test')).toEqual('stuff');
 	});
   
   it('sets value with set - get value from form toJSON', function () {
 		expect(myBerry.toJSON('test')).toEqual('hello');
-    myBerry.fields.test.set('test');
-    expect(myBerry.toJSON()).toEqual({test: 'test'});
+    myBerry.fields.test.set('stuff');
+    expect(myBerry.toJSON()).toEqual({test: 'stuff'});
   });
 
 	it('sets value with setValue', function () {
 		expect(myBerry.toJSON('test')).toEqual('hello');
-		myBerry.fields.test.setValue('test');
-		expect(myBerry.fields.test.value).toEqual('test');
+		myBerry.fields.test.setValue('stuff');
+		expect(myBerry.fields.test.value).toEqual('stuff');
 	});
 
   it('sets value with setValue - get value from name', function () {
 		expect(myBerry.toJSON('test')).toEqual('hello');
-    myBerry.fields.test.setValue('test');
-    expect(myBerry.toJSON('test')).toEqual('test');
+    myBerry.fields.test.setValue('stuff');
+    expect(myBerry.toJSON('test')).toEqual('stuff');
   })
 
   it('sets value with setValue - get value from toJSON', function () {
 		expect(myBerry.toJSON('test')).toEqual('hello');
-    myBerry.fields.test.setValue('test');
-    expect(myBerry.toJSON()).toEqual({test: 'test'});
+    myBerry.fields.test.setValue('stuff');
+    expect(myBerry.toJSON()).toEqual({test: 'stuff'});
   });
 
   it('should trigger events', function () {
     myBerry.fields.test.set('hello');
     expect(triggerOnChange).not.toHaveBeenCalled();
-    myBerry.fields.test.set('test');
+    myBerry.fields.test.set('stuff');
     expect(triggerOnChange).toHaveBeenCalled();
   });
 
   it('should suppress change event during setValue', function () {
-    myBerry.fields.test.setValue('test');
+    myBerry.fields.test.setValue('stuff');
     expect(triggerOnChange).not.toHaveBeenCalled();
   });
 
