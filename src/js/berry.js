@@ -144,8 +144,9 @@ Berry = function(options, obj) {
 		self.each(function() {
 			if(!this.isContainer) {
 				//test the effects of changing this
-				var temp = this.owner.toJSON(this.getPath());
-				//var temp = this.owner.search(this.owner.source, this.getPath());
+				//var temp = this.owner.toJSON(this.getPath());
+				var temp = this.owner.search(this.owner.source, this.getPath());
+				debugger
 				this.setValue(temp || '');
 				this.trigger('change');
 				this.toJSON();

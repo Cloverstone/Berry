@@ -36,9 +36,16 @@ describe('Berry Initialization', function () {
 		expect(myBerry.toJSON()).toEqual({test: 'hello'});
 	});
 
-  it('should have events', function () {
+  it('should have triggerable events', function () {
     myBerry.trigger('change');
     expect(triggerOnChange).toHaveBeenCalled();
+  });
+
+  it('should allow attributes paramater', function () {
+    myBerry.destroy();
+    debugger;
+    myBerry = new Berry({attributes: {test: 'hello'}, fields:{test:{}}}, $('#berry'));
+    expect(myBerry.toJSON()).toEqual({test: 'hello'});
   });
 });
 
@@ -76,19 +83,3 @@ describe('Berry in action', function () {
 	});
 
 });
-
-// describe('Select Input', function () {
-//   var myBerry;
-
-//   beforeEach(function() {
-//     myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'));
-//   });
-// });
-
-// describe('Radio Input', function () {
-//   var myBerry;
-
-//   beforeEach(function() {
-//     myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'));
-//   });
-// });
