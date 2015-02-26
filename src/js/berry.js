@@ -42,7 +42,7 @@ Berry = function(options, obj) {
 		var a = s.split('.');
 		while (a.length) {
 			var n = a.shift();
-			if (n in o) {
+			if (typeof o !== 'undefined' && n in o) {
 				o = o[n];
 			} else {
 				return o;
@@ -441,6 +441,9 @@ Berry = function(options, obj) {
 					temp = this.owner.search(this.owner.attributes,this.parent.getPath());
 				}else{
 					temp = this.owner.attributes;
+				}
+				if(typeof temp === 'undefined'){
+					 temp = this.getValue();
 				}
 				if($.isArray(temp)){
 					temp[this.parent.instance_id][this.name] = this.getValue();
