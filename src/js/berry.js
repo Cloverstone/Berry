@@ -25,7 +25,6 @@ Berry = function(options, obj) {
 		this.trigger('destroy');
 		this.$el.empty();
 		for(var i in this.fieldsets) {
-			//$('[name=' + this.fieldsets[i] + ']').empty();
 			$(this.fieldsets[i]).empty();
 		}
 		this.fields = {};
@@ -234,13 +233,13 @@ Berry = function(options, obj) {
 		return n;
 	};
 
-	this.toArray = function() {
-		var fields = [];
-		for(var i in this.fields){
-			fields.push(this.fields[i]);
-		}
-		return fields;
-	};
+	// this.toArray = function() {
+	// 	var fields = [];
+	// 	for(var i in this.fields){
+	// 		fields.push(this.fields[i]);
+	// 	}
+	// 	return fields;
+	// };
 
 	this.each = function(toCall, args, fields) {
 		fields = (fields || this.fields);
@@ -274,7 +273,7 @@ Berry = function(options, obj) {
 		var a = s.split('.');
 		while (a.length) {
 			var n = a.shift();
-			var temp = this.shallowFind(n, o);
+			var temp = shallowFind(n, o);
 			if (temp) {
 				if(!$.isEmptyObject(temp.children)) {
 					o = temp.children;
@@ -292,7 +291,7 @@ Berry = function(options, obj) {
 		}
 		return o;
 	};
-	this.shallowFind = function(name, fields) {
+	var shallowFind = function(name, fields) {
 		fields = (fields || this.fields);
 		for(var i in fields) {
 			if(i == name) {
@@ -307,7 +306,7 @@ Berry = function(options, obj) {
 				return fields[i];
 			}
 			if(!$.isEmptyObject(field.children)) {
-				var temp = this.shallowFind(name, field.children);
+				var temp = shallowFind(name, field.children);
 				if(temp){ return temp;}
 			}
 		}
@@ -443,7 +442,7 @@ Berry = function(options, obj) {
 					temp = this.owner.attributes;
 				}
 				if(typeof temp === 'undefined'){
-					 temp = this.getValue();
+					 temp = this.owner.attributes;
 				}
 				if($.isArray(temp)){
 					temp[this.parent.instance_id][this.name] = this.getValue();
@@ -455,13 +454,13 @@ Berry = function(options, obj) {
 		return self.attributes;
 	};
 
-	var latch = function() {
-		self.each(function() {
-			this.toJSON();
-		});
-		parsefields();
-		return self.attributes;
-	};
+	// var latch = function() {
+	// 	self.each(function() {
+	// 		this.toJSON();
+	// 	});
+	// 	parsefields();
+	// 	return self.attributes;
+	// };
 
 	var addActions = function(actions) {
 		if(actions) {
