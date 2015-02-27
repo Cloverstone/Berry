@@ -70,7 +70,7 @@ describe('Berry in action', function () {
 		myBerry = new Berry({attributes: {test: null}, fields:{test:{type: 'select', choices: ['hello', 'stuff'],value: null }}}, $('#berry'));
 
 		//possibly revisit this
-		expect(myBerry.toJSON()).toEqual({test: {}});
+		expect(myBerry.toJSON()).toEqual({test: 'hello'});
 	});
 
 	it('returns expected json - select default', function () {
