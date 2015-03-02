@@ -67,9 +67,9 @@ Berry = function(options, obj) {
 
 	var processMultiples = function(attributes) {
 		var altered = $.extend(true, {}, attributes);
-		self.each(function(altered) {
+		self.each(function(attributes, altered) {
 			if(this.multiple && this.toArray){
-				var root = this.owner.attributes;
+				var root = attributes;
 				var temp = Berry.search(root, this.getPath());
 				if(this.isChild()){
 					root = Berry.search(altered, this.parent.getPath());
@@ -79,7 +79,7 @@ Berry = function(options, obj) {
 					root[this.name][i] = $.pluck(temp,i);
 				}
 			}
-		}, [altered]);
+		}, [attributes, altered]);
 		return altered;
 	};
 	var processMultiplesIN = function() {
@@ -225,15 +225,26 @@ Berry = function(options, obj) {
 	};
 
 	this.find = function(s, f){
-		var o = (f || this.fields);
-		this.each(function(search) {
-				if(this.getPath() == search){
-					found = true;
-					o = this;
-					return true;
+		var items = [];
+		this.each(function(s, items) {
+			if(this.getPath() == s || this.name == s){
+				items.push(this);
+			}
+		}, [s, items], (f || this.fields));
+		if(items.length > 1 || items[0].multiple){
+			return items;
+		}
+		return items[0];
+	};
+
+	this.findByID = function(id, f){
+		var items = [];
+		this.each(function(id, items) {
+				if(this.id == id){
+					items.push(this);
 				}
-		}, [s], o);
-		return o;
+		}, [id, items], (f || this.fields));
+		return items[0];
 	};
 
 	this.processfields = function(fields, target, parent) {
@@ -355,14 +366,14 @@ Berry = function(options, obj) {
 
 	var parsefields = function(attributes) {
 		var newAttributes = $.extend(true, {}, attributes);
-		self.each(function(attributes) {
+		self.each(function(newAttributes) {
 			if(!this.isContainer) {
 				var temp;
 				if(this.isChild() || (this.instance_id !== null)){
-					temp = Berry.search(attributes,this.parent.getPath());
+					temp = Berry.search(newAttributes,this.parent.getPath());
 				}
 				if(typeof temp == 'undefined'){
-					 temp = attributes;
+					 temp = newAttributes;
 				}
 				if($.isArray(temp)){
 					temp[this.parent.instance_id][this.name] = this.getValue();
@@ -473,39 +484,9 @@ Berry = function(options, obj) {
 		Berry.instances[this.options.name] = this;
 
 		this.on('dropped', function(info){
-			var instances = this.find(info.path);
-			var path = '';
-			for(var i in instances){
-				if(instances[i].id == info.id){
-					path = instances[i].getPath();
-					instances.splice(i, 1);
-					break;
-				}
-			}
-			var o = self.attributes;
-			var s = path;
-			s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-			s = s.replace(/^\./, '');           // strip a leading dot
-			var a = s.split('.');
-			while (a.length) {
-				var n = a.shift();
-				if (n in o) {
-					o = o[n];
-				}
-			}
-			if($.isArray(o)){
-				o.splice(i,1);
-			}
-			else{
-				delete o[i];
-				var temp = 0;
-				for(var j in o){
-					if(j >= i){
-						o[i++] = o[j];
-						delete o[j];
-					}
-				}
-			}
+			var temp = self.findByID(info.id);
+			Berry.search(self.attributes, info.path).splice(temp.instance_id,1);
+			temp.parent.children[temp.name].instances.splice(temp.instance_id,1);
 		});
 };
 
@@ -516,12 +497,16 @@ Berry.collections = {};
 
 
 Berry.register = function(elem) {
-	Berry.types[elem.type] = Berry.field.extend(elem);
+	if(elem.extends && typeof Berry.types[elem.extends] !== 'undefined'){
+		Berry.types[elem.type] = Berry.types[elem.extends].extend(elem);
+	}else{
+		Berry.types[elem.type] = Berry.field.extend(elem);
+	}
 };
 
 Berry.search = function(o, s) {
 		s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-		s = s.replace(/^\./, '');           // strip a leading dot
+		// s = s.replace(/^\./, '');           // strip a leading dot
 		var a = s.split('.');
 		while (a.length) {
 			var n = a.shift();

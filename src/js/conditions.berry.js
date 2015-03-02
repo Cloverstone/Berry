@@ -1,4 +1,3 @@
-
 Berry.processConditions = function(conditions, func) {
 	if (typeof conditions === 'string') {
 		if(conditions === 'show' || conditions === 'display') {

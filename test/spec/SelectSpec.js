@@ -4,7 +4,7 @@ describe('Select Input', function () {
 	beforeEach(function() {
     triggerOnChange = jasmine.createSpy('onChange');
 
-    myBerry = new Berry({fields:{test:{type: 'select', choices: ['hello', 'stuff'] }}}, $('#berry')).on('change:test', triggerOnChange);
+    myBerry = new Berry({fields:{test:{type: 'select', value: 'hello', choices: ['hello', 'stuff'] }}}, $('#berry')).on('change:test', triggerOnChange);
 //		myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'))
 	});
 

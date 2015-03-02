@@ -70,4 +70,16 @@ describe('Text Input', function () {
     expect(triggerOnChange).not.toHaveBeenCalled();
   });
 
+  it('should load choices from function', function () {
+
+    myBerry.destroy();
+    myBerry = new Berry({fields:{
+      Title: {name: 'test', label: 'Label Field', type: 'select', reference: 'name',key: 'label', choices: function(){
+        return [{"label":"Title","name":"second"},{"label":"Top Right","name":"topright"},{"label":"Bottom Right","name":"bottomright"},{"label":"Bottom Left","name":"bottomleft"},{"label":"Top Left","name":"topleft"}];
+      }}}
+    }, $('#berry'));
+    expect($('select[name=test] option')[0]).toBeDefined();
+  });
+
+
 });
