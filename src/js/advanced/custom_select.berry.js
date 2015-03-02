@@ -1,7 +1,7 @@
 (function(f,$){
 	f.register({ type: 'custom_select',
 		create: function() {
-			return f.render('berry_custom_select', f.processOpts(this));
+			return f.render('berry_custom_select', f.processOpts(this.item));
 		},
 		setup: function() {
 			this.$el = this.self.find('.list-group');

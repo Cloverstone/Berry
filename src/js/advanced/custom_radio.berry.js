@@ -1,7 +1,7 @@
 (function(f,$){
 	f.register({ type: 'custom_radio',
 		create: function() {
-			return f.render('berry_custom_radio', f.processOpts(this));
+			return f.render('berry_custom_radio', f.processOpts(this.item));
 		},
 		defaults: {
 			selectedClass: 'btn-success',

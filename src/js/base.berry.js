@@ -422,7 +422,6 @@ Berry = function(options, obj) {
 	}, options);
 	this.events = $.extend({}, Berry.prototype.events);
 
-	
 	this.fieldsets = [];
 	var rows = {};
 	this.section_count = 0;
@@ -459,7 +458,6 @@ Berry = function(options, obj) {
 		this.populate();
 	}
 
-
 	addActions(this.options.actions);
 	if(typeof this.renderer.initialize === 'function') {
 		this.renderer.initialize();
@@ -490,11 +488,9 @@ Berry = function(options, obj) {
 		});
 };
 
-
 Berries = Berry.instances = {};
 Berry.types = {};
 Berry.collections = {};
-
 
 Berry.register = function(elem) {
 	if(elem.extends && typeof Berry.types[elem.extends] !== 'undefined'){

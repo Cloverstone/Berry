@@ -1,14 +1,14 @@
-(function(f,$){
-	f.register({ type: 'radio',
+(function(b, $){
+	b.register({ type: 'radio',
 		create: function() {
-			return f.render('berry_radio',f.processOpts(this.item));
+			return b.render('berry_radio',b.processOpts(this.item));
 		},
 		setup: function() {
 			this.$el = this.self.find('[type=radio]');
 			if(this.onchange !== undefined) {
 				this.$el.change(this.onchange);
 			}
-			this.$el.change($.proxy(function(){this.trigger('change');},this));
+			this.$el.change($.proxy(function(){this.trigger('change');}, this));
 		},
 		getValue: function() {
 			var selected = this.self.find('[type="radio"]:checked').data('label');
@@ -33,4 +33,4 @@
 			this.self.find('[type="radio"]:checked').focus();
 		}
 	});
-})(Berry,jQuery);
+})(Berry, jQuery);

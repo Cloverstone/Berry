@@ -1,4 +1,4 @@
-(function(b,$){
+(function(b, $){
 	b.register({ type: 'select',
 		create: function() {
 			return b.render('berry_' + (this.elType || this.type), b.processOpts(this.item));
@@ -19,4 +19,4 @@
 			}
 		}
 	});
-})(Berry,jQuery);
+})(Berry, jQuery);

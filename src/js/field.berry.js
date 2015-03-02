@@ -1,4 +1,4 @@
-Berry.field = function(item, owner){
+Berry.field = function(item, owner) {
 	this.children = {};
 	this.owner = owner;
 	this.hidden = false;
@@ -14,12 +14,12 @@ Berry.field = function(item, owner){
 			this.owner.on('change', $.proxy(function(){
 				this.set(this.liveValue());
 			},this));
-		} else if(typeof this.item.value === 'string' && this.item.value.indexOf('=') === 0 && typeof math !== 'undefined'){
+		} else if(typeof this.item.value === 'string' && this.item.value.indexOf('=') === 0 && typeof math !== 'undefined') {
 			this.template =  Hogan.compile(this.item.value.substr(1),{delimiters: '{ }'});
 			this.liveValue = function() {
-				try{
+				try {
 					var temp = math.eval(this.template.render(this.owner.toJSON(), templates))
-					if(jQuery.isNumeric(temp)){
+					if($.isNumeric(temp)){
 						return temp.toFixed((this.item.precision || 0));
 					}
 					return temp;
@@ -28,7 +28,7 @@ Berry.field = function(item, owner){
 				}
 			};
 			item.value = this.item.value = this.liveValue();
-			this.owner.on('change', $.proxy(function(){
+			this.owner.on('change', $.proxy(function() {
 				this.set(this.liveValue());
 			}, this));
 
@@ -46,12 +46,12 @@ Berry.field = function(item, owner){
 	this.id = (item.id || Berry.getUID());//?
 	this.self = undefined;
 	this.fieldset = undefined;
-	if(this.item.fieldset !== undefined && $('.' + this.item.fieldset).length > 0){
+	if(this.item.fieldset !== undefined && $('.' + this.item.fieldset).length > 0) {
 		//this.owner.fieldsets.push(this.item.fieldset);
 		this.fieldset = $('.' + this.item.fieldset)[0];
 		this.owner.fieldsets.push(this.fieldset);
 	}else{
-		if(this.item.fieldset !== undefined && $('[name=' + this.item.fieldset + ']').length > 0){
+		if(this.item.fieldset !== undefined && $('[name=' + this.item.fieldset + ']').length > 0) {
 //				this.owner.fieldsets.push(this.item.fieldset);
 			this.fieldset = $('[name=' + this.item.fieldset + ']')[0];
 			this.owner.fieldsets.push(this.fieldset);
@@ -60,14 +60,14 @@ Berry.field = function(item, owner){
 	// if(this.fieldset === undefined && typeof this.item.target === 'object'){
 	// 	this.fieldset = this.item.target;
 	// }
-	this.val = function(value){
-		if(typeof value !== 'undefined'){
+	this.val = function(value) {
+		if(typeof value !== 'undefined') {
 			this.set(value);
 		}
 		return this.getValue();
 	};
 	this.columns = (this.columns || this.owner.options.columns);
-	if(this.columns > this.owner.options.columns){this.columns = this.owner.options.columns}
+	if(this.columns > this.owner.options.columns) { this.columns = this.owner.options.columns; }
 };
 
 $.extend(Berry.field.prototype, {
@@ -89,7 +89,7 @@ $.extend(Berry.field.prototype, {
 	// show: function(){
 	// 	return true;
 	// }
-	getPath: function(force){
+	getPath: function(force) {
 		var path = '';
 		if(this.parent !== null && this.parent !== undefined) {
 			path = this.parent.getPath(force) + '.';
@@ -108,14 +108,14 @@ $.extend(Berry.field.prototype, {
 	// 	// }
 	// 	// return path + this.name;
 	// },
-	isActive: function(){
+	isActive: function() {
 		return this.parent === null || this.parent.enabled !== false;
 	},
 	isChild: function(){
 		return  this.parent !== null;
 	},
 	set: function(value){
-		if(this.value != value){
+		if(this.value != value) {
 			//this.value = value;
 			this.setValue(value);
 			this.trigger('change');
@@ -155,15 +155,15 @@ $.extend(Berry.field.prototype, {
 			this.trigger('change');
 		}, this));
 
-		if(this.item.mask && $.fn.mask){
+		if(this.item.mask && $.fn.mask) {
 			this.$el.mask(this.item.mask);
 		}
 	},
-	createAttributes: function(){
+	createAttributes: function() {
 		var o = this.owner.attributes;
 
 		if(this.isContainer) {
-			if(this.multiple){
+			if(this.multiple) {
 				if(this.isChild()) {
 					o = Berry.search(o, this.parent.getPath());
 				}
@@ -212,7 +212,7 @@ $.extend(Berry.field.prototype, {
 				}
 			);
 
-			if(typeof this.showConditions === 'boolean'){
+			if(typeof this.showConditions === 'boolean') {
 				this.self.toggle(this.showConditions);
 			}
 		}
@@ -233,10 +233,10 @@ $.extend(Berry.field.prototype, {
 			);
 		}
 	},
-	on: function(topic, func){
+	on: function(topic, func) {
 		this.owner.on(topic + ':' + this.name, func);
 	},
-	delay: function(topic, func){
+	delay: function(topic, func) {
 		this.owner.delay(topic + ':' + this.name, func);
 	},
 	trigger: function(topic) {
@@ -257,7 +257,7 @@ $.extend(Berry.field.prototype, {
 		this.value = value;
 		return this.$el.val(value);
 	},
-	update: function(item,silent) {
+	update: function(item, silent) {
 		$.extend(this.item, item);
 		$.extend(this, this.item);
 		this.setValue(this.value);
@@ -343,67 +343,33 @@ Berry.field.extend = function(protoProps) {
 	child.prototype = new Surrogate;
 	if (protoProps) $.extend(child.prototype, protoProps);
 	return child;
-
-
-
-	   // var parent = this;
-    // var child;
-
-    // // The constructor function for the new subclass is either defined by you
-    // // (the "constructor" property in your `extend` definition), or defaulted
-    // // by us to simply call the parent's constructor.
-    // if (protoProps && _.has(protoProps, 'constructor')) {
-    //   child = protoProps.constructor;
-    // } else {
-    //   child = function(){ return parent.apply(this, arguments); };
-    // }
-
-    // // Add static properties to the constructor function, if supplied.
-    // _.extend(child, parent, staticProps);
-
-    // // Set the prototype chain to inherit from `parent`, without calling
-    // // `parent`'s constructor function.
-    // var Surrogate = function(){ this.constructor = child; };
-    // Surrogate.prototype = parent.prototype;
-    // child.prototype = new Surrogate;
-
-    // // Add prototype properties (instance properties) to the subclass,
-    // // if supplied.
-    // if (protoProps) _.extend(child.prototype, protoProps);
-
-    // // Set a convenience property in case the parent's prototype is needed
-    // // later.
-    // child.__super__ = parent.prototype;
-
-    // return child;
 };
 
-
-
 Berry.processOpts = function(item) {
-	/*
-	If a function is defined for choices use that.
-	*/
-	if(typeof item.choices === 'function'){
-		item.choices = item.choices.call(item);
-	}
+	// var options;
 	/* 
 	If max is set on the item, assume a number set is desired. 
 	min defaults to 0 and the step defaults to 1.
 	*/
-	if(typeof item.max !== 'undefined'){
+	if(typeof item.max !== 'undefined') {
 		item.min = (item.min || 0);
-		item.step = (item.step || 1);
 		item.choices = (item.choices || []);
 		if(item.min <= item.max) {
-			var i = item.min;
-			while(i <= item.max){
+			for (var i = item.min; i <= item.max; i=i+(item.step || 1) ) { 
 				item.choices.push(i.toString());
-				i += item.step;
 			}
 		}
 	}
-	if(typeof item.choices !== 'undefined' && item.choices.length > 0){
+	/*
+	If a function is defined for choices use that.
+	*/
+	if(typeof item.choices === 'function') {
+		item.choices = item.choices.call(item);
+	}
+
+	if(typeof item.choices !== 'undefined' && item.choices.length > 0) {
+
+
 		if(typeof item.choices === 'string') {
 			if(typeof Berry.collections[item.choices] === 'undefined') {
 				$.ajax({
@@ -411,7 +377,7 @@ Berry.processOpts = function(item) {
 					type: 'get',
 					success: $.proxy(function(data) {
 						Berry.collections[item.choices] = data;
-						this.update({choices: data, value: Berry.search(this.owner.attributes,this.getPath())});
+						this.update({choices: data, value: Berry.search(this.owner.attributes, this.getPath())});
 					}, item)
 				});
 				item.options = [];
@@ -420,19 +386,24 @@ Berry.processOpts = function(item) {
 				item.choices = Berry.collections[item.choices];
 			}
 		}
-		if(typeof item.choices === 'object' && !$.isArray(item.choices)){
+
+		if(typeof item.choices === 'object' && !$.isArray(item.choices)) {
 			item.choices = item.choices.toJSON();
 		}
-		if(typeof item.default !== 'undefined'){
+
+		/* Insert the default value at the begining */
+		if(typeof item.default !== 'undefined') {
 			item.choices.unshift(item.default);
 		}
+
 		item.options = $.map(item.choices, function(value, index) {
 			return [value];
 		});
 	}
-	if(typeof item.options !== 'undefined' && item.options.length > 0){
+
+	if(typeof item.options !== 'undefined' && item.options.length > 0) {
 		var set = false;
-		for ( var o in item.options   ) {
+		for ( var o in item.options ) {
 			var cOpt = item.options[o];
 			if(typeof cOpt === 'string' || typeof cOpt === 'number') {
 				cOpt = {label: cOpt};
@@ -440,19 +411,21 @@ Berry.processOpts = function(item) {
 					cOpt.value = cOpt.label;
 				}
 			}
-			item.options[o] = $.extend({label: cOpt.name, value: o},{label: cOpt[(item.key || 'title')], value: cOpt[(item.reference || 'id')]}, cOpt);
+			item.options[o] = $.extend({label: cOpt.name, value: o}, {label: cOpt[(item.key || 'title')], value: cOpt[(item.reference || 'id')]}, cOpt);
 
-			if(!set){
-				if(typeof(item.value) !== 'undefined' && item.value !== ''){
+			if(!set) {
+				if(typeof item.value !== 'undefined' && item.value !== '') {
 					item.options[o].selected = (item.options[o].value == item.value);
-				}else {
+				} else {
 					item.options[o].selected = true;
 					item.value = item.options[o].value;
 				}
 				set = item.options[o].selected;
-			}else{
+			} else {
 				item.options[o].selected = false;
 			}
+			//item.options[o].selected = (item.options[o].value == item.value)
+
 		}
 	}
 	return item;

@@ -1,7 +1,7 @@
 (function(f,$){
 	f.register({ type: 'dropdown',
 		create: function() {
-			return f.render('berry_dropdown', f.processOpts(this));
+			return f.render('berry_dropdown', f.processOpts(this.item));
 		},
 		setup: function() {
 			this.$el = this.self.find('.btn-group');
