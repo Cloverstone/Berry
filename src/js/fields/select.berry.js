@@ -1,7 +1,8 @@
 (function(b, $){
 	b.register({ type: 'select',
 		create: function() {
-			return b.render('berry_' + (this.elType || this.type), b.processOpts(this.item));
+			this.options = b.processOpts(this.item).options;
+			return b.render('berry_' + (this.elType || this.type), this);
 		},
 		setup: function() {
 			this.$el = this.self.find('select');

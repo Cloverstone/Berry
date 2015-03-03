@@ -1,7 +1,8 @@
 (function(b, $){
 	b.register({ type: 'radio',
 		create: function() {
-			return b.render('berry_radio',b.processOpts(this.item));
+			this.options = b.processOpts(this.item).options;
+			return b.render('berry_radio', this);
 		},
 		setup: function() {
 			this.$el = this.self.find('[type=radio]');

@@ -368,8 +368,6 @@ Berry.processOpts = function(item) {
 	}
 
 	if(typeof item.choices !== 'undefined' && item.choices.length > 0) {
-
-
 		if(typeof item.choices === 'string') {
 			if(typeof Berry.collections[item.choices] === 'undefined') {
 				$.ajax({
