@@ -484,7 +484,11 @@ Berry = function(options, obj) {
 		this.on('dropped', function(info){
 			var temp = self.findByID(info.id);
 			Berry.search(self.attributes, info.path).splice(temp.instance_id,1);
-			temp.parent.children[temp.name].instances.splice(temp.instance_id,1);
+			if(temp.isChild()){
+				temp.parent.children[temp.name].instances.splice(temp.instance_id,1);
+			}else{
+				self.fields[temp.name].instances.splice(temp.instance_id,1);
+			}
 		});
 };
 
