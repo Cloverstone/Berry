@@ -58,23 +58,174 @@
 
 			<div class="row">
 
-				<div class="col-xs-6 col-sm-3" id="sidebar" role="navigation">
+				<div class="col-xs-6 col-sm-3" ></div>
+				<div style="position:fixed;overflow:auto;top:100px;bottom:0;width:200px" id="sidebar" role="navigation">
 					<h4>What is berry?</h4>
 					<ul class>
-						<li class="list-unstyled" ><i class="fa fa-chevron-right"></i> Api</li>
+						<li class="list-unstyled" ><a href="#intro"><i class="fa fa-chevron-right"></i> Introduction</a></li>
+						<li class="list-unstyled" ><a href="#getting_started"><i class="fa fa-chevron-right"></i> Getting Started</a></li>
+						<li class="list-unstyled" ><a href="#api"><i class="fa fa-chevron-right"></i> Api</a></li>
 					</ul>
+					<a href="#options"><h4>Options</h4></a>
+					<ul class>
+						<li class="list-unstyled" ><a href="#legend"><i class="fa fa-chevron-right"></i> Legend</a></li>
+						<li class="list-unstyled" ><a href="#defaults"><i class="fa fa-chevron-right"></i> Defaults</a></li>
+						<li class="list-unstyled" ><a href="#renderer"><i class="fa fa-chevron-right"></i> Renderer</a></li>
+					</ul>
+					<a href="#field_options"><h4>Field Options</h4></a>
+					<ul class>
+						<li class="list-unstyled" ><a href="#type"><i class="fa fa-chevron-right"></i> Type</a></li>
+						<li class="list-unstyled" ><a href="#value"><i class="fa fa-chevron-right"></i> Value</a></li>
+					</ul>
+					<a href="#field_types"><h4>Field Types</h4></a>
+					<ul class>
+						<li class="list-unstyled" ><a href="#text"><i class="fa fa-chevron-right"></i> Text</a></li>
+						<li class="list-unstyled" ><a href="#textarea"><i class="fa fa-chevron-right"></i> Textarea</a></li>
+						<li class="list-unstyled" ><a href="#select"><i class="fa fa-chevron-right"></i> Select</a></li>
+						<li class="list-unstyled" ><a href="#radio"><i class="fa fa-chevron-right"></i> Radio</a></li>
+						<li class="list-unstyled" ><a href="#fieldset"><i class="fa fa-chevron-right"></i> Fieldset</a></li>
+					</ul>
+					<a href="#events"><h4>Events</h4></a>
+					<ul class>
+						<li class="list-unstyled" ><a href="#initialize"><i class="fa fa-chevron-right"></i> Initialize</a></li>
+						<li class="list-unstyled" ><a href="#change"><i class="fa fa-chevron-right"></i> Change</a></li>
+						<li class="list-unstyled" ><a href="#changed"><i class="fa fa-chevron-right"></i> Changed</a></li>
+						<li class="list-unstyled" ><a href="#destroy"><i class="fa fa-chevron-right"></i> Destroy</a></li>
+						<li class="list-unstyled" ><a href="#destroyed"><i class="fa fa-chevron-right"></i> Destroyed</a></li>
+					</ul>
+					<h4>Renderers</h4>
+					<ul class>
+						<li class="list-unstyled" ><a href="#renderer-basic"><i class="fa fa-chevron-right"></i> Basic</a></li>
+						<li class="list-unstyled" ><a href="#renderer-tabs"><i class="fa fa-chevron-right"></i> Tabs</a></li>
+						<li class="list-unstyled" ><a href="#renderer-wizard"><i class="fa fa-chevron-right"></i> Wizard</a></li>
+						<li class="list-unstyled" ><a href="#renderer-poppins"><i class="fa fa-chevron-right"></i> Poppins</a></li>
+					</ul>
+					<h4>Validation</h4>
+					<ul class>
+						<li class="list-unstyled" ><a href="#validation-required"><i class="fa fa-chevron-right"></i> Required</a></li>
+					</ul>
+					<h4>Themes</h4>
+					<ul class>
+						<li class="list-unstyled" ><a href="#bootstrap"><i class="fa fa-chevron-right"></i> Bootstrap</a></li>
+					</ul>
+					<h4>Extra Field Types</h4>
+					<ul class>
+						<li class="list-unstyled" ><a href="#color"><i class="fa fa-chevron-right"></i> Color</a></li>
+					</ul>
+					<h4>Tests</h4>
+					<ul class>
+						<li class="list-unstyled" ><a href="#color"><i class="fa fa-chevron-right"></i> Color</a></li>
+					</ul>
+
+
 				</div><!--/span-->
 				<div class="col-xs-12 col-sm-9">
+					<!--Introduction -->
+					<a name="intro" style="display:block;position:relative;top:-80px"></a>
+					<h2>BerryJS Field Guide</h2>
+					<div class="alert alert-danger">NOTE: This is a beta version, likely still containing bugs and the api may 
+					still change slightly.</div>
+					<!-- <a name="intro" style="display:block;position:relative;top:-80px"></a> -->
+					<h4>What is it?</h4>
+					<p>
+					Berry is an extensible JavaScript/jQuery library with an included set of CSS rules.
+					</p>
+					<p>
+					The core library does very little besides establish the framework without at least one plugin. Each input type is defined with a plugin allowing for many more input types than are normally available in plain html and more can be created as the need arises.
+					</p>
+					<p>
+					The basics include hidden, text, textarea, select, checkbox, radio, and password.
+					</p>
+					<p>
+					HTML5 adds quite a few more but it is difficult to rely on them since support in older browsers is sketchy at best, this is where Berry comes in. With the proper plugin you can trust that the input will look, act and validate correctly. Its even possible to create input types that don't exist in any spec but act in similar and predictable ways.
+					</p>
 
+					<!--Getting Started -->
+					<a name="getting_started" style="display:block;position:relative;top:-80px"></a>
+					<br>
+					<h4>Getting Started</h4>
+					<p><b>Dependencies</b> - Berry has two hard dependencies that needed. The first being jquery (or zepto) and the second being hogan.js. Strictly speaking the compile portion of hogan is not needed. </p>
+					<pre><code class="prettyprint">&lt;script src='http://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js'&gt;&lt;/script&gt;<br>&lt;script src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'&gt;&lt;/script&gt;</code></pre>
+					<p>Next the core berry engine will need to be loaded.</p>
+					<pre><code class="prettyprint">&lt;script type='text/javascript' src='berry.min.js'&gt;&lt;/script&gt;</code></pre>
+					<p>And lastly a theme is required - the default theme is based on bootstrap and will also require the css for bootstrap to be included.</p>
+					<pre><code class="prettyprint">&lt;style src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'&gt;&lt;/style&gt;<br>&lt;script type='text/javascript' src='bootstrap.berry.js'&gt;&lt;/script&gt;</code></pre>
+					<p>So now all together an example of a minimum setup would look something like this</p>
+					<pre><code class="prettyprint">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;style src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'&gt;&lt;/style&gt;
+    &lt;script src='http://twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js'&gt;&lt;/script&gt;
+    &lt;script src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'&gt;&lt;/script&gt;
+    &lt;script type='text/javascript' src='berry.min.js'&gt;&lt;/script&gt;
+    &lt;script type='text/javascript' src='bootstrap.berry.js'&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;div class="myForm"&gt;
+  &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+					<br>
+					<p>Now that we have all of our dependencies included we can begin enjoying the magic of berry!</p>
+					<blockquote><code class="prettyprint">var options = {};<br>var myForm = $('.myForm').berry(options);</code></blockquote>
+					<p>This will create a form in the element selected with 'selector' defined by your options.</p>
+
+					<!--Api -->
+					<a name="api" style="display:block;position:relative;top:-80px"></a>
+					<br>
+					<h4>API</h4>
+					<h5>toJSON <code>myForm.toJSON([name]);</code></h5>
+					<p>
+						an object will be returned containing a serialized list of all fields maintained in the Berry tree. If the optional 'name' parameter is supplied then only the value of the field with that name is returned.
+					</p>
+					<br>
+					<h5>destroy <code>myForm.destroy();</code></h5>
+					<p>
+						this will remove the form and clean up any residuals and remove all events
+					</p>
+					<br>
+					<h5>find <code>myForm.find(path || name);</code></h5>
+					<p>
+						the Berry field that the path leads to is returned, for first level fields the path is just the name if it is contained within a fieldset the path would be <code>'fieldset_name.field_name'</code>
+					</p>
+					<hr>
+
+					<!--options -->
+					<a name="options" style="display:block;position:relative;top:-80px"></a>
+					<br>
+					<h3>Options</h3>
+					<!--legend -->
+					<a name="legend" style="display:block;position:relative;top:-80px"></a>
+					<br>
+					<h4>Legend</h4>					
+					<p>
+						The legend of the forom as it is to be rendered
+					</p>
+					<blockquote>options.legend = ''</blockquote>
+					<br>
+					<h4>Defaults</h4>					
+					<p>
+						The legend of the forom as it is to be rendered
+					</p>
+					<blockquote>options.defaults = {}</blockquote>
+					<br>
+					<h4>renderer</h4>					
+					<p>
+						The legend of the forom as it is to be rendered
+					</p>
+					<blockquote>options.defaults = {}</blockquote>
+					<br>
+					<hr>
+
+
+					<footer>
+						<p>&copy; Berryjs 2015</p>
+					</footer>
 				</div><!--/span-->
 
 			</div><!--/row-->
 
-			<hr>
 
-			<footer>
-				<p>&copy; Company 2014</p>
-			</footer>
 
 		</div><!--/.container-->
 
@@ -87,5 +238,6 @@
 
 		<script type='text/javascript' src='bin/berry.min.js'></script>
 		<script type='text/javascript' src='bin/bootstrap.berry.js'></script>
+		<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 	</body>
 </html>
