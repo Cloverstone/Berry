@@ -311,7 +311,8 @@ Berry = function(options, obj) {
 		return false;
 	};
 	var addField = function(item , parent, target, insert) {
-		var current = new Berry.types[item.type](item, self);
+		debugger;
+		var current = new (Berry.types[item.type] || Berry.types['text'])(item, self);
 		current.parent = parent;
 
 		var root = self.fields;
