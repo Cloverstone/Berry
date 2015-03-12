@@ -2,6 +2,8 @@
 	b.register({type: 'text' });
 	b.register({type: 'raw' });
 	b.register({type: 'password' });
+	b.register({type: 'date' });
+	b.register({type: 'range' });
 
 	b.register({type: 'hidden',
 		create: function() {
