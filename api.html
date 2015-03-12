@@ -367,7 +367,7 @@
 					<p>
 						The target by default is the form or fieldset that contains the field however Berry can manage fields accross different containers. If a selector string is passed in then the field will be appended to the element that is indicated by the selector.
 					</p>
-					<blockquote>options.fields[0].target = 'selector'</blockquote>
+					<blockquote>options.fields[0].target = '.myForm'</blockquote>
 					<!--field value -->
 					<a name="field_value" style="display:block;position:relative;top:-80px"></a>
 					<br>
@@ -375,13 +375,13 @@
 					<p>
 						This is the default value of the field and has lower presidence than the attributes field on the form. 
 					</p>
-					<blockquote>options.fields[0].value = ''</blockquote>
+					<blockquote>options.fields[0].value = 'Default'</blockquote>
 					<!--field help -->
 					<a name="field_help" style="display:block;position:relative;top:-80px"></a>
 					<br>
 					<h4>help <code>['string']</code></h4>					
 					<p>
-						
+						This is the help text that will be shown to a user to guide them in filling out the field. By default no help text will be included.
 					</p>
 					<blockquote>options.fields[0].help = 'Put your first name here'</blockquote>
 					<!--field columns -->
@@ -389,7 +389,7 @@
 					<br>
 					<h4>columns <code>['integer']</code></h4>					
 					<p>
-
+						Fields default to the full with but based on the grid that the theme uses this can be modified on a per field basis. The default bootstrap theme is based on a 12 column grid.
 					</p>
 					<blockquote>options.fields[0].columns = 12</blockquote>
 					<!--field show -->
@@ -397,7 +397,7 @@
 					<br>
 					<h4>show <code>['bool', 'Berry.conditions']</code></h4>					
 					<p>
-
+						
 					</p>
 					<blockquote>options.fields[0].show = true</blockquote>
 					<!--field placeholder -->
