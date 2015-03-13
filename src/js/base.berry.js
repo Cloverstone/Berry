@@ -407,20 +407,7 @@ Berry = function(options, obj) {
 	this.$el = obj;
 
 
-	this.options = $.extend(true, {
-		name: Berry.getUID(),
-		errorClass: 'has-error',
-		errorTextClass: 'font-xs.text-danger',
-		options: {inline: false},
-		modifiers: '',
-		renderer: 'base',
-		flatten: true,
-		columns: 12,
-		autoDestroy: false,
-		autoFocus: true,
-		default: {type: 'text'},
-		actions: ['cancel', 'save']
-	}, options);
+	this.options = $.extend(true, {name: Berry.getUID()}, Berry.options, options);
 	this.events = $.extend({}, Berry.prototype.events);
 
 	this.fieldsets = [];
@@ -492,10 +479,22 @@ Berry = function(options, obj) {
 			}
 		});
 };
-
 Berries = Berry.instances = {};
 Berry.types = {};
 Berry.collections = {};
+Berry.options = {
+	errorClass: 'has-error',
+	errorTextClass: 'font-xs.text-danger',
+	options: {inline: false},
+	modifiers: '',
+	renderer: 'base',
+	flatten: true,
+	columns: 12,
+	autoDestroy: false,
+	autoFocus: true,
+	default: {type: 'text'},
+	actions: ['cancel', 'save']
+};
 
 Berry.register = function(elem) {
 	if(elem.extends && typeof Berry.types[elem.extends] !== 'undefined'){

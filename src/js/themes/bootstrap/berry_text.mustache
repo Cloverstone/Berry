@@ -13,7 +13,7 @@
 	{{/label}}
 		{{#pre}}<div class="input-group col-xs-12"><span class="input-group-addon">{{{pre}}}</span>{{/pre}}
     {{^pre}}{{#post}}<div class="input-group">{{/post}}{{/pre}}
-		<input autocomplete="off" class="form-control" {{#readonly}}readonly{{/readonly}} {{#max}}maxlength="{{max}}"{{/max}} placeholder="{{placeholder}}" type="{{type}}" name="{{name}}" id="{{name}}" value="{{value}}" />
+		<input autocomplete="off" class="form-control" {{#readonly}}readonly{{/readonly}} {{#maxlength}}maxlength="{{maxlength}}"{{/maxlength}} {{#max}}max="{{max}}"{{/max}} {{#min}}min="{{min}}"{{/min}}  {{#step}}step="{{step}}"{{/step}} placeholder="{{placeholder}}" type="{{type}}" name="{{name}}" id="{{name}}" value="{{value}}" />
     {{#post}}<span class="input-group-addon">{{{post}}}</span></div>{{/post}}
     {{^post}}{{#pre}}</div>{{/pre}}{{/post}}
 		{{>berry__addons}}

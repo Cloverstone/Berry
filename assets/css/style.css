@@ -93,5 +93,6 @@ code{color:#BA7D10;background:#FCF3E2;}
 h2, h3, h4{font-weight: 200;color:#BA7D10;}
 h5 code,h4 code{margin-left:50px;background: rgba(0, 0, 0, 0);
 color: #555;}
+h4 code{font-size:12px;}
 pre{margin:10px 0;}
 
