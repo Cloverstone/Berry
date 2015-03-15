@@ -122,9 +122,11 @@
 					</ul>
 					<a href="#events"><h4>Events</h4></a>
 					<ul class>
+						<li class="list-unstyled" ><a href="#on"><i class="fa fa-chevron-right"></i> on</a></li>
+						<li class="list-unstyled" ><a href="#delay"><i class="fa fa-chevron-right"></i> delay</a></li>
+						<li class="list-unstyled" ><a href="#trigger"><i class="fa fa-chevron-right"></i> trigger</a></li>
 						<li class="list-unstyled" ><a href="#initialize"><i class="fa fa-chevron-right"></i> initialize</a></li>
 						<li class="list-unstyled" ><a href="#change"><i class="fa fa-chevron-right"></i> change</a></li>
-						<li class="list-unstyled" ><a href="#changed"><i class="fa fa-chevron-right"></i> changed</a></li>
 						<li class="list-unstyled" ><a href="#save"><i class="fa fa-chevron-right"></i> save</a></li>
 						<li class="list-unstyled" ><a href="#destroy"><i class="fa fa-chevron-right"></i> destroy</a></li>
 						<li class="list-unstyled" ><a href="#destroyed"><i class="fa fa-chevron-right"></i> destroyed</a></li>
@@ -174,10 +176,10 @@
 						<li class="list-unstyled" ><a href="#bootstrap"><i class="fa fa-chevron-right"></i> Bootstrap</a></li>
 						<!-- <li class="list-unstyled" ><a href="#foundation"><i class="fa fa-chevron-right"></i> Foundation</a></li> -->
 					</ul>
-					<a href="#enhancements"><h4>Enhancements</h4></a>
+					<a href="#plugins"><h4>Plugins</h4></a>
 					<ul class>
-						<li class="list-unstyled" ><a href="#bootstrap"><i class="fa fa-chevron-right"></i> Modal</a></li>
-						<li class="list-unstyled" ><a href="#bootstrap"><i class="fa fa-chevron-right"></i> Backbone</a></li>
+						<li class="list-unstyled" ><a href="#bootstrap"><i class="fa fa-chevron-right"></i> modal</a></li>
+						<li class="list-unstyled" ><a href="#bootstrap"><i class="fa fa-chevron-right"></i> backbone</a></li>
 					</ul>
 					<a href="#extra_types"><h4>Extra Field Types</h4></a>
 					<ul class>
@@ -447,7 +449,7 @@
 					<!--field post -->
 					<a name="field_post" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>post <code>['string']</code></h4>					
+					<h4>post <code>['string']</code></h4>
 					<p>
 						This sting will be appended to the field if the theme supports the post attribute.
 					</p>
@@ -455,7 +457,7 @@
 					<!--field options -->
 					<a name="field_choices" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>options/choices  <code>['array', 'object', 'string', 'function']</code></h4>					
+					<h4>options/choices  <code>['array', 'object', 'string', 'function']</code></h4>	
 					<p>
 						The 
 					</p>
@@ -463,7 +465,7 @@
 					<!--field max -->
 					<a name="field_max" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>max <code>['integer', null]</code></h4>					
+					<h4>max <code>['integer', null]</code></h4>
 					<p>
 						This field has a different meaning based on the field type and has no effect on many field types. For a field type of 'number' this will set a maximum number that the fields value can be. If the max is set on any field that would normally have its options/choices passed in then the max is used to generate a set of options for that field.
 					</p>
@@ -471,7 +473,7 @@
 					<!--field min -->
 					<a name="field_min" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>min <code>['integer', null]</code></h4>					
+					<h4>min <code>['integer', null]</code></h4>
 					<p>
 						Similar to the max field this field has a different meaning based on the field type and has no effect on many field types. For a field type of 'number' this will set a minimum number that the fields value can be. If the max is set on any field that would normally have its options/choices passed in then the min is used with the max to generate a set of options for that field. If max is set but min is not then min is assumed to be 0 when generating options.
 					</p>
@@ -493,7 +495,7 @@
 					<!--text -->
 					<a name="field_text" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>text</h4>					
+					<h4>text</h4>
 					<p>
 						This is the default field type that is created if the type is not specified. This will generate an input of type text.
 					</p>
@@ -502,7 +504,7 @@
 					<!--textarea -->
 					<a name="field_textarea" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>textarea</h4>					
+					<h4>textarea</h4>
 					<p>
 						This will create a textarea with the value as the content.
 					</p>
@@ -511,7 +513,7 @@
 					<!--select -->
 					<a name="field_select" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>select</h4>					
+					<h4>select</h4>
 					<p>
 						This will create a select element generating the options based on the list of options/choices that are passed in.
 					</p>
@@ -520,7 +522,7 @@
 					<!--radio -->
 					<a name="field_radio" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>radio</h4>					
+					<h4>radio</h4>
 					<p>
 						This will create a collection of radio buttons generated based on the list of options/choices that are passed in.
 					</p>
@@ -529,7 +531,7 @@
 					<!--checkbox -->
 					<a name="field_checkbox" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>checkbox</h4>					
+					<h4>checkbox</h4>
 					<p>
 						This will create a checkbox with true states being any of the following: true, 'true' 1, '1', 'on';<br>
 						The expected true state can also be set with the attribute <code>trueState</code> and the false state can be set with the attribute <code>falseState</code>
@@ -539,7 +541,7 @@
 					<!--fieldset -->
 					<a name="field_fieldset" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>fieldset</h4>					
+					<h4>fieldset</h4>
 					<p>
 						This field
 					</p>
@@ -554,7 +556,7 @@
 					<!--fieldset -->
 					<a name="fieldset" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>fieldset</h4>					
+					<h4>fieldset</h4>
 					<p>
 
 					</p>
@@ -563,16 +565,16 @@
 					<!--legend -->
 					<a name="fieldset_legend" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>legend / label</h4>					
+					<h4>legend / label</h4>
 					<p>
-
+						For consistancy with other fields you can set either the 'legend' or the 'label' attribute to render the legend for the fieldset. If you set both the 'legend' attribute is priority. If neither is set no legend is drawn for the basic renderer.
 					</p>
 					<blockquote>options.fields[0] = {type: 'fieldset', legend: 'Common Fields' fields: []}</blockquote>
 
 					<!--multiple -->
 					<a name="fieldset_multiple" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>multiple</h4>					
+					<h4>multiple</h4>
 					<p>
 
 					</p>
@@ -581,7 +583,7 @@
 					<!--duplicate -->
 					<a name="fieldset_duplicate" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>duplicate</h4>					
+					<h4>duplicate</h4>
 					<p>
 
 					</p>
@@ -590,9 +592,9 @@
 					<!--max -->
 					<a name="fieldset_max" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>multiple.max</h4>					
+					<h4>multiple.max</h4>
 					<p>
-
+						This is the maximum number duplications of the fieldset that is aloud.
 					</p>
 					<blockquote>options.fields[0] = {type: 'fieldset', legend: 'Common Fields' fields: []}</blockquote>
 
@@ -601,249 +603,358 @@
 					<br>
 					<h3>Events</h3>
 
-					<!--initialize -->
-					<a name="initialize" style="display:block;position:relative;top:-80px"></a>
+					<!--on -->
+					<a name="on" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>initialize</h4>					
+					<h4>on('event', 'function')</h4>					
 					<p>
-
+Bind a callback function to an object. The callback will be invoked whenever the event is fired. If you have a large number of different events on a page, the convention is to use colons to namespace them: "poll:start", or "change:selection". The event string may also be a space-delimited list of several events...
 					</p>
-					<blockquote>berry.on('initialize', function(){})</blockquote>
+					<blockquote>berry.on('change:myfield', function(){})</blockquote>
 
-					<!--change -->
-					<a name="change" style="display:block;position:relative;top:-80px"></a>
+					<!--delay -->
+					<a name="delay" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>change</h4>					
+					<h4>delay('event', 'function', [delay])</h4>					
 					<p>
-
+						This works exatly like the on method except it will only be triggered after the event has not been fired again after the delay timeout. The default delay time is 250ms.
 					</p>
-					<blockquote>berry.on('change', function(){})</blockquote>
+					<blockquote>berry.delay('change', function(){}, ['integer'])</blockquote>
 
-					<!--changed -->
-					<a name="changed" style="display:block;position:relative;top:-80px"></a>
+					<!--trigger -->
+					<a name="trigger" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>changed</h4>					
+					<h4>trigger('event')</h4>					
 					<p>
-
+						Trigger callbacks for the given event, or space-delimited list of events. Subsequent arguments to trigger will be passed along to the event callbacks.
 					</p>
-					<blockquote>berry.on('changed', function(){})</blockquote>
+					<blockquote>berry.trigger('change')</blockquote>
 
-					<!--save -->
-					<a name="save" style="display:block;position:relative;top:-80px"></a>
+					<!--built in events -->
+					<a name="built_in_events" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>save</h4>					
+					<h4>Built-in Events</h4>					
 					<p>
-
+						The list of built-in Berry events. You're also free to trigger your own events as you see fit. The context is always set to that of the Berry instance triggering the event.
 					</p>
-					<blockquote>berry.on('save', function(){})</blockquote>
+					<ul>
+						<!--initialize -->
+						<li><h5>initialize</h5>					
+						<p>
+							This event is fired as Berry begins the initialization and is a good place to put set up code.
+						</p></li>
 
-					<!--destroy -->
-					<a name="destroy" style="display:block;position:relative;top:-80px"></a>
-					<br>
-					<h4>destroy</h4>					
-					<p>
+						<!--change -->
+						<li><h5>change</h5>					
+						<p>
+							The change event is triggered whenever the value of a field is changed.
+						</p></li>
 
-					</p>
-					<blockquote>berry.on('destroy', function(){})</blockquote>
+						<!--destroy -->
+						<li><h5>destroy</h5>					
+						<p>
+							This event is fired when the destroy method is called but before anything has been destroyed.
+						</p></li>
 
-					<!--destroyed -->
-					<a name="destroyed" style="display:block;position:relative;top:-80px"></a>
-					<br>
-					<h4>destroyed</h4>					
-					<p>
+						<!--destroyed -->
+						<li><h5>destroyed</h5>					
+						<p>
+							Fires after everything related to the form has been destroyed.
+						</p></li>
 
-					</p>
-					<blockquote>berry.on('destroyed', function(){})</blockquote>
-
-
+					</ul>
 					<!--renderers -->
 					<a name="renderers" style="display:block;position:relative;top:-80px"></a>
 					<br>
 					<h3>Renderers</h3>
-
+						Renderers control how a form is drawn and layed out.
 					<!--basic -->
 					<a name="renderer_basic" style="display:block;position:relative;top:-80px"></a>
 					<br>
 					<h4>basic</h4>					
 					<p>
-
+						The 'basic' renderer will create the form in and fieldsets in the normal linear way that you would expect.
 					</p>
-					<blockquote></blockquote>
 
 					<!--tabs -->
 					<a name="renderer_tabs" style="display:block;position:relative;top:-80px"></a>
 					<br>
 					<h4>tabs</h4>					
 					<p>
-
+						This renderer will divide any fieldsets into separate tabs with the legends of each fieldset as the tab titles.
 					</p>
-					<blockquote></blockquote>
 
 					<!--wizard -->
 					<a name="renderer_wizard" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>wizard</h4>					
+					<h4>wizard</h4>	
+					<div class="alert alert-danger">BROKEN: The wizard functionallity is know to be currently broken, this should be remedied soon.</div>				
 					<p>
-
+						This renderer will divide any fieldsets into separate sections with the legends of each fieldset as the steps in the wizard and will require you to finish them in order and validate before moving on. Actions will also be create automatically for stepping through and saving.
 					</p>
-					<blockquote></blockquote>
 
 					<!--poppins -->
 					<a name="renderer_poppins" style="display:block;position:relative;top:-80px"></a>
 					<br>
 					<h4>poppins</h4>					
 					<p>
-
+						The poppins renderer handles the form differently, this will look for elements with the class poppins and a name matching the name of one of the fields, the value of that field will then be set to the contents of that element and set that element up to have a popup allow you to edit that value when it is clicked.
 					</p>
-					<blockquote></blockquote>
 
-					<!--inline -->
-					<a name="renderer_inline" style="display:block;position:relative;top:-80px"></a>
+ 					<!--inline -->
+<!--					<a name="renderer_inline" style="display:block;position:relative;top:-80px"></a>
 					<br>
 					<h4>inline</h4>					
 					<p>
 
-					</p>
-					<blockquote></blockquote>
+					</p> -->
 
 
 					<!--conditions -->
 					<a name="conditions" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h3>Conditions</h3>
+					<h3>Conditions</h3>					
+		<pre><code class="prettyprint">{
+  "label": "Reason",
+  "name": "reason",
+  "type": "text",
+  "show": {
+    "matches": {
+      "name": "candy",
+      "value": "Chocolate"
+    },				
+    "not_matches": {
+      "name": "candy",
+      "value": "Chocolate"
+    },
+    "requires": {
+      "name": "candy"
+    }
+  }
+}</code></pre>
 
 					<!--requires -->
 					<a name="requires" style="display:block;position:relative;top:-80px"></a>
 					<br>
 					<h4>requires</h4>					
 					<p>
-
+						The 'requires' condition requires that the field indicated with the 'name' attribute passes the required validation.
 					</p>
-					<blockquote></blockquote>
 
 					<!--matches -->
 					<a name="matches" style="display:block;position:relative;top:-80px"></a>
 					<br>
 					<h4>matches</h4>					
 					<p>
-
+						The 'matches' condition requires that the value of the field indicated with the 'name' attribute matches the value that is set in the 'value' attribute.
 					</p>
-					<blockquote></blockquote>
 
 					<!--not_matches -->
 					<a name="not_matches" style="display:block;position:relative;top:-80px"></a>
 					<br>
 					<h4>not_matches</h4>					
 					<p>
-
+						The 'matches' condition requires that the value of the field indicated with the 'name' attribute does not match the value that is set in the 'value' attribute.
 					</p>
-					<blockquote></blockquote>
 
 					<!--validation -->
 					<a name="validation" style="display:block;position:relative;top:-80px"></a>
 					<br>
-					<h4>Validation</h4>
+					<h3>Validation</h3>
 					<a name="required" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>required</h5>
 					<p>
-
+						fails validation if the field value is empty.	
 					</p>
+					<code>{validate: {required: true}</code>
 					<a name="matches" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>matches</h5>
 					<p>
-
+						fails validation if the field value does not match the value of the field indicated.	
 					</p>
+					<code>{validate: {matches: 'password_1'}</code>
 					<a name="valid_email" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>valid_email</h5>
 					<p>
-
+						fails validation if the field value is not a valid email address.	
 					</p>
+					<code>{validate: {valid_email: true}</code>
 					<a name="valid_emails" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>valid_emails</h5>
 					<p>
-
+						fails validation if any value in a comma separated list is not a valid email	
 					</p>
+					<code>{validate: {valid_emails: true}</code>
 					<a name="min_length" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>min_length</h5>
 					<p>
-
+						fails validation if the length of the fields value is shorter then the indicated value	
 					</p>
+					<code>{validate: {min_length: '8'}</code>
 					<a name="max_length" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>max_length</h5>
 					<p>
-
+						fails validation if the length of the fields value is longer then the indicated value	
 					</p>
+					<code>{validate: {max_length: '10'}</code>
 					<a name="exact_length" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>exact_length</h5>
 					<p>
-
+						fails validation if the length of the fields value is not exactly the same as the indicated value	
 					</p>
+					<code>{validate: {exact_length: '8'}</code>
 					<a name="greater_than" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>greater_than</h5>
 					<p>
-
+						fails validation if the value of the field is less than the indicated value after using parseFloat.
 					</p>
+					<code>{validate: {greater_than: '16'}</code>
 					<a name="less_than" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>less_than</h5>
 					<p>
-
+						fails validation if the value of the field is greater than the indicated value after using parseFloat.
 					</p>
+					<code>{validate: {less_than: '100'}</code>
 					<a name="alpha" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>alpha</h5>
 					<p>
-
+						fails validation if the value of the field contains anything other than alphabetical characters.
 					</p>
+					<code>{validate: {alpha: true}</code>
 					<a name="alpha_numeric" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>alpha_numeric</h5>
 					<p>
-
+						fails validation if the value of the field contains anything other than alpha-numeric characters.
 					</p>
+					<code>{validate: {alpha_numeric: true}</code>
 					<a name="alpha_dash" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>alpha_dash</h5>
 					<p>
-
+						fails validation if the value of the field contains anything other than alpha-numeric characters, underscores, or dashes.
 					</p>
+					<code>{validate: {alpha_dash: true}</code>
 					<a name="numeric" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>numeric</h5>
 					<p>
-
+						fails validation if the value of the field contains anything other than numeric characters.
 					</p>
+					<code>{validate: {numeric: true}</code>
 					<a name="integer" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>integer</h5>
 					<p>
-
+						fails validation if the value of the field contains anything other than an integer.
 					</p>
+					<code>{validate: {numeric: true}</code>
 					<a name="decimal" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>decimal</h5>
 					<p>
-
+						fails validation if the value of the field contains anything other than a decimal.
 					</p>
+					<code>{validate: {decimal: true}</code>
 					<a name="is_natural" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>is_natural</h5>
 					<p>
-
+						fails validation if the value of the field contains anything other than a natural number: 0, 1, 2, 3, etc.
 					</p>
+					<code>{validate: {is_natural: true}</code>
 					<a name="is_natural_no_zero" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>is_natural_no_zero</h5>
 					<p>
-
+						fails validation if the value of the field contains anything other than a natural number, but not zero: 1, 2, 3, etc.
 					</p>
+					<code>{validate: {is_natural_no_zero: true}</code>
 					<a name="valid_ip" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>valid_ip</h5>
 					<p>
-
+						fails validation if the value of the field is not a valid IP address.
 					</p>
+					<code>{validate: {valid_ip: true}</code>
 					<a name="valid_url" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>valid_url</h5>
 					<p>
-
+						fails validation if the value of the field is not a valid url.
 					</p>
+					<code>{validate: {valid_url: true}</code>
 					<a name="valid_base64" style="display:block;position:relative;top:-80px"></a>
+					<hr>
 					<h5>valid_base64</h5>
 					<p>
-
+						fails validation if the value of the field contains anything other than valid Base64 characters.
 					</p>
+					<code>{validate: {valid_base64: true}</code>
 					<br>
+
+
+
+					<!--themes -->
+					<a name="themes" style="display:block;position:relative;top:-80px"></a>
+					<br>
+					<h3>Themes</h3>
+						Themes help BerryJS to fit seemlessly into your current site.
+					<!--bootstrap -->
+					<a name="bootstrap" style="display:block;position:relative;top:-80px"></a>
+					<br>
+					<h4>Bootstrap</h4>					
+					<p>
+						The bootstrp theme is the default theme and is the one that is tested most thoroughly. It impliments all of the basic elements and uses the 12 column grid. The pre and post pieces of form groups are also impilmented 
+					</p>
+
+
+					<!--plugins -->
+					<a name="plugins" style="display:block;position:relative;top:-80px"></a>
+					<br>
+					<h3>Plugins</h3>
+						Plugins are used to extend the functionality of BerryJS as well as to impliment new features that may only make sense for a subset of people.
+					<!--modal -->
+					<a name="modal" style="display:block;position:relative;top:-80px"></a>
+					<br>
+					<h4>Modal</h4>					
+					<p>
+						This plugin will automatically create a modal popup of a form if the target is not selected or the target element is not found. In practice this would look like this: 
+						<pre><code class="prettyprint">var myForm = $().berry(options);</code></pre>
+						To make use of this plugin the plugin just needs to be included and no target selected.
+					</p>
+					<!--backbone -->
+					<a name="backbone" style="display:block;position:relative;top:-80px"></a>
+					<br>
+					<h4>Backbone</h4>					
+					<p>
+						This plugin will automatically create a modal popup of a form if the target is not selected or the target element is not found. In practice this would look like this: 
+						<pre><code class="prettyprint">var myForm = $('.myform').berry({model: new bbModel(), fields:['first_name']});</code></pre>
+						To use this plugin the plugin just needs to be included and a model passed in to it. A reference to the model is also available at <code>myForm.options.model</code>, this is useful from within an event callback function. Two new events are also used with this plugin: 
+					<ul>
+						<!--save -->
+						<li><h5>save</h5>					
+						<p>
+							triggered right before the model is updated with the new values
+						</p></li>
+						<!--saved -->
+						<li><h5>saved</h5>					
+						<p>
+							triggered right after the model is updated with the new values
+						</p></li>
+
+					</ul>
+					</p>
 
 
 					<hr>

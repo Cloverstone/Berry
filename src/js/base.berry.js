@@ -7,8 +7,8 @@
 Berry = function(options, obj) {
 
 	this.destroy = function() {
-		this.each(function() {if(typeof this.destroy === 'function') {this.destroy();}});
 		this.trigger('destroy');
+		this.each(function() {if(typeof this.destroy === 'function') {this.destroy();}});
 		this.$el.empty();
 		for(var i in this.fieldsets) {
 			$(this.fieldsets[i]).empty();
@@ -126,7 +126,7 @@ Berry = function(options, obj) {
 		});
 		return self.attributes;
 	};
-
+//hydrate
 	var inflate = function(o, n) {
 		for(var i in n) {
 			if(typeof n[i] === 'object' && !$.isArray(n[i])) {
