@@ -387,7 +387,13 @@ Berry.processOpts = function(item) {
 		}
 
 		if(typeof item.choices === 'object' && !$.isArray(item.choices)) {
-			item.choices = item.choices.toJSON();
+			// item.choices = item.choices.toJSON();
+
+			for(var c in conditions) {
+				Berry.conditions[c].call(this, this.owner, conditions[c], function(bool, token) {
+					// conditions[c].callBack
+				});
+			}
 		}
 
 		/* Insert the default value at the begining */

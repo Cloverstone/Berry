@@ -12,7 +12,7 @@ Berry.processConditions = function(conditions, func) {
 	if (typeof conditions === 'object') {
 		var keys = [];
 		for(var c in conditions){
-			keys.push(Berry.conditions[c].call(this, this.owner, conditions[c], func));
+			keys.push(Berry.conditions[c].call(this, this.owner, conditions[c], (func || conditions[c].callBack)));
 		}
 		return keys;
 	}
