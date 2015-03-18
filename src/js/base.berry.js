@@ -53,16 +53,20 @@ Berry = function(options, obj) {
 					}
 				}
 			}
-		},[], fields);
+		}, [], fields);
 
 		self.each(function() {
 			if(!this.isContainer) {
 				var temp = Berry.search(this.owner.attributes, this.getPath());
-				this.setValue(temp || '');
+				var toset = temp;
+				if(typeof toset === undefined){
+					toset = '';
+				}
+				this.setValue(toset);
 				this.trigger('change');
 				this.toJSON();
 			}
-		},[], fields);
+		}, [], fields);
 	};
 
 	var processMultiples = function(attributes) {
@@ -382,7 +386,7 @@ Berry = function(options, obj) {
 					temp[this.name] = this.getValue();
 				}
 			}
-		},[newAttributes]);
+		}, [newAttributes]);
 		return newAttributes;
 	};
 

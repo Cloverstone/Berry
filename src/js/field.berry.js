@@ -429,8 +429,6 @@ Berry.processOpts = function(item) {
 			} else {
 				item.options[o].selected = false;
 			}
-			//item.options[o].selected = (item.options[o].value == item.value)
-
 		}
 	}
 	return item;
