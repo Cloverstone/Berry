@@ -36,15 +36,23 @@
 		value: 0,
 		getValue: function() {
 			var temp = this.$el.val();
-			if( $.isNumeric( temp ) ){
-				return parseFloat(temp, 10);
+			if(temp === '') {
+					return 0;
 			}else{
-				if(temp === '') {
-					return temp;
+				if( $.isNumeric( temp ) ){
+					return parseFloat(temp, 10);
 				}
-				this.revert();
-				return 0;
 			}
+
+			// if( $.isNumeric( temp ) ){
+			// 	return parseFloat(temp, 10);
+			// }else{
+			// 	if(temp === '') {
+			// 		return temp;
+			// 	}
+			// 	this.revert();
+			// 	return 0;
+			// }
 		}
 	});
 
