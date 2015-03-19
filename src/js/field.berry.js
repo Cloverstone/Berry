@@ -76,6 +76,7 @@ $.extend(Berry.field.prototype, {
 	offset: 0,
 	version: '1.0',
 	isContainer: false,
+	isParsable: true,
 	instance_id: null,
 	path:'',
 	defaults: {},
@@ -227,6 +228,22 @@ $.extend(Berry.field.prototype, {
 						if(!this.enabledConditions[c]) {
 							this.enabledState = false;
 							this.disable();
+							break;
+						}
+					}
+				}
+			);
+		}
+		if(typeof this.parsable !== 'undefined') {
+			this.parsableConditions = Berry.processConditions.call(this, this.parsable,
+				function(bool, token) {
+					this.parsableConditions[token] = bool;
+					this.isParsable = true;
+					// this.enable();
+					for(var c in this.parsableConditions) {
+						if(!this.parsableConditions[c]) {
+							this.isParsable = false;
+							// this.disable();
 							break;
 						}
 					}

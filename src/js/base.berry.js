@@ -372,7 +372,7 @@ Berry = function(options, obj) {
 	var parsefields = function(attributes) {
 		var newAttributes = $.extend(true, {}, attributes);
 		self.each(function(newAttributes) {
-			if(!this.isContainer) {
+			if(!this.isContainer && this.isParsable) {
 				var temp;
 				if(this.isChild() || (this.instance_id !== null)){
 					temp = Berry.search(newAttributes,this.parent.getPath());
@@ -381,9 +381,9 @@ Berry = function(options, obj) {
 					 temp = newAttributes;
 				}
 				if($.isArray(temp)){
-					temp[this.parent.instance_id][this.name] = this.getValue();
+					temp[this.parent.instance_id][(this.attribute || this.name)] = this.getValue();
 				}else{
-					temp[this.name] = this.getValue();
+					temp[(this.attribute || this.name)] = this.getValue();
 				}
 			}
 		}, [newAttributes]);

@@ -1,7 +1,7 @@
 Berry.processConditions = function(conditions, func) {
 	if (typeof conditions === 'string') {
-		if(conditions === 'show' || conditions === 'display') {
-			conditions = (this.item.display || this.item.show);
+		if(conditions === 'show' || conditions === 'enabled'  || conditions === 'parsable') {
+			conditions = this.item[conditions];
 		}else if(conditions === 'enable') {
 			conditions = this.item.enable;
 		}
