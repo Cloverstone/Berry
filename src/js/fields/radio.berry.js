@@ -1,7 +1,7 @@
 (function(b, $){
 	b.register({ type: 'radio',
 		create: function() {
-			this.options = b.processOpts(this.item).options;
+			this.options = b.processOpts.call(this.owner, this.item).options;
 			return b.render('berry_radio', this);
 		},
 		setup: function() {

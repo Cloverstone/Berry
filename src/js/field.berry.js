@@ -381,7 +381,7 @@ Berry.processOpts = function(item) {
 	If a function is defined for choices use that.
 	*/
 	if(typeof item.choices === 'function') {
-		item.choices = item.choices.call(item);
+		item.options = item.choices.call(this, item);
 	}
 
 	if(typeof item.choices !== 'undefined' && item.choices.length > 0) {

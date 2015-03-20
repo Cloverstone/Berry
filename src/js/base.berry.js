@@ -59,9 +59,7 @@ Berry = function(options, obj) {
 			if(!this.isContainer) {
 				var temp = Berry.search(this.owner.attributes, this.getPath());
 				var toset = temp;
-				if(typeof toset === undefined){
-					toset = '';
-				}
+				if(typeof toset === undefined) toset = '';
 				this.setValue(toset);
 				this.trigger('change');
 				this.toJSON();
@@ -280,7 +278,7 @@ Berry = function(options, obj) {
 	this.processField = function(item, target, parent, insert) {
 		field = $.extend({}, self.options.default, item);
 		if(target[0] !== undefined){target = target[0];}
-		if(field.type in Berry.types) {
+		// if(field.type in Berry.types) {
 			var current = addField(field, parent, target, insert);
 			if(current.fieldset === undefined) { current.fieldset = target; }
 
@@ -311,12 +309,25 @@ Berry = function(options, obj) {
 			}
 			current.initialize();
 			return current;
-		}
-		return false;
+		// }
+		// return false;
 	};
 	var addField = function(item , parent, target, insert) {
-		debugger;
-		var current = new (Berry.types[item.type] || Berry.types['text'])(item, self);
+
+
+		var type = Berry.types[item.type];
+		if(!type) {
+			if(typeof item.choices === 'undefined' && typeof item.options === 'undefined'){
+				type = Berry.types['text'];
+			}else{
+				 if(Berry.processOpts.call(this, item).options.length < 3){
+					type = Berry.types['radio'];
+				 }else{
+					type = Berry.types['select'];
+				 }
+			}
+		}
+		var current = new type(item, self);
 		current.parent = parent;
 
 		var root = self.fields;
@@ -496,7 +507,7 @@ Berry.options = {
 	columns: 12,
 	autoDestroy: false,
 	autoFocus: true,
-	default: {type: 'text'},
+	// default: {type: 'text'},
 	actions: ['cancel', 'save']
 };
 

@@ -1,7 +1,7 @@
 (function(b, $){
 	b.register({ type: 'select',
 		create: function() {
-			this.options = b.processOpts(this.item).options;
+			this.options = b.processOpts.call(this.owner, this.item).options;
 			return b.render('berry_' + (this.elType || this.type), this);
 		},
 		setup: function() {
