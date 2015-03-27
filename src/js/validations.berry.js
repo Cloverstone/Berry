@@ -19,10 +19,11 @@ Berry.prototype.performValidate = function(processee,processValue){
 	processee.valid = true;
 	processee.errors = '';
 
-	if(item.validate !== undefined && typeof item.validate === 'object'){
+	if(typeof item.validate !== 'undefined' && typeof item.validate === 'object'){
 		for(var r in item.validate){
 			if(!Berry.validations[r].method(value,item.validate[r])){
-				if((item.show === undefined) || processee.owner.show(item.show)){
+				// if((typeof item.show === 'undefined') || processee.owner.show(item.show)){
+				if((typeof item.show === 'undefined') || processee.owner.isVisible){
 					processee.valid = false;
 					var errorstring = Berry.validations[r].message;
 					if(typeof item.validate[r] == 'string') {

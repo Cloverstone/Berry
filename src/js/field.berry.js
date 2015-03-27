@@ -76,11 +76,13 @@ $.extend(Berry.field.prototype, {
 	version: '1.0',
 	isContainer: false,
 	isParsable: true,
+	isVisible: true,
+	enabledState: true,
 	instance_id: null,
 	path:'',
 	defaults: {},
 	parent: null,
-	enabled: true,
+	// enabled: true,
 	// parse: function(){
 	// 	return true;
 	// },
@@ -110,7 +112,7 @@ $.extend(Berry.field.prototype, {
 	// 	// return path + this.name;
 	// },
 	isActive: function() {
-		return this.parent === null || this.parent.enabled !== false;
+		return this.parent === null || this.parent.enabledState !== false;
 	},
 	isChild: function(){
 		return  this.parent !== null;
@@ -126,12 +128,13 @@ $.extend(Berry.field.prototype, {
 		//this.value = this.lastSaved;
 		this.item.value = this.lastSaved;
 		this.setValue(this.lastSaved);
+		return this;
 	},
 	hasChildren: function() {return !$.isEmptyObject(this.children);},
 	create: function() {return Berry.render('berry_' + (this.elType || this.type), this);},
 	render: function() {
 		if(typeof this.self === 'undefined') {
-			this.self = $(this.create()).attr('data-Berry',this.owner.options.name);
+			this.self = $(this.create()).attr('data-Berry', this.owner.options.name);
 		} else {
 			this.self.html($(this.create()).html());
 		}
@@ -200,12 +203,15 @@ $.extend(Berry.field.prototype, {
 		this.createAttributes();
 		this.setup();
 		if(typeof this.show !== 'undefined') {
+			this.isVisible = true;
 			this.showConditions = Berry.processConditions.call(this, this.show,
 				function(bool, token) {
 					this.showConditions[token] = bool;
 					this.self.show();
+					this.isVisible = true;
 					for(var c in this.showConditions) {
 						if(!this.showConditions[c]) {
+							this.isVisible = false;
 							this.self.hide();
 							break;
 						}
@@ -215,6 +221,7 @@ $.extend(Berry.field.prototype, {
 
 			if(typeof this.showConditions === 'boolean') {
 				this.self.toggle(this.showConditions);
+				this.isVisible = this.showConditions;
 			}
 		}
 		if(typeof this.enabled !== 'undefined') {
@@ -275,7 +282,9 @@ $.extend(Berry.field.prototype, {
 		return this.$el.val(value);
 	},
 	update: function(item, silent) {
-		$.extend(this.item, item);
+		if(typeof item === 'object') {
+			$.extend(this.item, item);
+		}
 		$.extend(this, this.item);
 		this.setValue(this.value);
 		this.render();
@@ -434,17 +443,23 @@ Berry.processOpts = function(item) {
 			}
 			item.options[o] = $.extend({label: cOpt.name, value: o}, {label: cOpt[(item.key || 'title')], value: cOpt[(item.reference || 'id')]}, cOpt);
 
-			if(!set) {
+			//if(!set) {
 				if(typeof item.value !== 'undefined' && item.value !== '') {
-					item.options[o].selected = (item.options[o].value == item.value);
-				} else {
-					item.options[o].selected = true;
-					item.value = item.options[o].value;
+					if(!$.isArray(item.value)) {
+						item.options[o].selected = (item.options[o].value == item.value);
+					} else {
+				// debugger;
+						item.options[o].selected = ($.inArray(item.options[o].value, item.value) > -1);
+					}
 				}
-				set = item.options[o].selected;
-			} else {
-				item.options[o].selected = false;
-			}
+				// else {
+				// 	item.options[o].selected = true;
+				// 	item.value = item.options[o].value;
+				// }
+				// set = item.options[o].selected;
+			// } else {
+			// 	item.options[o].selected = false;
+			// }
 		}
 	}
 	return item;

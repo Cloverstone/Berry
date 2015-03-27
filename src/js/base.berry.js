@@ -1,4 +1,4 @@
-//		BerryJS 0.9.3.0
+//		BerryJS 0.9.3.1
 //		(c) 2011-2014 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -59,7 +59,8 @@ Berry = function(options, obj) {
 			if(!this.isContainer) {
 				var temp = Berry.search(this.owner.attributes, this.getPath());
 				var toset = temp;
-				if(typeof toset === undefined) toset = '';
+				if(typeof toset === 'undefined') toset = '';
+				// debugger;
 				this.setValue(toset);
 				this.trigger('change');
 				this.toJSON();
@@ -471,7 +472,7 @@ Berry = function(options, obj) {
 			return false;
 		});
 	}
-
+// debugger;
 	this.each(function(){
 		this.trigger('change');
 	})
@@ -493,6 +494,8 @@ Berry = function(options, obj) {
 				self.fields[temp.name].instances.splice(temp.instance_id,1);
 			}
 		});
+
+		this.trigger('initialized');
 };
 Berries = Berry.instances = {};
 Berry.types = {};
