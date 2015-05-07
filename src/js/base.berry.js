@@ -1,4 +1,4 @@
-//		BerryJS 0.9.3.1
+//		BerryJS 0.9.3.2
 //		(c) 2011-2014 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -60,7 +60,6 @@ Berry = function(options, obj) {
 				var temp = Berry.search(this.owner.attributes, this.getPath());
 				var toset = temp;
 				if(typeof toset === 'undefined') toset = '';
-				// debugger;
 				this.setValue(toset);
 				this.trigger('change');
 				this.toJSON();
@@ -79,7 +78,7 @@ Berry = function(options, obj) {
 				}
 				root[this.name] = {};
 				for(var i in this.children) {
-					root[this.name][i] = $.pluck(temp,i);
+					root[this.name][i] = $.pluck(temp, i);
 				}
 			}
 		}, [attributes, altered]);
@@ -172,7 +171,6 @@ Berry = function(options, obj) {
 			}
 			deflated.push(this.name);
 			}else{
-				// debugger;
 				deflated.push(this.name);
 				$.extend(working, deflate(working[this.name]));
 				delete working[this.name];
@@ -234,6 +232,9 @@ Berry = function(options, obj) {
 				items.push(this);
 			}
 		}, [s, items], (f || this.fields));
+		if(items.length == 0){
+			return false;
+		}
 		if(items.length > 1 || items[0].multiple){
 			return items;
 		}
@@ -255,6 +256,7 @@ Berry = function(options, obj) {
 			if(typeof fields[i] === 'string'){
 				fields[i] = { type : fields[i], label : i };
 			}
+			// debugger;
 			fields[i] = $.extend({}, self.options.default, fields[i]);
 			//if no name given and a name is needed, check for a given id else use the key
 			if(typeof fields[i].name === 'undefined' && !fields[i].isContainer){
@@ -281,7 +283,8 @@ Berry = function(options, obj) {
 		if(target[0] !== undefined){target = target[0];}
 		// if(field.type in Berry.types) {
 			var current = addField(field, parent, target, insert);
-			if(current.fieldset === undefined) { current.fieldset = target; }
+			 // debugger;
+			if(typeof current.fieldset === 'undefined') { current.fieldset = target; }
 
 			if(insert == 'before') {
 				$(target).before(current.render());
@@ -382,17 +385,19 @@ Berry = function(options, obj) {
 	};
 
 	var parsefields = function(attributes) {
-		var newAttributes = $.extend(true, {}, attributes);
+		// var newAttributes = $.extend(true, {}, attributes);
+		var newAttributes = JSON.parse(JSON.stringify(attributes))
 		self.each(function(newAttributes) {
 			if(!this.isContainer && this.isParsable) {
 				var temp;
 				if(this.isChild() || (this.instance_id !== null)){
 					temp = Berry.search(newAttributes,this.parent.getPath());
 				}
-				if(typeof temp == 'undefined'){
-					 temp = newAttributes;
+				if(typeof temp === 'undefined'){
+					temp = newAttributes;
 				}
 				if($.isArray(temp)){
+					if(!temp[this.parent.instance_id]){temp[this.parent.instance_id] = {}}
 					temp[this.parent.instance_id][(this.attribute || this.name)] = this.getValue();
 				}else{
 					temp[(this.attribute || this.name)] = this.getValue();
@@ -459,6 +464,11 @@ Berry = function(options, obj) {
 		}
 		processMultiplesIN();
 
+		this.each(function(){
+			if(this.multiple){
+				this.createAttributes();
+			}
+		})
 		this.populate();
 	}
 
@@ -472,7 +482,6 @@ Berry = function(options, obj) {
 			return false;
 		});
 	}
-// debugger;
 	this.each(function(){
 		this.trigger('change');
 	})
