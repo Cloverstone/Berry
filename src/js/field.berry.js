@@ -3,6 +3,10 @@ Berry.field = function(item, owner) {
 	this.owner = owner;
 	this.hidden = false;
 	this.item = $.extend(true, {}, this.defaults, item);
+	// if(typeof this.item.fieldset === 'function') { this.item.fieldset = this.item.fieldset.call(this); }
+	// this.trigger('initializeField');
+
+	this.owner.trigger('initializeField', {field: this});
 	$.extend(this, this.owner.options.options, this.item);
 	if(item.value !== 0){
 		if(typeof item.value === 'function') {
@@ -46,15 +50,24 @@ Berry.field = function(item, owner) {
 	this.id = (item.id || Berry.getUID());//?
 	this.self = undefined;
 	this.fieldset = undefined;
-	if(this.item.fieldset !== undefined && $('.' + this.item.fieldset).length > 0) {
-		//this.owner.fieldsets.push(this.item.fieldset);
-		this.fieldset = $('.' + this.item.fieldset)[0];
-		this.owner.fieldsets.push(this.fieldset);
-	}else{
-		if(this.item.fieldset !== undefined && $('[name=' + this.item.fieldset + ']').length > 0) {
-//				this.owner.fieldsets.push(this.item.fieldset);
-			this.fieldset = $('[name=' + this.item.fieldset + ']')[0];
+
+	// if(this.owner.renderer === 'inline'){debugger;}
+	// debugger;
+	if(typeof this.item.fieldset !== 'object'){
+		if(this.item.fieldset !== undefined && $('.' + this.item.fieldset).length > 0) {
+			//this.owner.fieldsets.push(this.item.fieldset);
+			this.fieldset = $('.' + this.item.fieldset)[0];
 			this.owner.fieldsets.push(this.fieldset);
+		}else{
+			if(this.item.fieldset !== undefined && $('[name=' + this.item.fieldset + ']').length > 0) {
+	//				this.owner.fieldsets.push(this.item.fieldset);
+				this.fieldset = $('[name=' + this.item.fieldset + ']')[0];
+				this.owner.fieldsets.push(this.fieldset);
+			}
+		}
+	}else{
+		if(this.item.fieldset.length){
+			this.fieldset = this.item.fieldset;
 		}
 	}
 	// if(this.fieldset === undefined && typeof this.item.target === 'object'){
@@ -195,7 +208,7 @@ $.extend(Berry.field.prototype, {
 		}
 	},
 	initialize: function() {
-		if(this.multiple && this.multiple.duplicate){
+		if(this.multiple && this.multiple.duplicate) {
 			this.self.find('.duplicate').click( $.proxy(this.dupeMe, this) );
 			this.self.find('.remove').click( $.proxy(this.dropMe, this) );
 		}

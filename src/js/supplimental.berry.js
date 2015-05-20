@@ -36,18 +36,18 @@ Berry.renderers = {
 	base: function(owner) {
 		this.owner = owner;
 		this.initialize = function() {
-			$(this.owner.$el).keydown(function(event) {
+			$(this.owner.$el).keydown($.proxy(function(event) {
 				switch(event.keyCode) {
 					case 27://escape
 						$('#close').click();
 						break;
 					case 13://enter
 						if (event.ctrlKey) {
-							$('#submit').click();
+							this.owner.$el.find('[data-id=berry-submit]').click();
 						}
 						break;
 				}
-			});
+			}, this));
 		};
 		this.fieldset = function(data) {
 			return Berry.render('berry_' + this.owner.options.renderer + '_fieldset',data);
@@ -87,6 +87,14 @@ Berry.btn = {
 			this.trigger('cancel');
 		}
 	}
+};
+
+Berry.prototype.toArray = function() {
+	var fields = [];
+	for(var i in this.fields){
+		fields.push(this.fields[i]);
+	}
+	return fields;
 };
 
 Berry.counter = 0;

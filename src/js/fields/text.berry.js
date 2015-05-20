@@ -24,6 +24,30 @@
 			placeholder: '+1'
 		}
 	});
+	b.register({ type: 'color',
+		defaults: {
+			pre: '<i></i>' ,
+			type: 'text'
+		},	
+		setValue: function(value) {
+			if(typeof this.lastSaved === 'undefined'){
+				this.lastSaved = value;
+			}
+			this.value = value;
+			this.$el.parent().colorpicker('setValue', this.value)
+			return this.$el.val(value);
+		},
+		setup: function() {
+				this.$el = this.self.find('input');
+				this.$el.off();
+				if(this.onchange !== undefined){ this.$el.on('input', this.onchange);}
+				this.$el.on('input', $.proxy(function() {this.trigger('change');}, this));
+				this.$el.attr('type','text');
+				this.$el.parent().colorpicker({format: 'hex'}).on('changeColor', $.proxy(function(ev){
+				  this.trigger('change');
+				}, this));
+			}
+	});
 	b.register({ type: 'email',
 		defaults: {
 		post: '<i class="fa fa-envelope"></i>' ,
@@ -56,30 +80,6 @@
 		}
 	});
 
-	b.register({ type: 'color',
-		defaults: {
-			pre: '<i></i>' ,
-			type: 'text'
-		},	
-		setValue: function(value) {
-			if(typeof this.lastSaved === 'undefined'){
-				this.lastSaved = value;
-			}
-			this.value = value;
-			this.$el.parent().colorpicker('setValue', this.value)
-			return this.$el.val(value);
-		},
-		setup: function() {
-				this.$el = this.self.find('input');
-				this.$el.off();
-				if(this.onchange !== undefined){ this.$el.on('input', this.onchange);}
-				this.$el.on('input', $.proxy(function() {this.trigger('change');}, this));
-				this.$el.attr('type','text');
-				this.$el.parent().colorpicker({format: 'hex'}).on('changeColor', $.proxy(function(ev){
-				  this.trigger('change');
-				}, this));
-			}
-	});
 	b.register({ type: 'tags',
 		defaults: { elType: 'text' },
 		setup: function() {

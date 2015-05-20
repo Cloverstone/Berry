@@ -1,10 +1,10 @@
 Berry.renderers['wizard'] = function(owner) {
 	this.owner = owner;
 	this.fieldset = function(data){
-		return Berry.render('berry_' + this.owner.options.renderer + '_fieldset',data);
+		return Berry.render('berry_' + this.owner.options.renderer + '_fieldset', data);
 	};
 	this.render = function(){
-		this.owner.$el.html(Berry.render('berry_' + this.owner.options.renderer + '_form' , this.owner.options));
+		this.owner.$el.html(Berry.render('berry_' + this.owner.options.renderer + '_form', this.owner.options));
 		return this.owner.$el.find('form');
 	};
 	this.$element = null;
