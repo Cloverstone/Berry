@@ -384,7 +384,7 @@ Berry.field.extend = function(protoProps) {
 	return child;
 };
 
-Berry.processOpts = function(item) {
+Berry.processOpts = function(item, object) {
 	// var options;
 	/* 
 	If max is set on the item, assume a number set is desired. 
@@ -415,7 +415,7 @@ Berry.processOpts = function(item) {
 					success: $.proxy(function(data) {
 						Berry.collections[item.choices] = data;
 						this.update({choices: data, value: Berry.search(this.owner.attributes, this.getPath())});
-					}, item)
+					}, object)
 				});
 				item.options = [];
 				return item;

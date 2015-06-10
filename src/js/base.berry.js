@@ -1,4 +1,4 @@
-//		BerryJS 0.9.3.2
+//		BerryJS 0.9.3.3
 //		(c) 2011-2014 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
