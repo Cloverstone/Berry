@@ -14,7 +14,8 @@
 		setup: function() {
 			this.$el = this.self.find('[type=checkbox]');
 			if(this.onchange !== undefined) {
-				this.$el.change(this.onchange);
+				//this.$el.change(this.onchange);
+				this.on('change', this.onchange);
 			}
 			this.$el.change($.proxy(function(){this.trigger('change');},this));
 		},

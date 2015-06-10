@@ -3,6 +3,10 @@ Berry.field = function(item, owner) {
 	this.owner = owner;
 	this.hidden = false;
 	this.item = $.extend(true, {}, this.defaults, item);
+	// if(typeof this.item.fieldset === 'function') { this.item.fieldset = this.item.fieldset.call(this); }
+	// this.trigger('initializeField');
+
+	this.owner.trigger('initializeField', {field: this});
 	$.extend(this, this.owner.options.options, this.item);
 	if(item.value !== 0){
 		if(typeof item.value === 'function') {
@@ -15,17 +19,16 @@ Berry.field = function(item, owner) {
 				this.set(this.liveValue());
 			},this));
 		} else if(typeof this.item.value === 'string' && this.item.value.indexOf('=') === 0 && typeof math !== 'undefined') {
-			//this.template =  Hogan.compile(this.item.value.substr(1),{delimiters: '{ }'});
+			this.formula = this.item.value.substr(1);
 			this.liveValue = function() {
 				try {
-					//var temp = math.eval(this.template.render(this.owner.toJSON(), templates))
-					var temp = math.eval(this.item.value.substr(1), this.owner.toJSON());
+					var temp = math.eval(this.formula, this.owner.toJSON());
 					if($.isNumeric(temp)){
 						return temp.toFixed((this.item.precision || 0));
 					}
 					return temp;
 				}catch(e){
-					return this.template.render();
+					 return this.formula;
 				}
 			};
 			item.value = this.item.value = this.liveValue();
@@ -47,15 +50,24 @@ Berry.field = function(item, owner) {
 	this.id = (item.id || Berry.getUID());//?
 	this.self = undefined;
 	this.fieldset = undefined;
-	if(this.item.fieldset !== undefined && $('.' + this.item.fieldset).length > 0) {
-		//this.owner.fieldsets.push(this.item.fieldset);
-		this.fieldset = $('.' + this.item.fieldset)[0];
-		this.owner.fieldsets.push(this.fieldset);
-	}else{
-		if(this.item.fieldset !== undefined && $('[name=' + this.item.fieldset + ']').length > 0) {
-//				this.owner.fieldsets.push(this.item.fieldset);
-			this.fieldset = $('[name=' + this.item.fieldset + ']')[0];
+
+	// if(this.owner.renderer === 'inline'){debugger;}
+	// debugger;
+	if(typeof this.item.fieldset !== 'object'){
+		if(this.item.fieldset !== undefined && $('.' + this.item.fieldset).length > 0) {
+			//this.owner.fieldsets.push(this.item.fieldset);
+			this.fieldset = $('.' + this.item.fieldset)[0];
 			this.owner.fieldsets.push(this.fieldset);
+		}else{
+			if(this.item.fieldset !== undefined && $('[name=' + this.item.fieldset + ']').length > 0) {
+	//				this.owner.fieldsets.push(this.item.fieldset);
+				this.fieldset = $('[name=' + this.item.fieldset + ']')[0];
+				this.owner.fieldsets.push(this.fieldset);
+			}
+		}
+	}else{
+		if(this.item.fieldset.length){
+			this.fieldset = this.item.fieldset;
 		}
 	}
 	// if(this.fieldset === undefined && typeof this.item.target === 'object'){
@@ -76,11 +88,14 @@ $.extend(Berry.field.prototype, {
 	offset: 0,
 	version: '1.0',
 	isContainer: false,
+	isParsable: true,
+	isVisible: true,
+	enabledState: true,
 	instance_id: null,
 	path:'',
 	defaults: {},
 	parent: null,
-	enabled: true,
+	// enabled: true,
 	// parse: function(){
 	// 	return true;
 	// },
@@ -110,7 +125,7 @@ $.extend(Berry.field.prototype, {
 	// 	// return path + this.name;
 	// },
 	isActive: function() {
-		return this.parent === null || this.parent.enabled !== false;
+		return this.parent === null || this.parent.enabledState !== false;
 	},
 	isChild: function(){
 		return  this.parent !== null;
@@ -126,12 +141,13 @@ $.extend(Berry.field.prototype, {
 		//this.value = this.lastSaved;
 		this.item.value = this.lastSaved;
 		this.setValue(this.lastSaved);
+		return this;
 	},
 	hasChildren: function() {return !$.isEmptyObject(this.children);},
 	create: function() {return Berry.render('berry_' + (this.elType || this.type), this);},
 	render: function() {
 		if(typeof this.self === 'undefined') {
-			this.self = $(this.create()).attr('data-Berry',this.owner.options.name);
+			this.self = $(this.create()).attr('data-Berry', this.owner.options.name);
 		} else {
 			this.self.html($(this.create()).html());
 		}
@@ -192,7 +208,7 @@ $.extend(Berry.field.prototype, {
 		}
 	},
 	initialize: function() {
-		if(this.multiple && this.multiple.duplicate){
+		if(this.multiple && this.multiple.duplicate) {
 			this.self.find('.duplicate').click( $.proxy(this.dupeMe, this) );
 			this.self.find('.remove').click( $.proxy(this.dropMe, this) );
 		}
@@ -200,12 +216,15 @@ $.extend(Berry.field.prototype, {
 		this.createAttributes();
 		this.setup();
 		if(typeof this.show !== 'undefined') {
+			this.isVisible = true;
 			this.showConditions = Berry.processConditions.call(this, this.show,
 				function(bool, token) {
 					this.showConditions[token] = bool;
 					this.self.show();
+					this.isVisible = true;
 					for(var c in this.showConditions) {
 						if(!this.showConditions[c]) {
+							this.isVisible = false;
 							this.self.hide();
 							break;
 						}
@@ -215,6 +234,7 @@ $.extend(Berry.field.prototype, {
 
 			if(typeof this.showConditions === 'boolean') {
 				this.self.toggle(this.showConditions);
+				this.isVisible = this.showConditions;
 			}
 		}
 		if(typeof this.enabled !== 'undefined') {
@@ -227,6 +247,22 @@ $.extend(Berry.field.prototype, {
 						if(!this.enabledConditions[c]) {
 							this.enabledState = false;
 							this.disable();
+							break;
+						}
+					}
+				}
+			);
+		}
+		if(typeof this.parsable !== 'undefined') {
+			this.parsableConditions = Berry.processConditions.call(this, this.parsable,
+				function(bool, token) {
+					this.parsableConditions[token] = bool;
+					this.isParsable = true;
+					// this.enable();
+					for(var c in this.parsableConditions) {
+						if(!this.parsableConditions[c]) {
+							this.isParsable = false;
+							// this.disable();
 							break;
 						}
 					}
@@ -259,7 +295,9 @@ $.extend(Berry.field.prototype, {
 		return this.$el.val(value);
 	},
 	update: function(item, silent) {
-		$.extend(this.item, item);
+		if(typeof item === 'object') {
+			$.extend(this.item, item);
+		}
 		$.extend(this, this.item);
 		this.setValue(this.value);
 		this.render();
@@ -346,7 +384,7 @@ Berry.field.extend = function(protoProps) {
 	return child;
 };
 
-Berry.processOpts = function(item) {
+Berry.processOpts = function(item, object) {
 	// var options;
 	/* 
 	If max is set on the item, assume a number set is desired. 
@@ -365,7 +403,7 @@ Berry.processOpts = function(item) {
 	If a function is defined for choices use that.
 	*/
 	if(typeof item.choices === 'function') {
-		item.choices = item.choices.call(item);
+		item.options = item.choices.call(this, item);
 	}
 
 	if(typeof item.choices !== 'undefined' && item.choices.length > 0) {
@@ -377,7 +415,7 @@ Berry.processOpts = function(item) {
 					success: $.proxy(function(data) {
 						Berry.collections[item.choices] = data;
 						this.update({choices: data, value: Berry.search(this.owner.attributes, this.getPath())});
-					}, item)
+					}, object)
 				});
 				item.options = [];
 				return item;
@@ -387,7 +425,13 @@ Berry.processOpts = function(item) {
 		}
 
 		if(typeof item.choices === 'object' && !$.isArray(item.choices)) {
-			item.choices = item.choices.toJSON();
+			// item.choices = item.choices.toJSON();
+
+			for(var c in conditions) {
+				Berry.conditions[c].call(this, this.owner, conditions[c], function(bool, token) {
+					// conditions[c].callBack
+				});
+			}
 		}
 
 		/* Insert the default value at the begining */
@@ -412,19 +456,23 @@ Berry.processOpts = function(item) {
 			}
 			item.options[o] = $.extend({label: cOpt.name, value: o}, {label: cOpt[(item.key || 'title')], value: cOpt[(item.reference || 'id')]}, cOpt);
 
-			if(!set) {
+			//if(!set) {
 				if(typeof item.value !== 'undefined' && item.value !== '') {
-					item.options[o].selected = (item.options[o].value == item.value);
-				} else {
-					item.options[o].selected = true;
-					item.value = item.options[o].value;
+					if(!$.isArray(item.value)) {
+						item.options[o].selected = (item.options[o].value == item.value);
+					} else {
+				// debugger;
+						item.options[o].selected = ($.inArray(item.options[o].value, item.value) > -1);
+					}
 				}
-				set = item.options[o].selected;
-			} else {
-				item.options[o].selected = false;
-			}
-			//item.options[o].selected = (item.options[o].value == item.value)
-
+				// else {
+				// 	item.options[o].selected = true;
+				// 	item.value = item.options[o].value;
+				// }
+				// set = item.options[o].selected;
+			// } else {
+			// 	item.options[o].selected = false;
+			// }
 		}
 	}
 	return item;

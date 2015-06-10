@@ -24,6 +24,10 @@ Berry.prototype.performValidate = function(processee,processValue){
 			if(!Berry.validations[r].method(value,item.validate[r])){
 				// if((typeof item.show === 'undefined') || processee.owner.show(item.show)){
 				if((typeof item.show === 'undefined') || processee.owner.isVisible){
+
+					
+
+
 					processee.valid = false;
 					var errorstring = Berry.validations[r].message;
 					if(typeof item.validate[r] == 'string') {

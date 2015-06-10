@@ -1,27 +1,27 @@
 Berry.renderers['wizard'] = function(owner) {
 	this.owner = owner;
 	this.fieldset = function(data){
-		return Berry.render('berry_' + this.owner.options.renderer + '_fieldset',data);
+		return Berry.render('berry_' + this.owner.options.renderer + '_fieldset', data);
 	};
 	this.render = function(){
-		this.owner.$el.html(Berry.render('berry_' + this.owner.options.renderer + '_form' , this.owner.options));
+		this.owner.$el.html(Berry.render('berry_' + this.owner.options.renderer + '_form', this.owner.options));
 		return this.owner.$el.find('form');
 	};
 	this.$element = null;
 	this.update = function(){
 		this.$element.find('ul').html(Berry.render('berry_wizard_steps',this.owner));
-		$('#submit,#wizard-next').hide();
+		$('[data-id=berry-submit],[data-id=wizard-next]').hide();
 		$('.step-pane').removeClass('active');
 		$('#step' + (this.owner.currentSection + 1)).addClass('active');
 		if((this.owner.currentSection + 1) != this.owner.section_count){
-			$('#wizard-next').show();
+			$('[data-id=wizard-next]').show();
 		}else{
-			$('#submit').show();
+			$('[data-id=berry-submit]').show();
 		}
 		if(this.owner.currentSection === 0){
-			$('#wizard-previous').hide();
+			$('[data-id=wizard-previous]').hide();
 		}else{
-			$('#wizard-previous').show();
+			$('[data-id=wizard-previous]').show();
 		}
 		// reset the wizard position to the left
 		this.$element.find('ul').first().attr('style','margin-left: 0');
@@ -94,22 +94,22 @@ Berry.renderers['wizard'] = function(owner) {
 		this.owner.sectionList[0].state = 'active';
 		this.owner.currentSection = 0;
 		if((this.owner.currentSection + 1) == this.owner.section_count){
-			$('#wizard-next').hide();
+			$('[data-id=wizard-next]').hide();
 		}else{
-			$('#submit').hide();
+			$('[data-id=berry-submit]').hide();
 		}
 		if(this.owner.currentSection === 0){
-			$('#wizard-previous').hide();
+			$('[data-id=wizard-previous]').hide();
 		}else{
-			$('#wizard-previous').show();
+			$('[data-id=wizard-previous]').show();
 		}
 
 		this.$element = this.owner.$el.find('.wizard');
 		this.$element.find('ul').html(Berry.render('berry_wizard_steps',this.owner));
 		$('#step1').addClass('active');
 		$('body').on('click','.wizard li',$.proxy(this.sectionClick,this));
-		$('body').on('click','#wizard-next',$.proxy(this.next,this));
-		$('body').on('click','#wizard-previous',$.proxy(this.previous,this));
+		$('body').on('click','[data-id=wizard-next]',$.proxy(this.next,this));
+		$('body').on('click','[data-id=wizard-previous]',$.proxy(this.previous,this));
 	};
 };
 
@@ -117,7 +117,7 @@ Berry.btn['previous'] = {
 			'label': "Previous",
 			'icon':'arrow-left',
 			'id': 'wizard-previous',
-			'modifier': 'danger pull-right'
+			'modifier': 'danger pull-left'
 		};
 Berry.btn['next'] = {
 			'label': "Next",
@@ -125,7 +125,7 @@ Berry.btn['next'] = {
 			'id': 'wizard-next',
 			'modifier': 'success pull-right'
 		};
-Berry.btn['finish'] = $.extend({}, Berry.btn['save'],{label: 'Finish'});
+Berry.btn['finish'] = $.extend({}, Berry.btn['save'], {label: 'Finish'});
 
 
 Berry.prototype.events.initialize.push({
@@ -133,7 +133,7 @@ Berry.prototype.events.initialize.push({
 	func: function(){
 		if(this.options.renderer == 'wizard') {
 			this.sectionsEnabled = true;
-			this.options.actions = ['cancel', 'finish', 'next', 'previous'];
+			this.options.actions = ['finish', 'next', 'previous'];
 		}
 	}
 });

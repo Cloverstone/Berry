@@ -7,6 +7,7 @@ Berry.prototype.events.initialize.push({
 					// this.options.model.save(this.toJSON() , {wait: true, patch: true, success: $.proxy(function(){
 					// 	this.trigger('saved');
 					// }, this)});
+// debugger;
 					this.trigger('saveing');
 					this.options.model.set(this.toJSON());
 					this.trigger('saved');
@@ -39,14 +40,16 @@ Berry.prototype.events.initialize.push({
 			if(typeof this.options.attributes === 'undefined' || $.isEmptyObject(this.options.attributes)) {
 				this.options.attributes = this.options.model.toJSON();
 
-// 				this.options.model.on('change',function(){
-// 					for(var i in this.options.model.changed){
-// 						if(typeof this.fields[i] !== 'undefined'){
-// 							this.fields[i].set(this.options.model.changed[i]);
-// //							this.fields[i].publish('changed');
-// 						}
-// 					}
-// 				},this);
+				this.options.model.on('change', function(){
+					// debugger;
+					for(var i in this.options.model.changed){
+						var temp = this.find(i);
+						if(temp && !$.isArray(temp)) {
+							temp.set(this.options.model.changed[i]);
+						}
+					}
+				},this);
+
 				this.on('destroy',function(){
 					this.options.model.on('change', null, this);
 				});

@@ -24,30 +24,6 @@
 			placeholder: '+1'
 		}
 	});
-	b.register({ type: 'email',
-		defaults: {
-		post: '<i class="fa fa-envelope"></i>' ,
-		validate: { 'valid_email': true }
-		}
-	});
-
-	b.register({ type: 'number',
-		defaults: { elType: 'text' },
-		value: 0,
-		getValue: function() {
-			var temp = this.$el.val();
-			if( $.isNumeric( temp ) ){
-				return parseFloat(temp, 10);
-			}else{
-				if(temp === '') {
-					return temp;
-				}
-				this.revert();
-				return 0;
-			}
-		}
-	});
-
 	b.register({ type: 'color',
 		defaults: {
 			pre: '<i></i>' ,
@@ -72,6 +48,38 @@
 				}, this));
 			}
 	});
+	b.register({ type: 'email',
+		defaults: {
+		post: '<i class="fa fa-envelope"></i>' ,
+		validate: { 'valid_email': true }
+		}
+	});
+
+	b.register({ type: 'number',
+		defaults: { elType: 'text' },
+		value: 0,
+		getValue: function() {
+			var temp = this.$el.val();
+			if(temp === '') {
+					return 0;
+			}else{
+				if( $.isNumeric( temp ) ){
+					return parseFloat(temp, 10);
+				}
+			}
+
+			// if( $.isNumeric( temp ) ){
+			// 	return parseFloat(temp, 10);
+			// }else{
+			// 	if(temp === '') {
+			// 		return temp;
+			// 	}
+			// 	this.revert();
+			// 	return 0;
+			// }
+		}
+	});
+
 	b.register({ type: 'tags',
 		defaults: { elType: 'text' },
 		setup: function() {

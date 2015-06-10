@@ -1,4 +1,4 @@
-//		BerryJS 0.9.3.0
+//		BerryJS 0.9.3.3
 //		(c) 2011-2014 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -53,16 +53,18 @@ Berry = function(options, obj) {
 					}
 				}
 			}
-		},[], fields);
+		}, [], fields);
 
 		self.each(function() {
 			if(!this.isContainer) {
 				var temp = Berry.search(this.owner.attributes, this.getPath());
-				this.setValue(temp || '');
+				var toset = temp;
+				if(typeof toset === 'undefined') toset = '';
+				this.setValue(toset);
 				this.trigger('change');
 				this.toJSON();
 			}
-		},[], fields);
+		}, [], fields);
 	};
 
 	var processMultiples = function(attributes) {
@@ -76,7 +78,7 @@ Berry = function(options, obj) {
 				}
 				root[this.name] = {};
 				for(var i in this.children) {
-					root[this.name][i] = $.pluck(temp,i);
+					root[this.name][i] = $.pluck(temp, i);
 				}
 			}
 		}, [attributes, altered]);
@@ -169,7 +171,6 @@ Berry = function(options, obj) {
 			}
 			deflated.push(this.name);
 			}else{
-				// debugger;
 				deflated.push(this.name);
 				$.extend(working, deflate(working[this.name]));
 				delete working[this.name];
@@ -231,6 +232,9 @@ Berry = function(options, obj) {
 				items.push(this);
 			}
 		}, [s, items], (f || this.fields));
+		if(items.length == 0){
+			return false;
+		}
 		if(items.length > 1 || items[0].multiple){
 			return items;
 		}
@@ -252,6 +256,7 @@ Berry = function(options, obj) {
 			if(typeof fields[i] === 'string'){
 				fields[i] = { type : fields[i], label : i };
 			}
+			// debugger;
 			fields[i] = $.extend({}, self.options.default, fields[i]);
 			//if no name given and a name is needed, check for a given id else use the key
 			if(typeof fields[i].name === 'undefined' && !fields[i].isContainer){
@@ -276,9 +281,10 @@ Berry = function(options, obj) {
 	this.processField = function(item, target, parent, insert) {
 		field = $.extend({}, self.options.default, item);
 		if(target[0] !== undefined){target = target[0];}
-		if(field.type in Berry.types) {
+		// if(field.type in Berry.types) {
 			var current = addField(field, parent, target, insert);
-			if(current.fieldset === undefined) { current.fieldset = target; }
+			 // debugger;
+			if(typeof current.fieldset === 'undefined') { current.fieldset = target; }
 
 			if(insert == 'before') {
 				$(target).before(current.render());
@@ -307,12 +313,25 @@ Berry = function(options, obj) {
 			}
 			current.initialize();
 			return current;
-		}
-		return false;
+		// }
+		// return false;
 	};
 	var addField = function(item , parent, target, insert) {
-		debugger;
-		var current = new (Berry.types[item.type] || Berry.types['text'])(item, self);
+
+
+		var type = Berry.types[item.type];
+		if(!type) {
+			if(typeof item.choices === 'undefined' && typeof item.options === 'undefined'){
+				type = Berry.types['text'];
+			}else{
+				 if(Berry.processOpts.call(this, item).options.length < 3){
+					type = Berry.types['radio'];
+				 }else{
+					type = Berry.types['select'];
+				 }
+			}
+		}
+		var current = new type(item, self);
 		current.parent = parent;
 
 		var root = self.fields;
@@ -366,23 +385,25 @@ Berry = function(options, obj) {
 	};
 
 	var parsefields = function(attributes) {
-		var newAttributes = $.extend(true, {}, attributes);
+		// var newAttributes = $.extend(true, {}, attributes);
+		var newAttributes = JSON.parse(JSON.stringify(attributes))
 		self.each(function(newAttributes) {
-			if(!this.isContainer) {
+			if(!this.isContainer && this.isParsable) {
 				var temp;
 				if(this.isChild() || (this.instance_id !== null)){
 					temp = Berry.search(newAttributes,this.parent.getPath());
 				}
-				if(typeof temp == 'undefined'){
-					 temp = newAttributes;
+				if(typeof temp === 'undefined'){
+					temp = newAttributes;
 				}
 				if($.isArray(temp)){
-					temp[this.parent.instance_id][this.name] = this.getValue();
+					if(!temp[this.parent.instance_id]){temp[this.parent.instance_id] = {}}
+					temp[this.parent.instance_id][(this.attribute || this.name)] = this.getValue();
 				}else{
-					temp[this.name] = this.getValue();
+					temp[(this.attribute || this.name)] = this.getValue();
 				}
 			}
-		},[newAttributes]);
+		}, [newAttributes]);
 		return newAttributes;
 	};
 
@@ -443,6 +464,11 @@ Berry = function(options, obj) {
 		}
 		processMultiplesIN();
 
+		this.each(function(){
+			if(this.multiple){
+				this.createAttributes();
+			}
+		})
 		this.populate();
 	}
 
@@ -456,7 +482,6 @@ Berry = function(options, obj) {
 			return false;
 		});
 	}
-
 	this.each(function(){
 		this.trigger('change');
 	})
@@ -478,6 +503,8 @@ Berry = function(options, obj) {
 				self.fields[temp.name].instances.splice(temp.instance_id,1);
 			}
 		});
+
+		this.trigger('initialized');
 };
 Berries = Berry.instances = {};
 Berry.types = {};
@@ -492,7 +519,7 @@ Berry.options = {
 	columns: 12,
 	autoDestroy: false,
 	autoFocus: true,
-	default: {type: 'text'},
+	// default: {type: 'text'},
 	actions: ['cancel', 'save']
 };
 

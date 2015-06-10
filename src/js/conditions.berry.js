@@ -1,7 +1,7 @@
 Berry.processConditions = function(conditions, func) {
 	if (typeof conditions === 'string') {
-		if(conditions === 'show' || conditions === 'display') {
-			conditions = (this.item.display || this.item.show);
+		if(conditions === 'show' || conditions === 'enabled'  || conditions === 'parsable') {
+			conditions = this.item[conditions];
 		}else if(conditions === 'enable') {
 			conditions = this.item.enable;
 		}
@@ -12,7 +12,7 @@ Berry.processConditions = function(conditions, func) {
 	if (typeof conditions === 'object') {
 		var keys = [];
 		for(var c in conditions){
-			keys.push(Berry.conditions[c].call(this, this.owner, conditions[c], func));
+			keys.push(Berry.conditions[c].call(this, this.owner, conditions[c], (func || conditions[c].callBack)));
 		}
 		return keys;
 	}
