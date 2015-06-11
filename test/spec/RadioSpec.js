@@ -4,7 +4,7 @@ describe('Radio Input', function () {
   beforeEach(function() {
     triggerOnChange = jasmine.createSpy('onChange');
 
-    myBerry = new Berry({fields:{test:{type: 'radio', choices: ['hello', 'stuff'] }}}, $('#berry')).on('change:test', triggerOnChange);
+    myBerry = new Berry({fields:{test:{type: 'radio', choices: ['hello', 'stuff'] , value: 'hello'}}}, $('#berry')).on('change:test', triggerOnChange);
 //    myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry'))
   });
 

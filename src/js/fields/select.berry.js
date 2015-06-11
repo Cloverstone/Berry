@@ -3,8 +3,8 @@
 		create: function() {
 			// this.options = b.processOpts.call(this.owner, this.item).options;
 			// return b.render('berry_' + (this.elType || this.type), this);
-			this.options = f.processOpts.call(this.owner, this.item, this).options;
-			return f.render('berry_' + (this.elType || this.type), this);
+			this.options = b.processOpts.call(this.owner, this.item, this).options;
+			return b.render('berry_' + (this.elType || this.type), this);
 		},
 		setup: function() {
 			this.$el = this.self.find('select');
