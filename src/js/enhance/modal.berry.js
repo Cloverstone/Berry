@@ -4,7 +4,7 @@ Berry.prototype.events.initialize.push({
 		if((typeof this.$el == 'undefined') || !this.$el.length) {
 			this.$el = $('<div/>');
 
-			this.ref = $(Berry.render('modal',this.options));
+			this.ref = $(Berry.render('modal', this.options));
 			$(this.ref).appendTo('body');
 
 			this.options.legendTarget = this.ref.find('.modal-title');

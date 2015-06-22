@@ -1,5 +1,6 @@
 (function(f,$){
 	f.register({ type: 'checkbox',
+		defaults: {container: 'span'},
 		create: function() {
 			this.checkStatus(this.value);
 			return f.render('berry_checkbox', this);
