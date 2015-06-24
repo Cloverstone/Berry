@@ -3,7 +3,8 @@ Berry.prototype.events.initialize.push({
 	func: function() {
 		if((typeof this.$el == 'undefined') || !this.$el.length) {
 			this.$el = $('<div/>');
-
+			this.options.modal = (this.options.modal || {});
+			this.options.header_class = this.options.header_class || 'bg-success';
 			this.ref = $(Berry.render('modal', this.options));
 			$(this.ref).appendTo('body');
 
@@ -21,7 +22,7 @@ Berry.prototype.events.initialize.push({
 			this.on('cancel', $.proxy(function(){
 				this.ref.modal('hide');
 			},this));
-			
+
 			this.on('saved', $.proxy(function(){
 				//alert('hide modal');
 				this.ref.modal('hide');
