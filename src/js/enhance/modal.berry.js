@@ -4,7 +4,7 @@ Berry.prototype.events.initialize.push({
 		if((typeof this.$el == 'undefined') || !this.$el.length) {
 			this.$el = $('<div/>');
 			this.options.modal = (this.options.modal || {});
-			this.options.header_class = this.options.header_class || 'bg-success';
+			this.options.modal.header_class = this.options.modal.header_class || 'bg-success';
 			this.ref = $(Berry.render('modal', this.options));
 			$(this.ref).appendTo('body');
 
