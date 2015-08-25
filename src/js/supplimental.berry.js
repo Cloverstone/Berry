@@ -32,6 +32,7 @@ Berry.register({
 Berry.render = function(name , data) {
 	return (templates[name] || templates['berry_text']).render(data, templates);
 };
+
 Berry.renderers = {
 	base: function(owner) {
 		this.owner = owner;

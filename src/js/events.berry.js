@@ -68,15 +68,6 @@ Berry.prototype.off = function(token) {
 	}
 	return this;
 };
-Berry.prototype.processTopic = function(topic, args){
-	if (this.events[topic]) {
-		var t = this.events[topic],
-			len = t ? t.length : 0;
-		while (len--) {
-			t[len].func.call(this, args, topic, t[len].token);
-		}
-	}
-}
 Berry.prototype.trigger = function(topic, args) {
 	if (this.events[topic]) {
 		var t = this.events[topic],

@@ -1,4 +1,4 @@
-//		BerryJS 0.9.3.4
+//		BerryJS 0.9.3.3
 //		(c) 2011-2014 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -26,18 +26,11 @@ Berry = function(options, obj) {
 		if(typeof s === 'string'){
 			return this.find(s).getValue();
 		} else {
-
-			var working = processMultiples(parsefields(this.attributes));
-			if(this.options.flatten) {
-				var deflated = [];
-				this.each(flatten, [working, deflated, deflate]);
-				working = deflate(working);
-			}
-			return working;
+			return parsefields(this.attributes);
 		}
 	};
+
 	this.populate = function(attributes, fields) {
-		attributes = attributes || this.attributes
 		fields = fields || this.fields;
 		this.each(function(attributes) {
 			if(this.multiple) {
@@ -64,141 +57,6 @@ Berry = function(options, obj) {
 				this.toJSON();
 			}
 		}, [attributes], fields);
-	};
-
-	var processMultiples = function(attributes) {
-		var altered = $.extend(true, {}, attributes);
-		self.each(function(attributes, altered) {
-			if(this.multiple && this.toArray){
-				var root = attributes;
-				var temp = Berry.search(root, this.getPath());
-				if(this.isChild()){
-					root = Berry.search(altered, this.parent.getPath());
-				}
-				root[this.name] = {};
-				for(var i in this.children) {
-					root[this.name][i] = $.pluck(temp, i);
-				}
-			}
-		}, [attributes, altered]);
-		return altered;
-	};
-	var processMultiplesIN = function() {
-		self.each(function() {
-
-			var root = this.owner.attributes[this.name];
-			if(this.multiple && this.toArray) {
-
-				if(this.isChild()){
-					root = Berry.search(this.owner.attributes, this.getPath(true));
-				}
-				if(root) {
-					var temp = $.extend(true,{},root[this.name]);
-					root[this.name] = [];
-					var	source = this.owner.source;
-					if(this.isChild()){
-						source = Berry.search(this.owner.source, this.parent.getPath());
-					}else{
-					}
-					for(var k in source[this.name]) {
-						for(var i in source[this.name][k]) {
-
-							var newObj = $.extend({}, temp);
-							for(var name in temp) {
-								newObj[name] = source[this.name][name][i];
-							}
-							root[this.name].push(newObj);
-						}
-						break;
-					}
-				}
-			} else {
-				var sourceRef = this.owner.source[this.name];
-				if(sourceRef !== null){
-					if(typeof sourceRef === 'object'){
-						if($.isArray(sourceRef)){
-							root = $.extend([],sourceRef);
-						}else{
-							root = $.extend({},sourceRef);
-						}
-					}else{
-						root = sourceRef;
-					}
-				}
-			}
-		});
-		return self.attributes;
-	};
-//hydrate
-	var inflate = function(o, n) {
-		for(var i in n) {
-			if(typeof n[i] === 'object' && !$.isArray(n[i])) {
-				if(i in o) {
-					n[i] = inflate(o[i], n[i]);
-				} else {
-					n[i] = inflate(o, n[i]);
-				}
-			} else {
-				if(i in o) {
-					n[i] = o[i];
-				}
-			}
-		}
-		return n;
-	};
-	var flatten = function(working, deflated, deflate) {
-		if(this.isContainer && this.owner.options.flatten && (this.instance_id === null || this.instance_id === 0 )){
-			if( this.isChild() ){
-			var arr = this.parent.getPath().split('.');
-			var baz = [];
-			for (var i = arr.length - 1; i >= 0; i--) {
-				var key = arr[i];
-				if (-1 === arr.indexOf(key)) {
-					baz.push(key);
-				}
-			}
-			arr = baz;
-			var name = arr.pop();
-			var temp = arr.join('.');
-			if(arr.length ) {
-				Berry.search(working, temp)[name] = deflate(Berry.search(working, this.getPath()));
-			} else {
-				if(name) {
-					working[name] = deflate(Berry.search(working, this.getPath()));
-				}else{
-					$.extend(working, deflate(Berry.search(working, this.name)));
-					delete working[this.name];
-				}
-			}
-			deflated.push(this.name);
-			}else{
-				deflated.push(this.name);
-				$.extend(working, deflate(working[this.name]));
-				delete working[this.name];
-			}
-		}
-	};
-	var deflate = function(o) {
-		var j;
-		var n = {};
-		for(var i in o) {
-			if(typeof o[i] === 'object') {
-				if($.isArray(o[i])) {
-					n[i] = [];
-					for(j in o[i]) {
-						n[i].push(o[i][j]);
-					}
-				} else {
-					n[i] = {};
-					for(j in o[i]) {
-						n[i][j] = o[i][j];
-					}
-				}
-			} else {
-				n[i] = o[i];
-			}
-		}
-		return n;
 	};
 
 	this.each = function(toCall, args, fields) {
@@ -460,17 +318,7 @@ Berry = function(options, obj) {
 		if(this.options.attributes === 'hash'){this.options.attributes = window.location.hash.replace('#', '').split('&').map(function(val){return val.split('=');}).reduce(function ( total, current ) {total[ current[0] ] = current[1];return total;}, {});}
 		this.source = $.extend(true, {}, this.options.attributes);
 
-		if(this.options.flatten){
-			this.source = inflate($.extend(true, {}, this.source), $.extend(true, {}, processMultiples(this.attributes))) || {};
-		}
-		processMultiplesIN();
-
-		this.each(function(){
-			if(this.multiple){
-				this.createAttributes();
-			}
-		})
-		this.populate();
+		this.populate(this.attributes);
 	}
 
 	addActions(this.options.actions);
