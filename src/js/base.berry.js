@@ -1,32 +1,55 @@
 //		BerryJS 0.9.3.4
-//		(c) 2011-2014 Adam Smallcomb
+//		(c) 2011-2015 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
 //		https://github.com/Cloverstone/Berry
 
 Berry = function(options, obj) {
 
+
+	/**
+   * Destroys the global reference to this form instance, empties the fieldsets that 
+   * were used and calls the destroy function on each field.
+   */
 	this.destroy = function() {
 		this.trigger('destroy');
+
+		//Trigger the destroy methods for each field
 		this.each(function() {if(typeof this.destroy === 'function') {this.destroy();}});
+
+		//Clean up affected containers
 		this.$el.empty();
 		for(var i in this.fieldsets) {
 			$(this.fieldsets[i]).empty();
 		}
-		this.fields = {};
+		// this.fields = {};
+
+		//Dispatch the destroy method of the renderer we used
 		if(typeof this.renderer.destroy === 'function') {
 			this.renderer.destroy();
 		}
-		delete	Berry.instances[this.options.name];
+
+		//Remove the global reference to our form
+		delete Berry.instances[this.options.name];
+
 		this.trigger('destroyed');
 	};
 
+	/**
+   * Gets the values for all of the fields and structures them according to the 
+   * configuration of the option 'flatten' and 'toArray'. If field name is requested
+   * then jut the value of that field is returned.
+   *
+   * @param {string} s Name of the field to return the value of.
+   * @param {booleon} validate Indicates whether or not to validate
+   * the values befor returning the results.
+   */
 	this.toJSON = function(s, validate) {
-		if(validate){this.validate()};
+		if(validate) { this.validate(); }
+
 		if(typeof s === 'string'){
 			return this.find(s).getValue();
 		} else {
-
 			var working = processMultiples(parsefields(this.attributes));
 			if(this.options.flatten) {
 				var deflated = [];
@@ -36,6 +59,15 @@ Berry = function(options, obj) {
 			return working;
 		}
 	};
+
+	/**
+   * Gets the values for all of the fields and structures them according to the 
+   * configuration of the option 'flatten' and 'toArray'
+   *
+   * @param {object} attributes The values for the fields to be populated
+   * @param {?array} fields These are the fields that the attributes will be applied to
+   * the values befor returning the results.
+   */
 	this.populate = function(attributes, fields) {
 		attributes = attributes || this.attributes
 		fields = fields || this.fields;
@@ -66,6 +98,12 @@ Berry = function(options, obj) {
 		}, [attributes], fields);
 	};
 
+  /**
+   * Format the field values properly in th array
+   *
+   * @param {object} attributes The values for the fields to be populated
+   * @internal
+   */
 	var processMultiples = function(attributes) {
 		var altered = $.extend(true, {}, attributes);
 		self.each(function(attributes, altered) {
@@ -83,6 +121,13 @@ Berry = function(options, obj) {
 		}, [attributes, altered]);
 		return altered;
 	};
+
+
+  /**
+   * Normalize the field values properly in th array
+   *
+   * @internal
+   */
 	var processMultiplesIN = function() {
 		self.each(function() {
 
@@ -129,7 +174,14 @@ Berry = function(options, obj) {
 		});
 		return self.attributes;
 	};
-//hydrate
+
+  /**
+   * Push the values into the structure dictated by the input field object
+   *
+   * @param {} o 
+   * @param {} n 
+   * @internal
+   */
 	var inflate = function(o, n) {
 		for(var i in n) {
 			if(typeof n[i] === 'object' && !$.isArray(n[i])) {
@@ -201,6 +253,14 @@ Berry = function(options, obj) {
 		return n;
 	};
 
+
+	/**
+   * 
+   *
+   * @param {function} toCall 
+   * @param {?array} args 
+   * @param {?array} fields 
+   */
 	this.each = function(toCall, args, fields) {
 		fields = (fields || this.fields);
 		var c = true;
@@ -226,13 +286,19 @@ Berry = function(options, obj) {
 		}
 	};
 
-	this.find = function(s, f){
+	/**
+   * 
+   *
+   * @param {string} s  This is the path or name of the field you are looking for
+   * @param {?array} fields These are the fields to be searched
+   */
+	this.find = function(s, fields){
 		var items = [];
 		this.each(function(s, items) {
 			if(this.getPath() == s || this.name == s){
 				items.push(this);
 			}
-		}, [s, items], (f || this.fields));
+		}, [s, items], (fields || this.fields));
 		if(items.length == 0){
 			return false;
 		}
@@ -242,13 +308,19 @@ Berry = function(options, obj) {
 		return items[0];
 	};
 
-	this.findByID = function(id, f){
+	/**
+   * 
+   *
+   * @param {string} id This is the id you are looking for
+   * @param {?array} fields These are the fields to be searched
+   */
+	this.findByID = function(id, fields){
 		var items = [];
 		this.each(function(id, items) {
 				if(this.id == id){
 					items.push(this);
 				}
-		}, [id, items], (f || this.fields));
+		}, [id, items], (fields || this.fields));
 		return items[0];
 	};
 
@@ -257,7 +329,6 @@ Berry = function(options, obj) {
 			if(typeof fields[i] === 'string'){
 				fields[i] = { type : fields[i], label : i };
 			}
-			// debugger;
 			fields[i] = $.extend({}, self.options.default, fields[i]);
 			//if no name given and a name is needed, check for a given id else use the key
 			if(typeof fields[i].name === 'undefined' && !fields[i].isContainer){
@@ -284,7 +355,6 @@ Berry = function(options, obj) {
 		if(target[0] !== undefined){target = target[0];}
 		// if(field.type in Berry.types) {
 			var current = addField(field, parent, target, insert);
-			 // debugger;
 			if(typeof current.fieldset === 'undefined') { current.fieldset = target; }
 
 			if(insert == 'before') {
@@ -392,13 +462,13 @@ Berry = function(options, obj) {
 			if(!this.isContainer && this.isParsable) {
 				var temp;
 				if(this.isChild() || (this.instance_id !== null)){
-					temp = Berry.search(newAttributes,this.parent.getPath());
+					temp = Berry.search(newAttributes, this.parent.getPath());
 				}
 				if(typeof temp === 'undefined'){
 					temp = newAttributes;
 				}
 				if($.isArray(temp)){
-					if(!temp[this.parent.instance_id]){temp[this.parent.instance_id] = {}}
+					if(!temp[this.parent.instance_id]) { temp[this.parent.instance_id] = {}; }
 					temp[this.parent.instance_id][(this.attribute || this.name)] = this.getValue();
 				}else{
 					temp[(this.attribute || this.name)] = this.getValue();
