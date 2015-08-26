@@ -4,13 +4,11 @@
 //		For all details and documentation:
 //		https://github.com/Cloverstone/Berry
 
-Berry = function(options, obj) {
-
-
+Berry = function(options, target) {
 	/**
-   * Destroys the global reference to this form instance, empties the fieldsets that 
-   * were used and calls the destroy function on each field.
-   */
+	 * Destroys the global reference to this form instance, empties the fieldsets that 
+	 * were used and calls the destroy function on each field.
+	 */
 	this.destroy = function() {
 		this.trigger('destroy');
 
@@ -22,7 +20,6 @@ Berry = function(options, obj) {
 		for(var i in this.fieldsets) {
 			$(this.fieldsets[i]).empty();
 		}
-		// this.fields = {};
 
 		//Dispatch the destroy method of the renderer we used
 		if(typeof this.renderer.destroy === 'function') {
@@ -36,14 +33,14 @@ Berry = function(options, obj) {
 	};
 
 	/**
-   * Gets the values for all of the fields and structures them according to the 
-   * configuration of the option 'flatten' and 'toArray'. If field name is requested
-   * then jut the value of that field is returned.
-   *
-   * @param {string} s Name of the field to return the value of.
-   * @param {booleon} validate Indicates whether or not to validate
-   * the values befor returning the results.
-   */
+	 * Gets the values for all of the fields and structures them according to the 
+	 * configuration of the option 'flatten' and 'toArray'. If field name is requested
+	 * then jut the value of that field is returned.
+	 *
+	 * @param {string} s Name of the field to return the value of.
+	 * @param {booleon} validate Indicates whether or not to validate
+	 * the values befor returning the results.
+	 */
 	this.toJSON = function(s, validate) {
 		if(validate) { this.validate(); }
 
@@ -61,20 +58,22 @@ Berry = function(options, obj) {
 	};
 
 	/**
-   * Gets the values for all of the fields and structures them according to the 
-   * configuration of the option 'flatten' and 'toArray'
-   *
-   * @param {object} attributes The values for the fields to be populated
-   * @param {?array} fields These are the fields that the attributes will be applied to
-   * the values befor returning the results.
-   */
+	 * Gets the values for all of the fields and structures them according to the 
+	 * configuration of the option 'flatten' and 'toArray'
+	 *
+	 * @param {object} attributes The values for the fields to be populated
+	 * @param {?array} fields These are the fields that the attributes will be applied to
+	 * the values befor returning the results.
+	 */
 	this.populate = function(attributes, fields) {
 		attributes = attributes || this.attributes
 		fields = fields || this.fields;
+
+		//If multiple instances should exist then build out the tree
 		this.each(function(attributes) {
 			if(this.multiple) {
 				var temp = {};
-					temp = Berry.search(attributes, this.getPath());
+				temp = Berry.search(attributes, this.getPath());
 				if(temp) {
 					var skip = true;
 					for(var i in temp) {
@@ -89,21 +88,21 @@ Berry = function(options, obj) {
 		self.each(function(attributes) {
 			if(!this.isContainer) {
 				var temp = Berry.search(attributes, this.getPath());
-				var toset = temp;
-				if(typeof toset === 'undefined') toset = '';
-				this.setValue(toset);
-				this.trigger('change');
-				this.toJSON();
+				if(typeof temp !== 'undefined' && typeof temp !== 'object') { 
+					this.setValue(temp);
+					this.trigger('change');
+					this.toJSON();
+				}
 			}
 		}, [attributes], fields);
 	};
 
-  /**
-   * Format the field values properly in th array
-   *
-   * @param {object} attributes The values for the fields to be populated
-   * @internal
-   */
+	/**
+	 * Format the field values properly in th array
+	 *
+	 * @param {object} attributes The values for the fields to be populated
+	 * @internal
+	 */
 	var processMultiples = function(attributes) {
 		var altered = $.extend(true, {}, attributes);
 		self.each(function(attributes, altered) {
@@ -123,11 +122,11 @@ Berry = function(options, obj) {
 	};
 
 
-  /**
-   * Normalize the field values properly in th array
-   *
-   * @internal
-   */
+	/**
+	 * Normalize the field values properly in th array
+	 *
+	 * @internal
+	 */
 	var processMultiplesIN = function() {
 		self.each(function() {
 
@@ -175,13 +174,13 @@ Berry = function(options, obj) {
 		return self.attributes;
 	};
 
-  /**
-   * Push the values into the structure dictated by the input field object
-   *
-   * @param {} o 
-   * @param {} n 
-   * @internal
-   */
+	/**
+	 * Push the values into the structure dictated by the input field object
+	 *
+	 * @param {} o 
+	 * @param {} n 
+	 * @internal
+	 */
 	var inflate = function(o, n) {
 		for(var i in n) {
 			if(typeof n[i] === 'object' && !$.isArray(n[i])) {
@@ -255,12 +254,12 @@ Berry = function(options, obj) {
 
 
 	/**
-   * 
-   *
-   * @param {function} toCall 
-   * @param {?array} args 
-   * @param {?array} fields 
-   */
+	 * 
+	 *
+	 * @param {function} toCall 
+	 * @param {?array} args 
+	 * @param {?array} fields 
+	 */
 	this.each = function(toCall, args, fields) {
 		fields = (fields || this.fields);
 		var c = true;
@@ -287,11 +286,11 @@ Berry = function(options, obj) {
 	};
 
 	/**
-   * 
-   *
-   * @param {string} s  This is the path or name of the field you are looking for
-   * @param {?array} fields These are the fields to be searched
-   */
+	 * 
+	 *
+	 * @param {string} s  This is the path or name of the field you are looking for
+	 * @param {?array} fields These are the fields to be searched
+	 */
 	this.find = function(s, fields){
 		var items = [];
 		this.each(function(s, items) {
@@ -309,11 +308,11 @@ Berry = function(options, obj) {
 	};
 
 	/**
-   * 
-   *
-   * @param {string} id This is the id you are looking for
-   * @param {?array} fields These are the fields to be searched
-   */
+	 * 
+	 *
+	 * @param {string} id This is the id you are looking for
+	 * @param {?array} fields These are the fields to be searched
+	 */
 	this.findByID = function(id, fields){
 		var items = [];
 		this.each(function(id, items) {
@@ -324,45 +323,78 @@ Berry = function(options, obj) {
 		return items[0];
 	};
 
+	/**
+	 * Iterates over an array of fields and normalizes the field before passing it on to be 
+	 * processed
+	 *
+	 * @param {?array} fields These are the fields we are going to process
+	 * @param {element} target Target is the default element where new fields should be added
+	 * @param {Berry.field} parent This is the parent field
+	 */
 	this.processfields = function(fields, target, parent) {
 		for(var i in fields) {
-			if(typeof fields[i] === 'string'){
-				fields[i] = { type : fields[i], label : i };
-			}
-			fields[i] = $.extend({}, self.options.default, fields[i]);
-			//if no name given and a name is needed, check for a given id else use the key
-			if(typeof fields[i].name === 'undefined' && !fields[i].isContainer){
-				if(typeof fields[i].id !== 'undefined') {
-					fields[i].name = fields[i].id;
-				} else {
-					fields[i].name = i.toLowerCase().split(' ').join('_');
-				}
-			}
-			if(typeof fields[i].label === 'undefined' && fields[i].label !== false) {
-				fields[i].label = i;
-			}
-			if(fields[i].required){
-				$.extend(fields[i],{validate: {required: true}});
-			}
-			if(typeof fields[i].validate !== 'undefined'){
-				fields[i].required = fields[i].validate.required;
-			}
-			this.processField(fields[i], target, parent);
+			this.processField(normalizeItem(fields[i], i), target, parent);
 		}
 	};
-	this.processField = function(item, target, parent, insert) {
-		field = $.extend({}, self.options.default, item);
-		if(target[0] !== undefined){target = target[0];}
-		// if(field.type in Berry.types) {
-			var current = addField(field, parent, target, insert);
-			if(typeof current.fieldset === 'undefined') { current.fieldset = target; }
 
-			if(insert == 'before') {
-				$(target).before(current.render());
-			} else if(insert == 'after') {
-				$(target).after(current.render());
+
+	var normalizeItem = function(item, i){
+		if(typeof item === 'string'){
+			item = { type : item, label : i };
+		}
+		item = $.extend({}, self.options.default, item);
+		//if no name given and a name is needed, check for a given id else use the key
+		if(typeof item.name === 'undefined' && !item.isContainer){
+			if(typeof item.id !== 'undefined') {
+				item.name = item.id;
 			} else {
-				if(current.item.type !== 'fieldset' ||  current.isChild() || !this.sectionsEnabled){
+				item.name = i.toLowerCase().split(' ').join('_');
+			}
+		}
+		if(typeof item.label === 'undefined' && item.label !== false) {
+			item.label = i;
+		}
+		if(item.required){
+			$.extend(item,{validate: {required: true}});
+		}
+		if(typeof item.validate !== 'undefined'){
+			item.required = item.validate.required;
+		}
+
+		if(typeof Berry.types[item.type] === 'undefined') {
+			if(typeof item.choices === 'undefined' && typeof item.options === 'undefined'){
+				item.type = 'text';
+			}else{
+				if(item.options.length <= 3){
+					item.type = 'radio';
+				}else{
+					item.type = 'select';
+				}
+			}
+		}
+		return $.extend({}, self.options.default, item);
+	};
+
+	/**
+	 * 
+	 *
+	 * @param {object} item This is the field descriptor to be processed
+	 * @param {element} target Target is the default element where new fields should be added
+	 * @param {Berry.field} parent This is the parent field
+	 * @param {string} insert Location relative to target to place the new field
+	 */
+	this.processField = function(item, target, parent, insert) {
+		// field = $.extend({}, self.options.default, item);
+		if(target[0] !== undefined){target = target[0];}
+		var current = addField(item, parent, target, insert);
+		if(typeof current.fieldset === 'undefined') { current.fieldset = target; }
+
+		if(insert == 'before') {
+			$(target).before(current.render());
+		} else if(insert == 'after') {
+			$(target).after(current.render());
+		} else {
+			if(current.item.type !== 'fieldset' ||  current.isChild() || !this.sectionsEnabled) {
 				var currentRow;
 				if(typeof $(current.fieldset).children('.row').last().attr('id') !== 'undefined') {
 					currentRow = rows[$(current.fieldset).children('.row').last().attr('id')];		
@@ -375,34 +407,19 @@ Berry = function(options, obj) {
 					rows[temp] = currentRow;
 					$(current.fieldset).append(currentRow.ref);
 				}
-				currentRow.used += parseInt(current.columns,10);
-				currentRow.used += parseInt(current.offset,10);
+				currentRow.used += parseInt(current.columns, 10);
+				currentRow.used += parseInt(current.offset, 10);
 				currentRow.ref.append( $('<div/>').addClass('col-md-' + current.columns).addClass('col-md-offset-' + current.offset).append(current.render()) );
-				}else{
-					$(current.fieldset).append(current.render() );
-				}
-			}
-			current.initialize();
-			return current;
-		// }
-		// return false;
-	};
-	var addField = function(item , parent, target, insert) {
-
-
-		var type = Berry.types[item.type];
-		if(!type) {
-			if(typeof item.choices === 'undefined' && typeof item.options === 'undefined'){
-				type = Berry.types['text'];
 			}else{
-				 if(Berry.processOpts.call(this, item).options.length < 3){
-					type = Berry.types['radio'];
-				 }else{
-					type = Berry.types['select'];
-				 }
+				$(current.fieldset).append(current.render() );
 			}
 		}
-		var current = new type(item, self);
+		current.initialize();
+		return current;
+	};
+
+	var addField = function(item , parent, target, insert) {
+		var current = new Berry.types[item.type](item, self);
 		current.parent = parent;
 
 		var root = self.fields;
@@ -496,37 +513,46 @@ Berry = function(options, obj) {
 	};
 
 	var self = this;
-	this.$el = obj;
+	this.$el = target;
 
-
-	this.options = $.extend(true, {name: Berry.getUID()}, Berry.options, options);
-	this.events = $.extend({}, Berry.prototype.events);
-
-	this.fieldsets = [];
-	var rows = {};
+	// Track sections for tabs, pages, wizard etc.
 	this.section_count = 0;
 	this.sectionsEnabled = false;
 	this.sections = [];
 	this.sectionList = [];
-	//this.changed = false;
 
-	this.fields = {};
+	// Initialize objects/arrays
+	var rows = {};
+	this.fieldsets = [];
+	this.fields = [];
 	this.source = {};
 	this.attributes = {};
+	this.options = $.extend({name: Berry.getUID()}, Berry.options, options);
+	this.events = $.extend({}, Berry.prototype.events);
+
 	this.trigger('initialize');
 
-	if(typeof this.$el === 'undefined') { obj = $('<div/>'); }
+	// Give renderers and other plugins a chance to default this
+	if(typeof this.$el === 'undefined') { this.$el = $('<div/>'); }
+
+	// Now the we have an element to work with instantiate the renderer
 	this.renderer = new Berry.renderers[this.options.renderer](this);
+
+	// Render and get the target returned from the renderer
 	this.target = this.renderer.render();
 
+	// Create the legend if not disabled
 	if(this.options.legend && this.options.legendTarget){
 		this.options.legendTarget.append(this.options.legend);
 	}
 
+	// Process the fields we were given adn apply them to the target
+	// we got from the renderer
 	this.processfields(this.options.fields, this.target, null);
 
-	if(typeof this.options.attributes !== 'undefined'){
 
+	// Process any attributes that were passed in to normalize them to the internal structure
+	if(typeof this.options.attributes !== 'undefined'){
 		if(this.options.attributes === 'hash'){this.options.attributes = window.location.hash.replace('#', '').split('&').map(function(val){return val.split('=');}).reduce(function ( total, current ) {total[ current[0] ] = current[1];return total;}, {});}
 		this.source = $.extend(true, {}, this.options.attributes);
 
@@ -534,19 +560,23 @@ Berry = function(options, obj) {
 			this.source = inflate($.extend(true, {}, this.source), $.extend(true, {}, processMultiples(this.attributes))) || {};
 		}
 		processMultiplesIN();
-
-		this.each(function(){
-			if(this.multiple){
+		this.each(function() {
+			if(this.multiple) {
 				this.createAttributes();
 			}
-		})
-		this.populate();
+		});
 	}
 
+	// Fill the form with any values we have
+	this.populate(this.source);
+
 	addActions(this.options.actions);
+
+	// Allow the renderer to initialize
 	if(typeof this.renderer.initialize === 'function') {
 		this.renderer.initialize();
 	}
+
 	if(this.options.autoFocus){
 		this.each(function(){
 			this.focus();
@@ -567,32 +597,35 @@ Berry = function(options, obj) {
 
 		this.on('dropped', function(info){
 			var temp = self.findByID(info.id);
-			Berry.search(self.attributes, info.path).splice(temp.instance_id,1);
+			Berry.search(self.attributes, info.path).splice(temp.instance_id, 1);
 			if(temp.isChild()){
-				temp.parent.children[temp.name].instances.splice(temp.instance_id,1);
+				temp.parent.children[temp.name].instances.splice(temp.instance_id, 1);
 			}else{
-				self.fields[temp.name].instances.splice(temp.instance_id,1);
+				self.fields[temp.name].instances.splice(temp.instance_id, 1);
 			}
 		});
 
 		this.trigger('initialized');
 };
+
+
 Berries = Berry.instances = {};
 Berry.types = {};
 Berry.collections = {};
 Berry.options = {
 	errorClass: 'has-error',
 	errorTextClass: 'font-xs.text-danger',
-	options: {inline: false},
+	inline: false,
 	modifiers: '',
 	renderer: 'base',
 	flatten: true,
 	columns: 12,
 	autoDestroy: false,
 	autoFocus: true,
-	// default: {type: 'text'},
 	actions: ['cancel', 'save']
 };
+
+
 
 Berry.register = function(elem) {
 	if(elem.extends && typeof Berry.types[elem.extends] !== 'undefined'){
@@ -602,6 +635,13 @@ Berry.register = function(elem) {
 	}
 };
 
+/**
+ * F
+ *
+ * @param {array} o The array of fields to be searched
+ * @param {string} s The path 
+ * @internal
+ */
 Berry.search = function(o, s) {
 		s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
 		// s = s.replace(/^\./, '');           // strip a leading dot
@@ -616,6 +656,7 @@ Berry.search = function(o, s) {
 		}
 		return o;
 	};
+
 $((function($){
 	$.fn.berry = function(options) {
 		return new Berry(options, this);

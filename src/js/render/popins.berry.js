@@ -111,7 +111,7 @@ Berry.prototype.events.initialize.push({
 	func: function(){
 		if(this.options.renderer == 'popins'){
 			this.options.default = {hideLabel: true};
-			this.options.options.inline = true;
+			this.options.inline = true;
 			// default: {hideLabel: true}
 		$.extend(this.options.default,{hideLabel: true});
 			// if(this.save){

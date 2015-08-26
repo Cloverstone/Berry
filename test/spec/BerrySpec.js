@@ -25,6 +25,10 @@ describe('Berry Initialization', function () {
 	it('should create actions correctly', function () {
 		expect($('[data-id=berry-submit]')[0]).toBeDefined();
 		expect($('[data-id=berry-close]')[0]).toBeDefined();
+		myBerry.destroy();
+		myBerry = new Berry({actions: ['cancel'], fields:{test:{value: 'hello'}}}, $('#berry')).on('change', triggerOnChange);
+		expect($('[data-id=berry-submit]')[0]).not.toBeDefined();
+		expect($('[data-id=berry-close]')[0]).toBeDefined();
 	});
 
 	it('should create field reference', function () {

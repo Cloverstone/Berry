@@ -7,7 +7,6 @@ Berry.prototype.events.initialize.push({
 					// this.options.model.save(this.toJSON() , {wait: true, patch: true, success: $.proxy(function(){
 					// 	this.trigger('saved');
 					// }, this)});
-// debugger;
 					this.trigger('saveing');
 					this.options.model.set(this.toJSON());
 					this.trigger('saved');
@@ -27,11 +26,9 @@ Berry.prototype.events.initialize.push({
 					if(typeof keys[key] === 'string'){
 						if(typeof list[keys[key]] !== 'undefined'){
 							returnArray[keys[key]] = list[keys[key]];
-							// returnArray.push(list[keys[key]]);
 						}
 					}else{
 						returnArray["key_"+key] = keys[key];
-	//					returnArray.push(keys[key]);
 					}
 				}
 				this.options.fields = returnArray;
@@ -41,7 +38,6 @@ Berry.prototype.events.initialize.push({
 				this.options.attributes = this.options.model.toJSON();
 
 				this.options.model.on('change', function(){
-					// debugger;
 					for(var i in this.options.model.changed){
 						var temp = this.find(i);
 						if(temp && !$.isArray(temp)) {

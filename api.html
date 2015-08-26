@@ -938,7 +938,15 @@ Bind a callback function to an object. The callback will be invoked whenever the
 					<br>
 					<h4>Backbone</h4>					
 					<p>
-						This plugin will automatically create a modal popup of a form if the target is not selected or the target element is not found. In practice this would look like this: 
+						Using this plugin will allow you to bind your model to the form, the fields can be defined on the model as a 'schema' and the model will be updated using model.set on the 'save' event of the form. If you don't want to use all of the fields defined on in the schema just pass an arr with the names of the fields you do want to use, you can also use the array to change the order of the fields as this is taken as priority over the definition.
+
+						The schema should be defined as an object of the form 
+						<pre><code class="prettyprint">bbModel = new Backbone.model.extend({
+  "schema": {
+    "First Name": {}, //name and label are assumed to be 'first_name' and 'First Name' respectively
+    "Home Address": {name: 'address', type: 'address'}
+  }
+}</pre>
 						<pre><code class="prettyprint">var myForm = $('.myform').berry({model: new bbModel(), fields: ['first_name']});</code></pre>
 						To use this plugin the plugin just needs to be included and a model passed in to it. A reference to the model is also available at <code>myForm.options.model</code>, this is useful from within an event callback function. Two new events are also used with this plugin: 
 					<ul>

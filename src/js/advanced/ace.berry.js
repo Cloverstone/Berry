@@ -11,7 +11,6 @@ Berry.register({
 		}
 		this.$el.on('input', $.proxy(function(){this.trigger('change');},this));
 
-
 		this.editor = ace.edit(this.name+"container");
     this.editor.setTheme(this.item.them || "ace/theme/chrome");
     this.editor.getSession().setMode(this.item.mode || "ace/mode/handlebars");
