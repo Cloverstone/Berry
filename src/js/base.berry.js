@@ -121,7 +121,6 @@ Berry = function(options, target) {
 		return altered;
 	};
 
-
 	/**
 	 * Normalize the field values properly in th array
 	 *
@@ -142,11 +141,10 @@ Berry = function(options, target) {
 					var	source = this.owner.source;
 					if(this.isChild()){
 						source = Berry.search(this.owner.source, this.parent.getPath());
-					}else{
 					}
+
 					for(var k in source[this.name]) {
 						for(var i in source[this.name][k]) {
-
 							var newObj = $.extend({}, temp);
 							for(var name in temp) {
 								newObj[name] = source[this.name][name][i];
@@ -337,7 +335,13 @@ Berry = function(options, target) {
 		}
 	};
 
-
+	/**
+	 * Takes the item descriptor passed in and makes sure the required attributes
+	 * are set and if they are not tries to apply sensible defaults
+	 *
+	 * @param {object} item This is the raw field descriptor to be normalized
+	 * @param {string or int} i The key index of the item
+	 */
 	var normalizeItem = function(item, i){
 		if(typeof item === 'string'){
 			item = { type : item, label : i };
@@ -372,7 +376,7 @@ Berry = function(options, target) {
 				}
 			}
 		}
-		return $.extend({}, self.options.default, item);
+		return item;
 	};
 
 	/**
@@ -384,7 +388,6 @@ Berry = function(options, target) {
 	 * @param {string} insert Location relative to target to place the new field
 	 */
 	this.processField = function(item, target, parent, insert) {
-		// field = $.extend({}, self.options.default, item);
 		if(target[0] !== undefined){target = target[0];}
 		var current = addField(item, parent, target, insert);
 		if(typeof current.fieldset === 'undefined') { current.fieldset = target; }
@@ -552,7 +555,7 @@ Berry = function(options, target) {
 
 
 	// Process any attributes that were passed in to normalize them to the internal structure
-	if(typeof this.options.attributes !== 'undefined'){
+	if(typeof this.options.attributes !== 'undefined') {
 		if(this.options.attributes === 'hash'){this.options.attributes = window.location.hash.replace('#', '').split('&').map(function(val){return val.split('=');}).reduce(function ( total, current ) {total[ current[0] ] = current[1];return total;}, {});}
 		this.source = $.extend(true, {}, this.options.attributes);
 
@@ -583,6 +586,8 @@ Berry = function(options, target) {
 			return false;
 		});
 	}
+
+	// may not be needed
 	this.each(function(){
 		this.trigger('change');
 	})

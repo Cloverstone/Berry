@@ -14,7 +14,7 @@ Berry.prototype.events.initialize.push({
 	token: Berry.getUID(),
 	func: function(){
 		if(this.options.renderer == 'inline'){
-			this.options.options.inline = true;
+			this.options.inline = true;
 			this.options.autoFocus = false;
 			this.options.default = {hideLabel: true,};
 			this.on('initializeField', function(opts){

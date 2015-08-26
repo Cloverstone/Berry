@@ -2,7 +2,7 @@
 /*             Events            */
 /*********************************/
 Berry.prototype.events = {initialize:[]};
-	//pub/sub service
+
 Berry.prototype.addSub = function(topic, func){
 	if (!this.events[topic]) {
 		this.events[topic] = [];
@@ -14,15 +14,23 @@ Berry.prototype.addSub = function(topic, func){
 	});
 	return token;
 };
-Berry.prototype.on = function(topic, func, execute) {
+Berry.prototype.on = function(topic, func, context, execute) {
 	var eventSplitter = /\s+/;
 	if(eventSplitter.test(topic)){
 		var list = topic.split(eventSplitter);
 		for (var t in list) {
-			this.addSub(list[t], func);
+			if(typeof context !== 'undefined'){
+				this.addSub(list[t], $.proxy(func, context));
+			}else{
+				this.addSub(list[t], func);
+			}
 		}
 	}else{
-		this.lastToken = this.addSub(topic, func);
+		if(typeof context !== 'undefined'){
+			this.lastToken = this.addSub(topic, $.proxy(func, context));
+		}else{
+			this.lastToken = this.addSub(topic, func);
+		}
 	}
 	if(execute){
 		func.call(this, null, topic);
@@ -36,7 +44,7 @@ Berry.prototype.delay = function(topic, func, execute, delay) {
 		clearTimeout(this.events[token].timer);
 		this.events[token].timer = setTimeout($.proxy(function(){
 			this.events[token].func.call(this);
-		},this) , (delay || 250));
+		}, this) , (delay || 250));
 	};
 
 	var eventSplitter = /\s+/;
