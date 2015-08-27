@@ -17,14 +17,10 @@ Berry = function(options, target) {
 
 		//Clean up affected containers
 		this.$el.empty();
-		for(var i in this.fieldsets) {
-			$(this.fieldsets[i]).empty();
-		}
+		for(var i = this.fieldsets.length-1;i >=0; i--) { $(this.fieldsets[i]).empty(); }
 
 		//Dispatch the destroy method of the renderer we used
-		if(typeof this.renderer.destroy === 'function') {
-			this.renderer.destroy();
-		}
+		if(typeof this.renderer.destroy === 'function') { this.renderer.destroy(); }
 
 		//Remove the global reference to our form
 		delete Berry.instances[this.options.name];
@@ -42,8 +38,10 @@ Berry = function(options, target) {
 	 * the values befor returning the results.
 	 */
 	this.toJSON = function(s, validate) {
+		// validate if desired this.valid will hold the result
 		if(validate) { this.validate(); }
 
+		// if a search string return the valu of the field with that name
 		if(typeof s === 'string'){
 			return this.find(s).getValue();
 		} else {
@@ -630,8 +628,6 @@ Berry.options = {
 	actions: ['cancel', 'save']
 };
 
-
-
 Berry.register = function(elem) {
 	if(elem.extends && typeof Berry.types[elem.extends] !== 'undefined'){
 		Berry.types[elem.type] = Berry.types[elem.extends].extend(elem);
@@ -641,7 +637,7 @@ Berry.register = function(elem) {
 };
 
 /**
- * F
+ * 
  *
  * @param {array} o The array of fields to be searched
  * @param {string} s The path 
@@ -661,6 +657,7 @@ Berry.search = function(o, s) {
 		}
 		return o;
 	};
+
 
 $((function($){
 	$.fn.berry = function(options) {
