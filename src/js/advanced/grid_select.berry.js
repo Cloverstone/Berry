@@ -1,14 +1,14 @@
-(function(f,$){
-	f.register({ type: 'grid_select',
+(function(b, $){
+	b.register({ type: 'grid_select',
 		create: function() {
 			//return f.render('berry_grid_select', f.processOpts(this.item));
-			this.options = f.processOpts.call(this.owner, this.item, this).options;
+			this.options = b.processOpts.call(this.owner, this.item, this).options;
 			if(this.reference){
 				for(var i in this.options){
 					this.options[i].image = this.options[i][this.reference];
 				}
 			}
-			return f.render('berry_' + (this.elType || this.type), this);
+			return b.render('berry_' + (this.elType || this.type), this);
 		},
 		setup: function() {
 			this.$el = this.self.find('.list');

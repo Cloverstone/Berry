@@ -8,9 +8,7 @@ Berry.prototype.validate = function(){
 Berry.prototype.validateItem = function(){
 	this.owner.performValidate(this);
 	this.owner.errors[this.item.name] = this.errors;
-	if(this.owner.valid !== false){
-		this.owner.valid = this.valid;
-	}
+	this.owner.valid = this.valid && this.owner.valid;
 };
 Berry.prototype.performValidate = function(processee,processValue){
 	var item = processee.item;

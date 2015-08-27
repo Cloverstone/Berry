@@ -1,9 +1,9 @@
-(function(f,$){
-	f.register({ type: 'checkbox',
+(function(b, $){
+	b.register({ type: 'checkbox',
 		defaults: {container: 'span'},
 		create: function() {
 			this.checkStatus(this.value);
-			return f.render('berry_checkbox', this);
+			return b.render('berry_checkbox', this);
 		},
 		checkStatus: function(value){
 			if(value === true || value === "true" || value === 1 || value === "1" || value === "on" || value == this.truestate){
@@ -15,7 +15,6 @@
 		setup: function() {
 			this.$el = this.self.find('[type=checkbox]');
 			if(this.onchange !== undefined) {
-				//this.$el.change(this.onchange);
 				this.on('change', this.onchange);
 			}
 			this.$el.change($.proxy(function(){this.trigger('change');},this));

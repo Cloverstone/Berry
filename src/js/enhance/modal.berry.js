@@ -24,7 +24,6 @@ Berry.prototype.events.initialize.push({
 			},this));
 
 			this.on('saved', $.proxy(function(){
-				//alert('hide modal');
 				this.ref.modal('hide');
 				this.closeAction = 'save';
 			},this));

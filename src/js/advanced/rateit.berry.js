@@ -1,7 +1,7 @@
-(function(f,$){
-	f.register({ type: 'rateit',
+(function(b, $){
+	b.register({ type: 'rateit',
 		create: function() {
-			return f.render('berry_rateit', this);
+			return b.render('berry_rateit', this);
 		},
 		setup: function() {
 			this.render();

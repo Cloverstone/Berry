@@ -1,4 +1,4 @@
-(function(b,$){
+(function(b, $){
 	b.register({type: 'text' });
 	b.register({type: 'raw' });
 	b.register({type: 'password' });
@@ -12,8 +12,8 @@
 
 	b.register({ type: 'url',
 		defaults: {
-		post: '<i class="fa fa-link"></i>',
-		validate: {'valid_url': true }
+			post: '<i class="fa fa-link"></i>',
+			validate: {'valid_url': true }
 		}
 	});
 
