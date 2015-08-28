@@ -7,7 +7,7 @@ Berry.field = function(item, owner) {
 	this.owner.trigger('initializeField', {field: this});
 
 	$.extend(this, this.owner.options.options, this.item);
-	if(item.value !== 0){
+	if(this.item.value !== 0){
 		if(typeof item.value === 'function') {
 			this.valueFunc = item.value;
 			this.liveValue = function() {
@@ -34,11 +34,6 @@ Berry.field = function(item, owner) {
 			this.owner.on('change', $.proxy(function() {
 				this.set(this.liveValue());
 			}, this));
-
-			// this.getValue = function() { return this.value; }
-			// this.set = function(value) {}
-			// this.setValue = function(value) {}
-			// this.set(this.value);
 		} else {
 			this.value = (item.value || this.value || item.default || '');
 		}
@@ -92,7 +87,7 @@ $.extend(Berry.field.prototype, {
 		var path = '';
 		if(this.parent !== null && this.parent !== undefined) {
 			path = this.parent.getPath(force) + '.';
-			if(this.parent.multiple || force){
+			if(!this.parent.toArray && (this.parent.multiple || force)){
 				path += this.parent.instance_id + '.';
 			}
 		}
@@ -151,12 +146,12 @@ $.extend(Berry.field.prototype, {
 	},
 	createAttributes: function() {
 		var o = this.owner.attributes;
-
+		if(this.isChild()) {
+			o = Berry.search(o, this.parent.getPath());
+		}
 		if(this.isContainer) {
 			if(this.multiple) {
-				if(this.isChild()) {
-					o = Berry.search(o, this.parent.getPath());
-				}
+
 				o[this.name] = (o[this.name] || []);
 			}else{
 				o[this.name] = {};
@@ -237,8 +232,7 @@ $.extend(Berry.field.prototype, {
 			);
 		}
 
-		// this.owner.trigger('initializedField', {field: this});
-
+		this.owner.trigger('initializedField', {field: this});
 	},
 	on: function(topic, func) {
 		this.owner.on(topic + ':' + this.name, func);

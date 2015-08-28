@@ -1,4 +1,4 @@
-//		BerryJS 0.9.3.4
+//		BerryJS 0.9.3.5
 //		(c) 2011-2015 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -31,7 +31,7 @@ Berry = function(options, target) {
 	/**
 	 * Gets the values for all of the fields and structures them according to the 
 	 * configuration of the option 'flatten' and 'toArray'. If field name is requested
-	 * then jut the value of that field is returned.
+	 * then just the value of that field is returned.
 	 *
 	 * @param {string} s Name of the field to return the value of.
 	 * @param {booleon} validate Indicates whether or not to validate
@@ -107,15 +107,18 @@ Berry = function(options, target) {
 			if(this.multiple && this.toArray){
 				var root = attributes;
 				var temp = Berry.search(root, this.getPath());
-				if(this.isChild()){
+
+				if(this.isChild()) {
 					root = Berry.search(altered, this.parent.getPath());
 				}
 				root[this.name] = {};
+
 				for(var i in this.children) {
 					root[this.name][i] = $.pluck(temp, i);
 				}
 			}
 		}, [attributes, altered]);
+
 		return altered;
 	};
 
@@ -125,48 +128,49 @@ Berry = function(options, target) {
 	 * @internal
 	 */
 	var processMultiplesIN = function() {
-		self.each(function() {
+		// self.each(function() {
+		// 	//var root = this.owner.attributes[this.name];
+		// 	var root = Berry.search(this.owner.attributes, this.getPath(true))
+		// 	if(this.multiple && this.toArray) {
 
-			var root = this.owner.attributes[this.name];
-			if(this.multiple && this.toArray) {
+		// 		if(this.isChild()){
+		// 			root = Berry.search(this.owner.attributes, this.getPath(true));
+		// 		}
+		// 		if(root) {
+		// 			var temp = $.extend(true,{},root[this.name]);
+		// 			root[this.name] = [];
+		// 			var	source = this.owner.source;
+		// 			if(this.isChild()){
+		// 				source = Berry.search(source, this.parent.getPath());
+		// 			}
 
-				if(this.isChild()){
-					root = Berry.search(this.owner.attributes, this.getPath(true));
-				}
-				if(root) {
-					var temp = $.extend(true,{},root[this.name]);
-					root[this.name] = [];
-					var	source = this.owner.source;
-					if(this.isChild()){
-						source = Berry.search(this.owner.source, this.parent.getPath());
-					}
-
-					for(var k in source[this.name]) {
-						for(var i in source[this.name][k]) {
-							var newObj = $.extend({}, temp);
-							for(var name in temp) {
-								newObj[name] = source[this.name][name][i];
-							}
-							root[this.name].push(newObj);
-						}
-						break;
-					}
-				}
-			} else {
-				var sourceRef = this.owner.source[this.name];
-				if(sourceRef !== null){
-					if(typeof sourceRef === 'object'){
-						if($.isArray(sourceRef)){
-							root = $.extend([],sourceRef);
-						}else{
-							root = $.extend({},sourceRef);
-						}
-					}else{
-						root = sourceRef;
-					}
-				}
-			}
-		});
+		// 			for(var k in source[this.name]) {
+		// 				for(var i in source[this.name][k]) {
+		// 					var newObj = $.extend({}, temp);
+		// 					for(var name in temp) {
+		// 						newObj[name] = source[this.name][name][i];
+		// 					}
+		// 					root[this.name].push(newObj);
+		// 				}
+		// 				break;
+		// 			}
+		// 		}
+		// 	} else {
+		// 		//var sourceRef = this.owner.source[this.name];
+		// 		var sourceRef = Berry.search(this.owner.source, this.getPath())
+		// 		if(sourceRef !== null){
+		// 			if(typeof sourceRef === 'object'){
+		// 				if($.isArray(sourceRef)){
+		// 					root = $.extend([],sourceRef);
+		// 				}else{
+		// 					root = $.extend({},sourceRef);
+		// 				}
+		// 			}else{
+		// 				root = sourceRef;
+		// 			}
+		// 		}
+		// 	}
+		// });
 		return self.attributes;
 	};
 
@@ -193,6 +197,7 @@ Berry = function(options, target) {
 		}
 		return n;
 	};
+
 	var flatten = function(working, deflated, deflate) {
 		if(this.isContainer && this.owner.options.flatten && (this.instance_id === null || this.instance_id === 0 )){
 			if( this.isChild() ){
@@ -225,6 +230,7 @@ Berry = function(options, target) {
 			}
 		}
 	};
+
 	var deflate = function(o) {
 		var j;
 		var n = {};
@@ -474,8 +480,8 @@ Berry = function(options, target) {
 	};
 
 	var parsefields = function(attributes) {
-		// var newAttributes = $.extend(true, {}, attributes);
-		var newAttributes = JSON.parse(JSON.stringify(attributes))
+		var newAttributes = $.extend(true, {}, attributes);
+		// var newAttributes = JSON.parse(JSON.stringify(attributes))
 		self.each(function(newAttributes) {
 			if(!this.isContainer && this.isParsable) {
 				var temp;
@@ -560,12 +566,14 @@ Berry = function(options, target) {
 		if(this.options.flatten){
 			this.source = inflate($.extend(true, {}, this.source), $.extend(true, {}, processMultiples(this.attributes))) || {};
 		}
+
 		processMultiplesIN();
+
 		this.each(function() {
 			if(this.multiple) {
 				this.createAttributes();
 			}
-		});
+		})
 	}
 
 	// Fill the form with any values we have

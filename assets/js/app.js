@@ -110,7 +110,7 @@ editor.setValue(JSON.stringify({"fields": [
     "name": "title",
   },
 	{"name": "fs_c", "type": "fieldset", "legend": "Favorite Candies", "fields": {
-		"fs": {"label":false, "type": "fieldset","max":2, "multiple": {"duplicate": true}, "toArray": true, "fields": {
+		"fs": {"label":false, "type": "fieldset", "multiple": {"duplicate": true, "max": 2,}, "toArray": true, "fields": {
 			"Candy Type": {}
 		}
   }}}

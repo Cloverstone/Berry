@@ -2,9 +2,10 @@ Berry.prototype.events.initialize.push({
 	token: Berry.getUID(),
 	func: function() {
 		Berry.field.prototype.dupeMe = function() {
+			debugger;
 			var target = this.self;
-			var max = this.max || -1;
-			var count = $(target).siblings('[name='+this.name+']').length+1;
+			var max = this.multiple.max || -1;
+			var count = $(target).siblings('[name='+this.name+']').length + 1;
 			if(max == -1 || max > count){
 				var item = $.extend({},this.owner.options.default, this.item, {id: Berry.getUID(), name: this.name});
 				this.owner.processField(item, $(target), this.parent, 'after');
@@ -17,7 +18,7 @@ Berry.prototype.events.initialize.push({
 		}
 		Berry.field.prototype.dropMe = function() {
 			var target = this.self;
-			var min = this.min || 1;
+			var min = this.multiple.min || 1;
 			var count = $(target).siblings('[name='+this.name+']').length;
 			if(min <= count){
 				$(target).empty().remove();
