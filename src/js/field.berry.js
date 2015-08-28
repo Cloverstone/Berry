@@ -46,7 +46,7 @@ Berry.field = function(item, owner) {
 		this.value = 0;
 	}
 	this.lastSaved = this.liveValue();
-	this.id = (item.id || Berry.getUID());//?
+	this.id = (item.id || Berry.getUID());
 	this.self = undefined;
 	this.fieldset = undefined;
 
@@ -162,6 +162,7 @@ $.extend(Berry.field.prototype, {
 				o[this.name] = {};
 			}
 		} else {
+			
 			var s = this.getPath();
 			s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
 			s = s.replace(/^\./, '');           // strip a leading dot
@@ -236,7 +237,7 @@ $.extend(Berry.field.prototype, {
 			);
 		}
 
-		this.owner.trigger('initializedField', {field: this});
+		// this.owner.trigger('initializedField', {field: this});
 
 	},
 	on: function(topic, func) {

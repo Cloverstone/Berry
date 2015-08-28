@@ -1,17 +1,4 @@
-Berry.prototype.toArray = function() {
-	// var fields = [];
-	// for(var i in this.fields){
-	// 	fields.push(this.fields[i]);
-	// }
-	// return fields;
-	return this.fields.map(function(key){
-		return this.fields;
-	});
-};
-
-
 Berries = Berry.instances = {};
-
 Berry.counter = 0;
 Berry.types = {};
 Berry.collections = {};
