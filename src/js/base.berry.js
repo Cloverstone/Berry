@@ -64,7 +64,7 @@ Berry = function(options, target) {
 	 * the values befor returning the results.
 	 */
 	this.populate = function(attributes, fields) {
-		attributes = attributes || this.attributes
+		attributes = attributes || this.source;
 		fields = fields || this.fields;
 
 		//If multiple instances should exist then build out the tree
@@ -532,7 +532,11 @@ Berry = function(options, target) {
 	var rows = {};
 	this.fieldsets = [];
 	this.fields = [];
+
+	// This will hold a copy of the attributes passed in that have been converted to the internally consistant structure
 	this.source = {};
+
+	// This holds the current attributes of the form
 	this.attributes = {};
 	this.options = $.extend({name: Berry.getUID()}, Berry.options, options);
 	this.events = $.extend({}, Berry.prototype.events);
@@ -561,13 +565,14 @@ Berry = function(options, target) {
 	// Process any attributes that were passed in to normalize them to the internal structure
 	if(typeof this.options.attributes !== 'undefined') {
 		if(this.options.attributes === 'hash'){this.options.attributes = window.location.hash.replace('#', '').split('&').map(function(val){return val.split('=');}).reduce(function ( total, current ) {total[ current[0] ] = current[1];return total;}, {});}
+
 		this.source = $.extend(true, {}, this.options.attributes);
 
 		if(this.options.flatten){
-			this.source = inflate($.extend(true, {}, this.source), $.extend(true, {}, processMultiples(this.attributes))) || {};
+			this.source = inflate(this.source, processMultiples(this.options.attributes)) || {};
 		}
 
-		processMultiplesIN();
+		// processMultiplesIN();
 
 		this.each(function() {
 			if(this.multiple) {
