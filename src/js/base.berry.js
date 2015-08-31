@@ -3,6 +3,20 @@
 //		Licensed under the MIT license.
 //		For all details and documentation:
 //		https://github.com/Cloverstone/Berry
+// 
+// 
+//	internal structure
+		// attributes = {
+		// 	name: {
+		// 	 first: '',
+		// 	 last:''
+		// 	},
+		// 	age: '',
+		// 	addresses: [
+		// 		{state: '', zip: ''}
+		// 	]
+
+		// }
 
 Berry = function(options, target) {
 	/**
@@ -68,20 +82,20 @@ Berry = function(options, target) {
 		fields = fields || this.fields;
 
 		//If multiple instances should exist then build out the tree
-		this.each(function(attributes) {
-			if(this.multiple) {
-				var temp = {};
-				temp = Berry.search(attributes, this.getPath());
-				if(temp) {
-					var skip = true;
-					for(var i in temp) {
-						if(!skip) {
-							this.owner.processField($.extend(true, {}, this.item, {id: Berry.getUID(), name: this.name}), $(this.self), this.parent, 'after');
-						} else { skip = false; }
-					}
-				}
-			}
-		}, [attributes], fields);
+		// this.each(function(attributes) {
+		// 	if(this.multiple) {
+		// 		var temp = {};
+		// 		temp = Berry.search(attributes, this.getPath());
+		// 		if(temp) {
+		// 			var skip = true;
+		// 			for(var i in temp) {
+		// 				if(!skip) {
+		// 					this.owner.processField($.extend(true, {}, this.item, {id: Berry.getUID(), name: this.name}), $(this.self), this.parent, 'after');
+		// 				} else { skip = false; }
+		// 			}
+		// 		}
+		// 	}
+		// }, [attributes], fields);
 
 		self.each(function(attributes) {
 			if(!this.isContainer) {
@@ -199,30 +213,30 @@ Berry = function(options, target) {
 	};
 
 	var flatten = function(working, deflated, deflate) {
-		if(this.isContainer && this.owner.options.flatten && (this.instance_id === null || this.instance_id === 0 )){
+		if( this.isContainer && this.owner.options.flatten && (this.instance_id === null || this.instance_id === 0 )){
 			if( this.isChild() ){
-			var arr = this.parent.getPath().split('.');
-			var baz = [];
-			for (var i = arr.length - 1; i >= 0; i--) {
-				var key = arr[i];
-				if (-1 === arr.indexOf(key)) {
-					baz.push(key);
+				var arr = this.parent.getPath().split('.');
+				var baz = [];
+				for (var i = arr.length - 1; i >= 0; i--) {
+					var key = arr[i];
+					if (-1 === baz.indexOf(key)) {
+						baz.push(key);
+					}
 				}
-			}
-			arr = baz;
-			var name = arr.pop();
-			var temp = arr.join('.');
-			if(arr.length ) {
-				Berry.search(working, temp)[name] = deflate(Berry.search(working, this.getPath()));
-			} else {
-				if(name) {
-					working[name] = deflate(Berry.search(working, this.getPath()));
-				}else{
-					$.extend(working, deflate(Berry.search(working, this.name)));
-					delete working[this.name];
+				arr = baz;
+				var name = arr.pop();
+				// var temp = arr.join('.');
+				if( arr.length ) {
+					Berry.search(working, arr.join('.'))[name] = deflate(Berry.search(working, this.getPath()));
+				} else {
+					if(name) {
+						working[name] = deflate(Berry.search(working, this.getPath()));
+					}else{
+						$.extend(working, deflate(Berry.search(working, this.name)));
+						delete working[this.name];
+					}
 				}
-			}
-			deflated.push(this.name);
+				deflated.push(this.name);
 			}else{
 				deflated.push(this.name);
 				$.extend(working, deflate(working[this.name]));
@@ -254,6 +268,16 @@ Berry = function(options, target) {
 		return n;
 	};
 
+	/**
+	 * 
+	 *
+	 * @param {function} toCall 
+	 * @param {?array} args 
+	 * @param {?array} fields 
+	 */
+	this.eachAttributes = function(attributes) {
+
+	};
 
 	/**
 	 * 

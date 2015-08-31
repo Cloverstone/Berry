@@ -44,7 +44,7 @@ describe('Berry Multiple', function () {
 
 	it('should return expected json with multiple supplied', function () {
     myBerry.destroy();
-    debugger;
+    // debugger;
 		myBerry = new Berry({
 			flatten: false,
 			fields:
