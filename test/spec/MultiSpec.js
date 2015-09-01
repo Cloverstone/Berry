@@ -38,9 +38,39 @@ describe('Berry Multiple', function () {
 		expect(myBerry.fields.fs_c.instances[0]).toEqual(jasmine.any(Berry.field));
 	});
 
+	it('should return expected json supplied', function () {
+    myBerry.destroy();
+		myBerry = new Berry({
+			flatten: false,
+			fields:
+			[
+				{
+					"name": "candies",
+					"type": "fieldset",
+					"legend": "Favorite Candies",
+					"fields": {
+						"fs": {
+							"label": false,
+							"type": "fieldset",
+							"fields": {
+								"Candy Type": {}
+							}
+						}
+					}
+				}
+			],
+		'attributes': { candy_type: 'Stuff' }   }, $('#berry')).on('change', triggerOnChange);
+
+		var actual = myBerry.options.attributes;//myBerry.toJSON()
+		var expected = {candy_type: 'Stuff' };
+		expect(actual).toEqual(expected);
+	});
+
 	it('should return expected json', function () {
 		expect(myBerry.toJSON()).toEqual({candy_type: []});
 	});
+
+
 
 	it('should return expected json with multiple supplied', function () {
     myBerry.destroy();
@@ -69,8 +99,6 @@ describe('Berry Multiple', function () {
 				}
 			],
 		'attributes': { candies: { fs: { candy_type: ['Hello', 'Stuff'] } } }   }, $('#berry')).on('change', triggerOnChange);
-
-    debugger;
 
 		var actual = myBerry.toJSON()
 		var expected = { candies: { fs: { candy_type: [ 'Hello' , 'Stuff' ] } } };
@@ -118,3 +146,62 @@ describe('Berry Multiple', function () {
  //    expect(myBerry.toJSON()).toEqual({test: 'hello'});
  //  });
 });
+
+
+
+
+// {
+//   "attributes": {"test": [{
+// 		"name": "dafasda",
+// 		"title": "more",
+// 		"candy": "Tuesday"
+// 	},{
+// 		"name": "dafasda",
+// 		"title": "more",
+// 		"candy": "Monday"
+// 	}]},
+// 	"fields": [
+//     {"type":"fieldset","multiple":{"min":2}, "label":"Test", "fields":[
+// 		{
+// 			"label": "Name",
+// 			"type": "text",
+// 			"required": false,
+// 			"name": "name"
+// 		},
+// 		{
+// 			"label": "Title",
+// 			"type": "text",
+// 			"name": "title"
+// 		},
+// 		{
+// 			"label": "Favorite Candy",
+// 			"name": "candy",
+// 			"type": "select",
+// 			"value": "",
+// 			"choices": "./data/days.json"
+// 		}]}
+// 	]
+// }
+
+// {
+//   "attributes": {"test": {
+// 		"name": "dafasda",
+// 		"title": "more",
+// 		"candy": "Tuesday"
+// 	}},
+// 	"fields": [
+//     {"type":"fieldset", "label":"Test", "fields":[
+// 		{
+// 			"label": "Name"
+// 		},
+// 		{
+// 			"label": "Title"
+// 		},
+// 		{
+// 			"label": "Favorite Candy",
+// 			"name": "candy",
+// 			"type": "select",
+// 			"choices": "./data/days.json"
+// 		}]}
+// 	]
+// }

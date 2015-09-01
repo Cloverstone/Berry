@@ -1,4 +1,4 @@
-//		BerryJS 0.9.3.5
+//		BerryJS 0.9.4
 //		(c) 2011-2015 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -56,22 +56,34 @@ Berry = function(options, target) {
 	 */
 	this.toJSON = function(s, validate) {
 		// validate if desired this.valid will hold the result
-		if(validate) { this.validate(); }
+		if(validate || !this.valid) { this.validate(); }
 
 		// if a search string return the valu of the field with that name
-		if(typeof s === 'string'){
+		if(typeof s === 'string' && s.length > 0){
 			return this.find(s).getValue();
 		} else {
-			this.attributes = parsefields(this.attributes);
-			var working = processMultiples(this.attributes);
-			if(this.options.flatten) {
-				var deflated = [];
-				this.each(flatten, [working, deflated, deflate]);
-				working = deflate(working);
-			}
-			return working;
+			return this.parsefields();
 		}
 	};
+
+
+	// var processMultiples = function(attributes) {
+	// 	var altered = $.extend(true, {}, attributes);
+	// 	this.each(function(attributes, altered) {
+	// 		if(this.multiple && this.toArray){
+	// 			var root = attributes;
+	// 			var temp = Berry.search(root, this.getPath());
+	// 			if(this.isChild()){
+	// 				root = Berry.search(altered, this.parent.getPath());
+	// 			}
+	// 			root[this.name] = {};
+	// 			for(var i in this.children) {
+	// 				root[this.name][i] = $.pluck(temp,i);
+	// 			}
+	// 		}
+	// 	}, [attributes, altered]);
+	// 	return altered;
+	// };
 
 	/**
 	 * Gets the values for all of the fields and structures them according to the 
@@ -82,26 +94,10 @@ Berry = function(options, target) {
 	 * the values befor returning the results.
 	 */
 	this.populate = function(attributes, fields) {
-		attributes = attributes || this.attributes;
+		// attributes = attributes || this.attributes;
 		fields = fields || this.fields;
 
-		//If multiple instances should exist then build out the tree
-		// this.each(function(attributes) {
-		// 	if(this.multiple) {
-		// 		var temp = {};
-		// 		temp = Berry.search(attributes, this.getPath());
-		// 		if(temp) {
-		// 			var skip = true;
-		// 			for(var i in temp) {
-		// 				if(!skip) {
-		// 					this.owner.processField($.extend(true, {}, this.item, {id: Berry.getUID(), name: this.name}), $(this.self), this.parent, 'after');
-		// 				} else { skip = false; }
-		// 			}
-		// 		}
-		// 	}
-		// }, [attributes], fields);
-
-		self.each(function(attributes) {
+		this.each(function(attributes) {
 			if(!this.isContainer) {
 				var temp = Berry.search(attributes, this.getPath());
 				if(typeof temp !== 'undefined' && typeof temp !== 'object') { 
@@ -113,185 +109,6 @@ Berry = function(options, target) {
 		}, [attributes], fields);
 	};
 
-	/**
-	 * Format the field values properly in th array
-	 *
-	 * @param {object} attributes The values for the fields to be populated
-	 * @internal
-	 */
-	var processMultiples = function(attributes) {
-		var altered = $.extend(true, {}, attributes);
-		self.each(function(attributes, altered) {
-			if(this.multiple && this.toArray){
-				var root = attributes;
-				var temp = Berry.search(root, this.getPath());
-
-				if(this.isChild()) {
-					root = Berry.search(altered, this.parent.getPath());
-				}
-				root[this.name] = {};
-
-				for(var i in this.children) {
-					root[this.name][i] = $.pluck(temp, i);
-				}
-			}
-		}, [attributes, altered]);
-
-		return altered;
-	};
-
-	/**
-	 * Normalize the field values properly in th array
-	 *
-	 * @internal
-	 */
-	var processMultiplesIN = function() {
-		// self.each(function() {
-		// 	//var root = this.owner.attributes[this.name];
-		// 	var root = Berry.search(this.owner.attributes, this.getPath(true))
-		// 	if(this.multiple && this.toArray) {
-
-		// 		if(this.isChild()){
-		// 			root = Berry.search(this.owner.attributes, this.getPath(true));
-		// 		}
-		// 		if(root) {
-		// 			var temp = $.extend(true,{},root[this.name]);
-		// 			root[this.name] = [];
-		// 			var	source = this.owner.source;
-		// 			if(this.isChild()){
-		// 				source = Berry.search(source, this.parent.getPath());
-		// 			}
-
-		// 			for(var k in source[this.name]) {
-		// 				for(var i in source[this.name][k]) {
-		// 					var newObj = $.extend({}, temp);
-		// 					for(var name in temp) {
-		// 						newObj[name] = source[this.name][name][i];
-		// 					}
-		// 					root[this.name].push(newObj);
-		// 				}
-		// 				break;
-		// 			}
-		// 		}
-		// 	} else {
-		// 		//var sourceRef = this.owner.source[this.name];
-		// 		var sourceRef = Berry.search(this.owner.source, this.getPath())
-		// 		if(sourceRef !== null){
-		// 			if(typeof sourceRef === 'object'){
-		// 				if($.isArray(sourceRef)){
-		// 					root = $.extend([],sourceRef);
-		// 				}else{
-		// 					root = $.extend({},sourceRef);
-		// 				}
-		// 			}else{
-		// 				root = sourceRef;
-		// 			}
-		// 		}
-		// 	}
-		// });
-		return self.attributes;
-	};
-
-	/**
-	 * Push the values into the structure dictated by the input field object
-	 *
-	 * @param {} o 
-	 * @param {} n 
-	 * @internal
-	 */
-	this.testOnly = {};
-	this.testOnly.inflate = function(o,n){
-		return inflate(o, processMultiples(n));
-	}	
-	this.testOnly.parsefields = function(attributes){
-		return parsefields(attributes);
-	}
-
-
-	var inflate = function(o, n) {
-		// for(var i in n) {
-		// 	if(typeof n[i] === 'object' && !$.isArray(n[i])) {
-		// 		if(i in o) {
-		// 			n[i] = inflate(o[i], n[i]);
-		// 		} else {
-		// 			n[i] = inflate(o, n[i]);
-		// 		}
-		// 	} else {
-		// 		if(i in o) {
-		// 			n[i] = o[i];
-		// 		}
-		// 	}
-		// }
-		return n;
-	};
-
-
-	var flatten = function(working, deflated, deflate) {
-		// if( this.isContainer && this.owner.options.flatten && (this.instance_id === null || this.instance_id === 0 )){
-		// 	if( this.isChild() ){
-		// 		var arr = this.parent.getPath().split('.');
-		// 		var baz = [];
-		// 		for (var i = arr.length - 1; i >= 0; i--) {
-		// 			var key = arr[i];
-		// 			if (-1 === baz.indexOf(key)) {
-		// 				baz.push(key);
-		// 			}
-		// 		}
-		// 		arr = baz;
-		// 		var name = arr.pop();
-		// 		// var temp = arr.join('.');
-		// 		if( arr.length ) {
-		// 			Berry.search(working, arr.join('.'))[name] = deflate(Berry.search(working, this.getPath()));
-		// 		} else {
-		// 			if(name) {
-		// 				working[name] = deflate(Berry.search(working, this.getPath()));
-		// 			}else{
-		// 				$.extend(working, deflate(Berry.search(working, this.name)));
-		// 				delete working[this.name];
-		// 			}
-		// 		}
-		// 		deflated.push(this.name);
-		// 	}else{
-		// 		deflated.push(this.name);
-		// 		$.extend(working, deflate(working[this.name]));
-		// 		delete working[this.name];
-		// 	}
-		// }
-	};
-
-	var deflate = function(o) {
-		var j;
-		var n = {};
-		for(var i in o) {
-			if(typeof o[i] === 'object') {
-				if($.isArray(o[i])) {
-					n[i] = [];
-					for(j in o[i]) {
-						n[i].push(o[i][j]);
-					}
-				} else {
-					n[i] = {};
-					for(j in o[i]) {
-						n[i][j] = o[i][j];
-					}
-				}
-			} else {
-				n[i] = o[i];
-			}
-		}
-		return n;
-	};
-
-	/**
-	 * 
-	 *
-	 * @param {function} toCall 
-	 * @param {?array} args 
-	 * @param {?array} fields 
-	 */
-	this.eachAttributes = function(attributes) {
-
-	};
 
 	/**
 	 * 
@@ -373,8 +190,9 @@ Berry = function(options, target) {
 	 */
 	this.processfields = function(fields, target, parent) {
 		for(var i in fields) {
-			this.processField(normalizeItem(fields[i], i), target, parent);
+			var state = this.processField(normalizeItem(fields[i], i, this.options.default), target, parent);
 		}
+
 	};
 
 	/**
@@ -384,14 +202,17 @@ Berry = function(options, target) {
 	 * @param {object} item This is the raw field descriptor to be normalized
 	 * @param {string or int} i The key index of the item
 	 */
-	var normalizeItem = function(item, i){
-		if(typeof item === 'string'){
+	var normalizeItem = function(item, i, defaultItem){
+		if(typeof item === 'string') {
 			item = { type : item, label : i };
 		}
-		item = $.extend({}, self.options.default, item);
+		item = $.extend({}, defaultItem, item);
+
 		//if no name given and a name is needed, check for a given id else use the key
 		if(typeof item.name === 'undefined' && !item.isContainer){
-			if(typeof item.id !== 'undefined') {
+			if(typeof item.label !== 'undefined' && !isNaN(parseFloat(i))){
+				item.name = item.label.toLowerCase().split(' ').join('_');
+			}else if(typeof item.id !== 'undefined') {
 				item.name = item.id;
 			} else {
 				item.name = i.toLowerCase().split(' ').join('_');
@@ -400,17 +221,24 @@ Berry = function(options, target) {
 		if(typeof item.label === 'undefined' && item.label !== false) {
 			item.label = i;
 		}
+
+		// Sync the validation with the 'required' shorthand
 		if(item.required){
 			$.extend(item,{validate: {required: true}});
-		}
-		if(typeof item.validate !== 'undefined'){
+		} else if(typeof item.validate !== 'undefined'){
 			item.required = item.validate.required;
 		}
 
+		// Set a sensible type default if type is not defined or not found
 		if(typeof Berry.types[item.type] === 'undefined') {
 			if(typeof item.choices === 'undefined' && typeof item.options === 'undefined'){
 				item.type = 'text';
 			}else{
+
+				if(item.options.length ==  1){
+					item.type = 'checkbox';
+					item.name = item.options[0].toLowerCase().split(' ').join('_');
+				}else 
 				if(item.options.length <= 3){
 					item.type = 'radio';
 				}else{
@@ -431,7 +259,7 @@ Berry = function(options, target) {
 	 */
 	this.processField = function(item, target, parent, insert) {
 		if(target[0] !== undefined){target = target[0];}
-		var current = addField(item, parent, target, insert);
+		var current = this.addField(item, parent, target, insert);
 		if(typeof current.fieldset === 'undefined') { current.fieldset = target; }
 
 		if(insert == 'before') {
@@ -459,15 +287,16 @@ Berry = function(options, target) {
 				$(current.fieldset).append(current.render() );
 			}
 		}
+		this.initializing[current.id] = true;
 		current.initialize();
 		return current;
 	};
 
-	var addField = function(item , parent, target, insert) {
-		var current = new Berry.types[item.type](item, self);
+	this.addField = function(item , parent, target, insert) {
+		var current = new Berry.types[item.type](item, this);
 		current.parent = parent;
 
-		var root = self.fields;
+		var root = this.fields;
 		if(parent !== null && parent !== undefined) {
 			root = parent.children;
 		}
@@ -476,7 +305,7 @@ Berry = function(options, target) {
 
 		if(current.isContainer) {
 			if(!exists) {
-				root[current.name] = { isContainer: true , multiple: current.multiple , hasChildren: !$.isEmptyObject(item.fields) , toArray: (current.item.toArray || current.owner.options.flatten), instances:[] };
+				root[current.name] = { isContainer: true , multiple: current.multiple , hasChildren: !$.isEmptyObject(item.fields) /*, toArray: (current.item.toArray || current.owner.options.flatten)*/, instances:[] };
 			}
 			var insertAt = root[current.name].instances.length;
 			var targetId = $(target).attr('id');
@@ -495,13 +324,11 @@ Berry = function(options, target) {
 		}else{
 			if(exists || current.multiple){
 				if(root[current.name].isContainer){
-					if(!self.options.flatten){
-						var temp = [];
-						temp.push(root[current.name]);
-						temp = root[current.name];
-						root[current.name] = {multiple:current.multiple, hasChildren:!$.isEmptyObject(item.fields), instances:[]};
-						root[current.name].instances.push(temp);
-					}
+					var temp = [];
+					temp.push(root[current.name]);
+					temp = root[current.name];
+					root[current.name] = {multiple:current.multiple, hasChildren:!$.isEmptyObject(item.fields), instances:[]};
+					root[current.name].instances.push(temp);
 				}else if(root[current.name] instanceof Berry.field){
 					var temp = [];
 					temp.push(root[current.name]);
@@ -517,49 +344,104 @@ Berry = function(options, target) {
 		return current;
 	};
 
-	var parsefields = function(attributes) {
-		var newAttributes = $.extend(true, {}, attributes);
+	this.parsefields = function() {
+		var newAttributes = {};//$.extend(true, {}, attributes);
+		debugger;
 		// var newAttributes = JSON.parse(JSON.stringify(attributes))
-		self.each(function(newAttributes) {
-			if(!this.isContainer && this.isParsable) {
+		this.each(function(newAttributes) {
+			if(this.isParsable) {
 				var temp;
-				if(this.isChild() || (this.instance_id !== null)){
+
+				if(this.isChild() /*|| (this.instance_id !== null)*/){
 					temp = Berry.search(newAttributes, this.parent.getPath());
 				}
+
 				if(typeof temp === 'undefined'){
 					temp = newAttributes;
 				}
-				if($.isArray(temp)){
-
-					if(!temp[this.parent.instance_id]) { temp[this.parent.instance_id] = {}; }
-					temp[this.parent.instance_id][(this.attribute || this.name)] = this.getValue();
-
+				if(!this.isContainer) {
+					var value = this.getValue();
+					if(value === null){
+						value = '';
+					}
+					if($.isArray(temp)){
+						if(!temp[this.parent.instance_id]) { temp[this.parent.instance_id] = {}; }
+						temp[this.parent.instance_id][this.name] = value;
+					}else{
+						temp[this.name] = value;
+					}
 				}else{
-					temp[(this.attribute || this.name)] = this.getValue();
+					if(this.multiple){
+						temp[this.name] = [];
+					}else{
+						temp[this.name] = {};
+					}
 				}
+
 			}
 		}, [newAttributes]);
 		return newAttributes;
 	};
 
-	var addActions = function(actions) {
+
+	this.setActions = function(actions) {
+		if(!this.options.actionTarget) {
+			this.options.actionTarget = $('<div class="berry-actions" style="overflow:hidden;padding-bottom:10px"></div>');
+			this.target.append(this.options.actionTarget);
+		}
+		this.options.actionTarget.empty();
+
 		if(actions) {
-			if(!self.options.actionTarget) {
-				self.options.actionTarget = $('<div class="berry-actions" style="overflow:hidden;padding-bottom:10px"></div>');
-				self.target.append(self.options.actionTarget);
-			}
 			actions = containsKey(Berry.btn, actions);
 			for(var action in actions) {
-				var temp = $(Berry.render('berry__action',actions[action]));
+				var temp = $(Berry.render('berry__action', actions[action]));
 					if(typeof actions[action].click === 'function'){
-						temp.click($.proxy(actions[action].click, self));
+						temp.click($.proxy(actions[action].click, this));
 					}
-				self.options.actionTarget.append(temp);
+				this.options.actionTarget.append(temp);
 			}
 		}
 	};
 
-	var self = this;
+	this.inflate = function(attributes) {
+		var altered = {};
+		this.each(function(attributes, altered) {
+			if(this.isChild()){
+				root = Berry.search(altered, this.parent.getPath());
+			}else{
+				root = altered;
+			}
+			if(this.isContainer){
+				if(this.multiple){
+					temp[this.name] = [];
+				}else{
+					temp[this.name] = {};
+				}
+			}else{
+				root[this.name] = attributes[this.name];
+			}
+
+		}, [attributes, altered]);
+		return altered;
+	};
+
+	var inflate = function(o, n) {
+		for(var i in n) {
+			if(typeof n[i] === 'object' && !$.isArray(n[i])) {
+				if(i in o) {
+					n[i] = inflate(o[i], n[i]);
+				} else {
+					n[i] = inflate(o, n[i]);
+				}
+			} else {
+				if(i in o) {
+					n[i] = o[i];
+				}
+			}
+		}
+		return n;
+	};
+
 	this.$el = target;
 
 	// Track sections for tabs, pages, wizard etc.
@@ -567,14 +449,14 @@ Berry = function(options, target) {
 	this.sectionsEnabled = false;
 	this.sections = [];
 	this.sectionList = [];
-
+	this.initializing = {};
 	// Initialize objects/arrays
 	var rows = {};
 	this.fieldsets = [];
 	this.fields = [];
 
 	// This holds the current attributes of the form
-	this.attributes = {};
+	// this.attributes = {};
 
 	this.options = $.extend({name: Berry.getUID()}, Berry.options, options);
 	this.events = $.extend({}, Berry.prototype.events);
@@ -591,41 +473,27 @@ Berry = function(options, target) {
 	this.target = this.renderer.render();
 
 	// Create the legend if not disabled
-	if(this.options.legend && this.options.legendTarget){
-		this.options.legendTarget.append(this.options.legend);
-	}
+	if(this.options.legend && this.options.legendTarget) { this.options.legendTarget.append(this.options.legend); }
 
 	// Process the fields we were given and apply them to the target
 	// we got from the renderer
-	this.processfields(this.options.fields, this.target, null);
-
-
-	/***** This section is in question *****/
-	// Process any attributes that were passed in to normalize them to the internal structure
-	if(typeof this.options.attributes !== 'undefined') {
-		if(this.options.attributes === 'hash'){this.options.attributes = window.location.hash.replace('#', '').split('&').map(function(val){return val.split('=');}).reduce(function ( total, current ) {total[ current[0] ] = current[1];return total;}, {});}
-
-		this.attributes = $.extend(true, {}, this.options.attributes);
+	var state = this.processfields(this.options.fields, this.target, null);
+var done = false;
+while(!done){
+	if(this.initializing.length == 0){
+	if(typeof this.options.attributes !== 'undefined'){
 
 		if(this.options.flatten){
-			this.attributes = inflate(this.attributes, processMultiples(this.options.attributes)) || {};
+			this.options.other = inflate($.extend(true, {}, this.options.attributes), $.extend(true, {}, this.options.attributes)) || {};
+			this.options.attributes = this.inflate(this.options.attributes);
+	
 		}
 
-		// processMultiplesIN();
-
-		this.each(function() {
-			if(this.multiple) {
-				this.createAttributes();
-			}
-		})
 	}
-
-
-
 	// Fill the form with any values we have
-	this.populate(this.attributes);
+	this.populate(this.options.attributes);
 
-	addActions(this.options.actions);
+	this.setActions(this.options.actions);
 
 	// Allow the renderer to initialize
 	if(typeof this.renderer.initialize === 'function') {
@@ -638,11 +506,18 @@ Berry = function(options, target) {
 			return false;
 		});
 	}
+	done = true;
+	}
+}
 
-	// may not be needed
-	this.each(function(){
-		this.trigger('change');
-	})
+
+
+
+	// // may not be needed
+	// this.each(function(){
+	// 	this.trigger('change');
+	// })
+
 
 	// if(typeof Berry.instances[this.options.name] !== 'undefined') {
 	// 	Berry.instances[this.options.name].on('destroyed', $.proxy(function(){
@@ -651,16 +526,6 @@ Berry = function(options, target) {
 	// 	Berry.instances[this.options.name].destroy();
 	// }else{
 		Berry.instances[this.options.name] = this;
-
-		this.on('dropped', function(info){
-			var temp = self.findByID(info.id);
-			Berry.search(self.attributes, info.path).splice(temp.instance_id, 1);
-			if(temp.isChild()){
-				temp.parent.children[temp.name].instances.splice(temp.instance_id, 1);
-			}else{
-				self.fields[temp.name].instances.splice(temp.instance_id, 1);
-			}
-		});
 
 		this.trigger('initialized');
 };

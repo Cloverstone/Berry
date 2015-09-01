@@ -31,6 +31,17 @@ Berry.prototype.events.initialize.push({
 				this.trigger('change');
 			}
 		}
+
+		this.on('dropped', function(info){
+			var temp = self.findByID(info.id);
+			Berry.search(self.attributes, info.path).splice(temp.instance_id, 1);
+			if(temp.isChild()){
+				temp.parent.children[temp.name].instances.splice(temp.instance_id, 1);
+			}else{
+				self.fields[temp.name].instances.splice(temp.instance_id, 1);
+			}
+		});
+
 		this.on('initializedField', function(opts){
 			if(opts.field.multiple && opts.field.multiple.duplicate) {
 				opts.field.self.find('.duplicate').on('click', $.proxy(opts.field.dupeMe, opts.field) );

@@ -177,7 +177,7 @@ $.extend(Berry.field.prototype, {
 		// }
 	},
 	initialize: function() {
-		this.createAttributes();
+		// this.createAttributes();
 		this.setup();
 		if(typeof this.show !== 'undefined') {
 			this.isVisible = true;
@@ -231,7 +231,7 @@ $.extend(Berry.field.prototype, {
 				}
 			);
 		}
-
+		delete this.owner.initializing[this.id]
 		this.owner.trigger('initializedField', {field: this});
 	},
 	on: function(topic, func) {
@@ -243,11 +243,11 @@ $.extend(Berry.field.prototype, {
 	trigger: function(topic) {
 		this.value = this.getValue();
 		this.owner.trigger(topic + ':' + this.name, {
-			type: this.type,
-			name: this.name,
+			// type: this.type,
+			// name: this.name,
 			id: this.id,
-			value: this.value,
-			path: this.getPath()
+			// value: this.value,
+			// path: this.getPath()
 		});
 		//this.owner.trigger(topic);
 	},
