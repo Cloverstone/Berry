@@ -62,10 +62,11 @@ Berry = function(options, target) {
 		if(typeof s === 'string'){
 			return this.find(s).getValue();
 		} else {
-			var working = processMultiples(parsefields(this.attributes));
+			this.attributes = parsefields(this.attributes);
+			var working = processMultiples(this.attributes);
 			if(this.options.flatten) {
-				// var deflated = [];
-				// this.each(flatten, [working, deflated, deflate]);
+				var deflated = [];
+				this.each(flatten, [working, deflated, deflate]);
 				working = deflate(working);
 			}
 			return working;
@@ -81,7 +82,7 @@ Berry = function(options, target) {
 	 * the values befor returning the results.
 	 */
 	this.populate = function(attributes, fields) {
-		attributes = attributes || this.source;
+		attributes = attributes || this.attributes;
 		fields = fields || this.fields;
 
 		//If multiple instances should exist then build out the tree
@@ -202,9 +203,11 @@ Berry = function(options, target) {
 	this.testOnly.inflate = function(o,n){
 		return inflate(o, processMultiples(n));
 	}	
-	this.testOnly.inflate = function(attributes){
-		return processMultiples(attributes);
+	this.testOnly.parsefields = function(attributes){
+		return parsefields(attributes);
 	}
+
+
 	var inflate = function(o, n) {
 		// for(var i in n) {
 		// 	if(typeof n[i] === 'object' && !$.isArray(n[i])) {
@@ -221,6 +224,7 @@ Berry = function(options, target) {
 		// }
 		return n;
 	};
+
 
 	var flatten = function(working, deflated, deflate) {
 		// if( this.isContainer && this.owner.options.flatten && (this.instance_id === null || this.instance_id === 0 )){
@@ -495,7 +499,7 @@ Berry = function(options, target) {
 						var temp = [];
 						temp.push(root[current.name]);
 						temp = root[current.name];
-						root[current.name] = {multiple:current.multiple,hasChildren:!$.isEmptyObject(item.fields),instances:[]};
+						root[current.name] = {multiple:current.multiple, hasChildren:!$.isEmptyObject(item.fields), instances:[]};
 						root[current.name].instances.push(temp);
 					}
 				}else if(root[current.name] instanceof Berry.field){
@@ -526,8 +530,10 @@ Berry = function(options, target) {
 					temp = newAttributes;
 				}
 				if($.isArray(temp)){
+
 					if(!temp[this.parent.instance_id]) { temp[this.parent.instance_id] = {}; }
 					temp[this.parent.instance_id][(this.attribute || this.name)] = this.getValue();
+
 				}else{
 					temp[(this.attribute || this.name)] = this.getValue();
 				}
@@ -567,11 +573,9 @@ Berry = function(options, target) {
 	this.fieldsets = [];
 	this.fields = [];
 
-	// This will hold a copy of the attributes passed in that have been converted to the internally consistant structure
-	this.source = {};
-
 	// This holds the current attributes of the form
 	this.attributes = {};
+
 	this.options = $.extend({name: Berry.getUID()}, Berry.options, options);
 	this.events = $.extend({}, Berry.prototype.events);
 
@@ -591,19 +595,20 @@ Berry = function(options, target) {
 		this.options.legendTarget.append(this.options.legend);
 	}
 
-	// Process the fields we were given adn apply them to the target
+	// Process the fields we were given and apply them to the target
 	// we got from the renderer
 	this.processfields(this.options.fields, this.target, null);
 
 
+	/***** This section is in question *****/
 	// Process any attributes that were passed in to normalize them to the internal structure
 	if(typeof this.options.attributes !== 'undefined') {
 		if(this.options.attributes === 'hash'){this.options.attributes = window.location.hash.replace('#', '').split('&').map(function(val){return val.split('=');}).reduce(function ( total, current ) {total[ current[0] ] = current[1];return total;}, {});}
 
-		this.source = $.extend(true, {}, this.options.attributes);
+		this.attributes = $.extend(true, {}, this.options.attributes);
 
 		if(this.options.flatten){
-			this.source = inflate(this.source, processMultiples(this.options.attributes)) || {};
+			this.attributes = inflate(this.attributes, processMultiples(this.options.attributes)) || {};
 		}
 
 		// processMultiplesIN();
@@ -615,8 +620,10 @@ Berry = function(options, target) {
 		})
 	}
 
+
+
 	// Fill the form with any values we have
-	this.populate(this.source);
+	this.populate(this.attributes);
 
 	addActions(this.options.actions);
 

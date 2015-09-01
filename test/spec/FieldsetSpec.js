@@ -15,11 +15,15 @@ describe('Fieldset', function () {
 	});
 
 	it('should return expected json', function () {
-		expect(myBerry.toJSON()).toEqual({test: 'hello'});
+    var actual = myBerry.toJSON();
+    var expected = {test: 'hello'};
+		expect(actual).toEqual(expected);
 	});
 
 	it('should return expected value', function () {
-		expect(myBerry.toJSON('first.test')).toEqual('hello');
+    var actual = myBerry.toJSON('first.test');
+    var expected = 'hello';
+    expect(actual).toEqual(expected);
 	});
 
   it('sets value with set', function () {

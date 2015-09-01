@@ -39,12 +39,11 @@ describe('Berry Multiple', function () {
 	});
 
 	it('should return expected json', function () {
-		expect(myBerry.toJSON()).toEqual({candy_type: [ '' ]});
+		expect(myBerry.toJSON()).toEqual({candy_type: []});
 	});
 
 	it('should return expected json with multiple supplied', function () {
     myBerry.destroy();
-    // debugger;
 		myBerry = new Berry({
 			flatten: false,
 			fields:
@@ -71,6 +70,7 @@ describe('Berry Multiple', function () {
 			],
 		'attributes': { candies: { fs: { candy_type: ['Hello', 'Stuff'] } } }   }, $('#berry')).on('change', triggerOnChange);
 
+    debugger;
 
 		var actual = myBerry.toJSON()
 		var expected = { candies: { fs: { candy_type: [ 'Hello' , 'Stuff' ] } } };
