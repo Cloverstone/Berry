@@ -71,7 +71,10 @@ describe('Berry Multiple', function () {
 			],
 		'attributes': { candies: { fs: { candy_type: ['Hello', 'Stuff'] } } }   }, $('#berry')).on('change', triggerOnChange);
 
-		expect(myBerry.toJSON()).toEqual({ candies: { fs: { candy_type: [ 'Hello' , 'Stuff' ] } } });
+
+		var actual = myBerry.toJSON()
+		var expected = { candies: { fs: { candy_type: [ 'Hello' , 'Stuff' ] } } };
+		expect(actual).toEqual(expected);
 	});
 
 	it('should return expected json with multiple supplied', function () {

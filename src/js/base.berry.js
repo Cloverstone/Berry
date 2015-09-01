@@ -5,6 +5,9 @@
 //		https://github.com/Cloverstone/Berry
 // 
 // 
+
+// toarray, multiple, flatten
+
 //	internal structure
 		// attributes = {
 		// 	name: {
@@ -61,8 +64,8 @@ Berry = function(options, target) {
 		} else {
 			var working = processMultiples(parsefields(this.attributes));
 			if(this.options.flatten) {
-				var deflated = [];
-				this.each(flatten, [working, deflated, deflate]);
+				// var deflated = [];
+				// this.each(flatten, [working, deflated, deflate]);
 				working = deflate(working);
 			}
 			return working;
@@ -195,54 +198,61 @@ Berry = function(options, target) {
 	 * @param {} n 
 	 * @internal
 	 */
+	this.testOnly = {};
+	this.testOnly.inflate = function(o,n){
+		return inflate(o, processMultiples(n));
+	}	
+	this.testOnly.inflate = function(attributes){
+		return processMultiples(attributes);
+	}
 	var inflate = function(o, n) {
-		for(var i in n) {
-			if(typeof n[i] === 'object' && !$.isArray(n[i])) {
-				if(i in o) {
-					n[i] = inflate(o[i], n[i]);
-				} else {
-					n[i] = inflate(o, n[i]);
-				}
-			} else {
-				if(i in o) {
-					n[i] = o[i];
-				}
-			}
-		}
+		// for(var i in n) {
+		// 	if(typeof n[i] === 'object' && !$.isArray(n[i])) {
+		// 		if(i in o) {
+		// 			n[i] = inflate(o[i], n[i]);
+		// 		} else {
+		// 			n[i] = inflate(o, n[i]);
+		// 		}
+		// 	} else {
+		// 		if(i in o) {
+		// 			n[i] = o[i];
+		// 		}
+		// 	}
+		// }
 		return n;
 	};
 
 	var flatten = function(working, deflated, deflate) {
-		if( this.isContainer && this.owner.options.flatten && (this.instance_id === null || this.instance_id === 0 )){
-			if( this.isChild() ){
-				var arr = this.parent.getPath().split('.');
-				var baz = [];
-				for (var i = arr.length - 1; i >= 0; i--) {
-					var key = arr[i];
-					if (-1 === baz.indexOf(key)) {
-						baz.push(key);
-					}
-				}
-				arr = baz;
-				var name = arr.pop();
-				// var temp = arr.join('.');
-				if( arr.length ) {
-					Berry.search(working, arr.join('.'))[name] = deflate(Berry.search(working, this.getPath()));
-				} else {
-					if(name) {
-						working[name] = deflate(Berry.search(working, this.getPath()));
-					}else{
-						$.extend(working, deflate(Berry.search(working, this.name)));
-						delete working[this.name];
-					}
-				}
-				deflated.push(this.name);
-			}else{
-				deflated.push(this.name);
-				$.extend(working, deflate(working[this.name]));
-				delete working[this.name];
-			}
-		}
+		// if( this.isContainer && this.owner.options.flatten && (this.instance_id === null || this.instance_id === 0 )){
+		// 	if( this.isChild() ){
+		// 		var arr = this.parent.getPath().split('.');
+		// 		var baz = [];
+		// 		for (var i = arr.length - 1; i >= 0; i--) {
+		// 			var key = arr[i];
+		// 			if (-1 === baz.indexOf(key)) {
+		// 				baz.push(key);
+		// 			}
+		// 		}
+		// 		arr = baz;
+		// 		var name = arr.pop();
+		// 		// var temp = arr.join('.');
+		// 		if( arr.length ) {
+		// 			Berry.search(working, arr.join('.'))[name] = deflate(Berry.search(working, this.getPath()));
+		// 		} else {
+		// 			if(name) {
+		// 				working[name] = deflate(Berry.search(working, this.getPath()));
+		// 			}else{
+		// 				$.extend(working, deflate(Berry.search(working, this.name)));
+		// 				delete working[this.name];
+		// 			}
+		// 		}
+		// 		deflated.push(this.name);
+		// 	}else{
+		// 		deflated.push(this.name);
+		// 		$.extend(working, deflate(working[this.name]));
+		// 		delete working[this.name];
+		// 	}
+		// }
 	};
 
 	var deflate = function(o) {
