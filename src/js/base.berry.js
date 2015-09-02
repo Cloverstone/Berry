@@ -260,6 +260,7 @@ Berry = function(options, target) {
 	this.processField = function(item, target, parent, insert) {
 		if(target[0] !== undefined){target = target[0];}
 		var current = this.addField(item, parent, target, insert);
+		this.initializing[current.id] = true;
 		if(typeof current.fieldset === 'undefined') { current.fieldset = target; }
 
 		if(insert == 'before') {
@@ -287,9 +288,8 @@ Berry = function(options, target) {
 				$(current.fieldset).append(current.render() );
 			}
 		}
-		this.initializing[current.id] = true;
 		current.initialize();
-		return current;
+		// return current;
 	};
 
 	this.addField = function(item , parent, target, insert) {
@@ -346,7 +346,7 @@ Berry = function(options, target) {
 
 	this.parsefields = function() {
 		var newAttributes = {};//$.extend(true, {}, attributes);
-		debugger;
+		// debugger;
 		// var newAttributes = JSON.parse(JSON.stringify(attributes))
 		this.each(function(newAttributes) {
 			if(this.isParsable) {
@@ -442,6 +442,38 @@ Berry = function(options, target) {
 		return n;
 	};
 
+	this.initializefield = function(id){
+		delete this.initializing[id];
+		this.fieldsinitialized = $.isEmptyObject(this.initializing);
+		if(this.fieldsinitialized) {
+			this.trigger('fieldsinitialized');
+		}
+	}
+
+	this.load = function(){
+		if(typeof this.options.attributes !== 'undefined'){
+			if(this.options.flatten){
+				this.options.other = inflate($.extend(true, {}, this.options.attributes), $.extend(true, {}, this.options.attributes)) || {};
+				this.options.attributes = this.inflate(this.options.attributes);
+			}
+		}
+		// Fill the form with any values we have
+		this.populate(this.options.attributes);
+	
+		if(this.options.autoFocus){
+			this.each(function(){
+				this.focus();
+				return false;
+			});
+		}
+	};
+
+	this.on('fieldsinitialized', function(){
+		this.load();
+		this.initialized = true;
+		this.trigger('initialized');
+	});
+
 	this.$el = target;
 
 	// Track sections for tabs, pages, wizard etc.
@@ -450,6 +482,8 @@ Berry = function(options, target) {
 	this.sections = [];
 	this.sectionList = [];
 	this.initializing = {};
+	this.fieldsinitialized = false;
+	this.initialized = false;
 	// Initialize objects/arrays
 	var rows = {};
 	this.fieldsets = [];
@@ -460,6 +494,8 @@ Berry = function(options, target) {
 
 	this.options = $.extend({name: Berry.getUID()}, Berry.options, options);
 	this.events = $.extend({}, Berry.prototype.events);
+
+	Berry.instances[this.options.name] = this;
 
 	this.trigger('initialize');
 
@@ -477,39 +513,16 @@ Berry = function(options, target) {
 
 	// Process the fields we were given and apply them to the target
 	// we got from the renderer
-	var state = this.processfields(this.options.fields, this.target, null);
-var done = false;
-while(!done){
-	if(this.initializing.length == 0){
-	if(typeof this.options.attributes !== 'undefined'){
+	this.processfields(this.options.fields, this.target, null);
 
-		if(this.options.flatten){
-			this.options.other = inflate($.extend(true, {}, this.options.attributes), $.extend(true, {}, this.options.attributes)) || {};
-			this.options.attributes = this.inflate(this.options.attributes);
-	
-		}
-
-	}
-	// Fill the form with any values we have
-	this.populate(this.options.attributes);
 
 	this.setActions(this.options.actions);
 
+
 	// Allow the renderer to initialize
-	if(typeof this.renderer.initialize === 'function') {
-		this.renderer.initialize();
-	}
-
-	if(this.options.autoFocus){
-		this.each(function(){
-			this.focus();
-			return false;
-		});
-	}
-	done = true;
-	}
-}
-
+		if(typeof this.renderer.initialize === 'function') {
+			this.renderer.initialize();
+		}
 
 
 
@@ -525,7 +538,5 @@ while(!done){
 	// 	},this));
 	// 	Berry.instances[this.options.name].destroy();
 	// }else{
-		Berry.instances[this.options.name] = this;
 
-		this.trigger('initialized');
 };

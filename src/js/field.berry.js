@@ -231,7 +231,8 @@ $.extend(Berry.field.prototype, {
 				}
 			);
 		}
-		delete this.owner.initializing[this.id]
+		
+		this.owner.initializefield(this.id);
 		this.owner.trigger('initializedField', {field: this});
 	},
 	on: function(topic, func) {
