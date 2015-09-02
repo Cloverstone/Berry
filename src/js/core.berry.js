@@ -8,7 +8,7 @@ Berry.options = {
 	inline: false,
 	modifiers: '',
 	renderer: 'base',
-	flatten: true,
+	flatten: false,
 	columns: 12,
 	autoDestroy: false,
 	autoFocus: true,
@@ -38,9 +38,10 @@ Berry.search = function(o, s) {
 			var n = a.shift();
 			if (typeof o !== 'undefined' && n in o) {
 				o = o[n];
-			} else {
-				return o;
-			}
+			} 
+			// else {
+			// 	return o;
+			// }
 		}
 		return o;
 	}

@@ -62,7 +62,7 @@ Berry = function(options, target) {
 		if(typeof s === 'string' && s.length > 0){
 			return this.find(s).getValue();
 		} else {
-			return this.parsefields();
+			return this.parsefields(this.options);
 		}
 	};
 
@@ -344,42 +344,42 @@ Berry = function(options, target) {
 		return current;
 	};
 
-	this.parsefields = function() {
+	this.parsefields = function(options) {
 		var newAttributes = {};//$.extend(true, {}, attributes);
-		// debugger;
+		debugger;
 		// var newAttributes = JSON.parse(JSON.stringify(attributes))
-		this.each(function(newAttributes) {
+		this.each(function(newAttributes, options) {
 			if(this.isParsable) {
-				var temp;
-
-				if(this.isChild() /*|| (this.instance_id !== null)*/){
-					temp = Berry.search(newAttributes, this.parent.getPath());
-				}
-
-				if(typeof temp === 'undefined'){
-					temp = newAttributes;
+				var root;
+				if(this.isChild() && (!options.flatten || typeof this.parent.multiple !== 'undefined')/*|| (this.instance_id !== null)*/){
+					root = Berry.search(newAttributes, this.parent.getPath());
+				} else {
+				//if(typeof root === 'undefined'){
+					root = newAttributes;
 				}
 				if(!this.isContainer) {
 					var value = this.getValue();
 					if(value === null){
 						value = '';
 					}
-					if($.isArray(temp)){
-						if(!temp[this.parent.instance_id]) { temp[this.parent.instance_id] = {}; }
-						temp[this.parent.instance_id][this.name] = value;
+					if($.isArray(root)){
+						if(!root[this.parent.instance_id]) { root[this.parent.instance_id] = {}; }
+						root[this.parent.instance_id][this.name] = value;
 					}else{
-						temp[this.name] = value;
+						root[this.name] = value;
 					}
 				}else{
 					if(this.multiple){
-						temp[this.name] = [];
+						root[this.name] = root[this.name]||[];
 					}else{
-						temp[this.name] = {};
+						if(!options.flatten){
+							root[this.name] = {};
+						}
 					}
 				}
 
 			}
-		}, [newAttributes]);
+		}, [newAttributes, options]);
 		return newAttributes;
 	};
 
@@ -403,44 +403,50 @@ Berry = function(options, target) {
 		}
 	};
 
-	this.inflate = function(attributes) {
+	this.inflate = function(atts) {
 		var altered = {};
-		this.each(function(attributes, altered) {
-			if(this.isChild()){
-				root = Berry.search(altered, this.parent.getPath());
-			}else{
-				root = altered;
-			}
+
+		this.each(function(atts, altered) {
+
+			var val;
+
 			if(this.isContainer){
 				if(this.multiple){
-					temp[this.name] = [];
+					val = [];
 				}else{
-					temp[this.name] = {};
+					val = {};
 				}
 			}else{
-				root[this.name] = attributes[this.name];
+				val = atts[this.name];
 			}
 
-		}, [attributes, altered]);
+			if(this.isChild()){
+				Berry.search(altered, this.parent.getPath())[this.name] = val;
+			} else {
+				altered[this.name] = val;
+			}
+
+		}, [atts, altered]);
+
 		return altered;
 	};
 
-	var inflate = function(o, n) {
-		for(var i in n) {
-			if(typeof n[i] === 'object' && !$.isArray(n[i])) {
-				if(i in o) {
-					n[i] = inflate(o[i], n[i]);
-				} else {
-					n[i] = inflate(o, n[i]);
-				}
-			} else {
-				if(i in o) {
-					n[i] = o[i];
-				}
-			}
-		}
-		return n;
-	};
+	// var inflate = function(o, n) {
+	// 	for(var i in n) {
+	// 		if(typeof n[i] === 'object' && !$.isArray(n[i])) {
+	// 			if(i in o) {
+	// 				n[i] = inflate(o[i], n[i]);
+	// 			} else {
+	// 				n[i] = inflate(o, n[i]);
+	// 			}
+	// 		} else {
+	// 			if(i in o) {
+	// 				n[i] = o[i];
+	// 			}
+	// 		}
+	// 	}
+	// 	return n;
+	// };
 
 	this.initializefield = function(id){
 		delete this.initializing[id];
@@ -453,13 +459,12 @@ Berry = function(options, target) {
 	this.load = function(){
 		if(typeof this.options.attributes !== 'undefined'){
 			if(this.options.flatten){
-				this.options.other = inflate($.extend(true, {}, this.options.attributes), $.extend(true, {}, this.options.attributes)) || {};
+				//this.options.other = inflate($.extend(true, {}, this.options.attributes), $.extend(true, {}, this.options.attributes)) || {};
 				this.options.attributes = this.inflate(this.options.attributes);
 			}
+			// Fill the form with any values we have
+			this.populate(this.options.attributes);
 		}
-		// Fill the form with any values we have
-		this.populate(this.options.attributes);
-	
 		if(this.options.autoFocus){
 			this.each(function(){
 				this.focus();
@@ -482,12 +487,15 @@ Berry = function(options, target) {
 	this.sections = [];
 	this.sectionList = [];
 	this.initializing = {};
+
+	// flags for progress
 	this.fieldsinitialized = false;
 	this.initialized = false;
+
 	// Initialize objects/arrays
 	var rows = {};
 	this.fieldsets = [];
-	this.fields = [];
+	this.fields = {};
 
 	// This holds the current attributes of the form
 	// this.attributes = {};

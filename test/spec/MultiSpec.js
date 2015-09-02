@@ -3,10 +3,12 @@ describe('Berry Multiple', function () {
 
 	beforeEach(function() {
     triggerOnChange = jasmine.createSpy();
-		myBerry = new Berry({fields:
+		myBerry = new Berry({
+			"flatten": false, 
+			fields:
 			[
 				{
-					"name": "fs_c",
+					"name": "candies",
 					"type": "fieldset",
 					"legend": "Favorite Candies",
 					"fields": {
@@ -19,7 +21,7 @@ describe('Berry Multiple', function () {
 							},
 							"toArray": true,
 							"fields": {
-								"Candy Type": {}
+								"Candy Type": {value: "Kit Kat"}
 							}
 						}
 					}
@@ -34,40 +36,20 @@ describe('Berry Multiple', function () {
   });
 
 	it('should create field reference', function () {
-		expect(myBerry.fields.fs_c).toBeDefined();
-		expect(myBerry.fields.fs_c.instances[0]).toEqual(jasmine.any(Berry.field));
+		expect(myBerry.fields.candies).toBeDefined();
+		expect(myBerry.fields.candies.instances[0]).toEqual(jasmine.any(Berry.field));
 	});
 
-	it('should return expected json supplied', function () {
-    myBerry.destroy();
-		myBerry = new Berry({
-			flatten: false,
-			fields:
-			[
-				{
-					"name": "candies",
-					"type": "fieldset",
-					"legend": "Favorite Candies",
-					"fields": {
-						"fs": {
-							"label": false,
-							"type": "fieldset",
-							"fields": {
-								"Candy Type": {}
-							}
-						}
-					}
-				}
-			],
-		'attributes': { candy_type: 'Stuff' }   }, $('#berry')).on('change', triggerOnChange);
-
-		var actual = myBerry.options.attributes;//myBerry.toJSON()
-		var expected = {candy_type: 'Stuff' };
+	it('should return expected json - value set', function () {
+		var actual = myBerry.toJSON()
+		var expected = { candies: { fs: [{candy_type: "Kit Kat"}]} } ;
+		debugger;
 		expect(actual).toEqual(expected);
 	});
 
+
 	it('should return expected json', function () {
-		expect(myBerry.toJSON()).toEqual({candy_type: []});
+		expect(myBerry.parsefields({flatten: true})).toEqual({fs: [{candy_type: "Kit Kat"}]} );
 	});
 
 
@@ -90,7 +72,7 @@ describe('Berry Multiple', function () {
 								"duplicate": true,
 								"max": 2
 							},
-							"toArray": true,
+							"toArray": false,
 							"fields": {
 								"Candy Type": {}
 							}
