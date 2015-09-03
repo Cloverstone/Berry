@@ -232,8 +232,8 @@ $.extend(Berry.field.prototype, {
 			);
 		}
 		
-		this.owner.initializefield(this.id);
 		this.owner.trigger('initializedField', {field: this});
+		// return this.owner.initializefield(this.id);
 	},
 	on: function(topic, func) {
 		this.owner.on(topic + ':' + this.name, func);

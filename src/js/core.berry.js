@@ -169,7 +169,7 @@ Berry.register({
 	setValue: function(value) {return true;},
 	setup: function() {
 		if(this.fields !== undefined) {
-			this.owner.processfields(this.fields, this.self, this);
+			return this.owner.processfields(this.fields, this.self, this);
 		}
 	},
 	isContainer: true
@@ -244,6 +244,9 @@ Berry.prototype.sum = function(search) {
 	return inputs;
 };
 
+// Berry.prototype.on('fieldsinitialized', function(){
+// 	this.load();
+// });
 
 $((function($){
 	$.fn.berry = function(options) {

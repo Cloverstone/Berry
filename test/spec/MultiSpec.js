@@ -43,7 +43,6 @@ describe('Berry Multiple', function () {
 	it('should return expected json - value set', function () {
 		var actual = myBerry.toJSON()
 		var expected = { candies: { fs: [{candy_type: "Kit Kat"}]} } ;
-		debugger;
 		expect(actual).toEqual(expected);
 	});
 
@@ -52,6 +51,38 @@ describe('Berry Multiple', function () {
 		expect(myBerry.parsefields({flatten: true})).toEqual({fs: [{candy_type: "Kit Kat"}]} );
 	});
 
+
+	it('should return expected json with multiple supplied', function () {
+    myBerry.destroy();
+    // debugger;
+		myBerry = new Berry({
+			flatten: false,
+			fields: [
+				{
+					"name": "candies",
+					"type": "fieldset",
+					"legend": "Favorite Candies",
+					"fields": {
+						"fs": {
+							"label": false,
+							"type": "fieldset",
+							"multiple": {
+								"duplicate": true,
+								"min": 2,
+								"max": 3
+							},
+							"toArray": false,
+							"fields": {
+								"Candy Type": {}
+							}
+						}
+					}
+				}
+			],
+		'attributes': { candies: { fs: [ { candy_type: 'Kit Kat' }, { candy_type: 'Reases' } ] } } }, $('#berry')).on('change', triggerOnChange);
+
+		expect(myBerry.toJSON()).toEqual({ candies: { fs: [ { candy_type: 'Kit Kat' }, { candy_type: 'Reases' } ] } });
+	});
 
 
 	it('should return expected json with multiple supplied', function () {
@@ -85,36 +116,6 @@ describe('Berry Multiple', function () {
 		var actual = myBerry.toJSON()
 		var expected = { candies: { fs: { candy_type: [ 'Hello' , 'Stuff' ] } } };
 		expect(actual).toEqual(expected);
-	});
-
-	it('should return expected json with multiple supplied', function () {
-    myBerry.destroy();
-		myBerry = new Berry({
-			flatten: false,
-			fields: [
-				{
-					"name": "candies",
-					"type": "fieldset",
-					"legend": "Favorite Candies",
-					"fields": {
-						"fs": {
-							"label": false,
-							"type": "fieldset",
-							"multiple": {
-								"duplicate": true,
-								"max": 2
-							},
-							"toArray": false,
-							"fields": {
-								"Candy Type": {}
-							}
-						}
-					}
-				}
-			],
-		'attributes': { candies: { fs: [ { candy_type: 'Kit Kat' }, { candy_type: 'Reases' } ] } } }, $('#berry')).on('change', triggerOnChange);
-
-		expect(myBerry.toJSON()).toEqual({ candies: { fs: [ { candy_type: 'Kit Kat' }, { candy_type: 'Reases' } ] } });
 	});
 
  //  it('should have triggerable events', function () {

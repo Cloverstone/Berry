@@ -96,6 +96,18 @@ Berry = function(options, target) {
 	this.populate = function(attributes, fields) {
 		// attributes = attributes || this.attributes;
 		fields = fields || this.fields;
+		this.each(function(attributes) {
+			if(this.multiple) {
+				var attcount = Berry.search(attributes, this.getPath()).length;
+				var d = this.multiple.min || 1;
+				if(d< attcount){d=attcount;}
+				// if(this.multiple.max > this.multiple.min){
+						while(this.parent.children[this.name].instances.length < d){
+							this.dupeMe();
+						}
+					}
+				// }
+		}, [attributes], fields);
 
 		this.each(function(attributes) {
 			if(!this.isContainer) {
@@ -109,7 +121,7 @@ Berry = function(options, target) {
 		}, [attributes], fields);
 	};
 
-
+	
 	/**
 	 * 
 	 *
@@ -135,7 +147,7 @@ Berry = function(options, target) {
 				}
 			} else { break; }
 		}
-		if(c) {
+		if(c && (typeof args !== 'undefined')) {
 			return args;
 		} else {
 			return c;
@@ -260,7 +272,7 @@ Berry = function(options, target) {
 	this.processField = function(item, target, parent, insert) {
 		if(target[0] !== undefined){target = target[0];}
 		var current = this.addField(item, parent, target, insert);
-		this.initializing[current.id] = true;
+		// this.initializing[current.id] = true;
 		if(typeof current.fieldset === 'undefined') { current.fieldset = target; }
 
 		if(insert == 'before') {
@@ -289,7 +301,7 @@ Berry = function(options, target) {
 			}
 		}
 		current.initialize();
-		// return current;
+		return current;
 	};
 
 	this.addField = function(item , parent, target, insert) {
@@ -346,7 +358,6 @@ Berry = function(options, target) {
 
 	this.parsefields = function(options) {
 		var newAttributes = {};//$.extend(true, {}, attributes);
-		debugger;
 		// var newAttributes = JSON.parse(JSON.stringify(attributes))
 		this.each(function(newAttributes, options) {
 			if(this.isParsable) {
@@ -431,53 +442,34 @@ Berry = function(options, target) {
 		return altered;
 	};
 
-	// var inflate = function(o, n) {
-	// 	for(var i in n) {
-	// 		if(typeof n[i] === 'object' && !$.isArray(n[i])) {
-	// 			if(i in o) {
-	// 				n[i] = inflate(o[i], n[i]);
-	// 			} else {
-	// 				n[i] = inflate(o, n[i]);
-	// 			}
-	// 		} else {
-	// 			if(i in o) {
-	// 				n[i] = o[i];
-	// 			}
+	// this.initializefield = function(id){
+	// 	delete this.initializing[id];
+	// 	if(!this.fieldsinitialized) {
+	// 		this.fieldsinitialized = $.isEmptyObject(this.initializing);
+	// 		if(this.fieldsinitialized) {
+	// 			this.trigger('fieldsinitialized');
 	// 		}
 	// 	}
-	// 	return n;
-	// };
+	// 	return this.fieldsinitialized;
+	// }
 
-	this.initializefield = function(id){
-		delete this.initializing[id];
-		this.fieldsinitialized = $.isEmptyObject(this.initializing);
-		if(this.fieldsinitialized) {
-			this.trigger('fieldsinitialized');
-		}
-	}
-
-	this.load = function(){
-		if(typeof this.options.attributes !== 'undefined'){
-			if(this.options.flatten){
-				//this.options.other = inflate($.extend(true, {}, this.options.attributes), $.extend(true, {}, this.options.attributes)) || {};
-				this.options.attributes = this.inflate(this.options.attributes);
+	this.load = function(options){
+		if(typeof options.attributes !== 'undefined'){
+			if(options.flatten){
+				options.attributes = this.inflate(options.attributes);
 			}
-			// Fill the form with any values we have
-			this.populate(this.options.attributes);
+			this.populate(options.attributes);
 		}
-		if(this.options.autoFocus){
+		if(options.autoFocus){
 			this.each(function(){
 				this.focus();
 				return false;
 			});
 		}
-	};
-
-	this.on('fieldsinitialized', function(){
-		this.load();
 		this.initialized = true;
 		this.trigger('initialized');
-	});
+	};
+
 
 	this.$el = target;
 
@@ -486,10 +478,10 @@ Berry = function(options, target) {
 	this.sectionsEnabled = false;
 	this.sections = [];
 	this.sectionList = [];
-	this.initializing = {};
+	// this.initializing = {};
 
 	// flags for progress
-	this.fieldsinitialized = false;
+	// this.fieldsinitialized = false;
 	this.initialized = false;
 
 	// Initialize objects/arrays
@@ -526,6 +518,7 @@ Berry = function(options, target) {
 
 	this.setActions(this.options.actions);
 
+	this.load(this.options);
 
 	// Allow the renderer to initialize
 		if(typeof this.renderer.initialize === 'function') {

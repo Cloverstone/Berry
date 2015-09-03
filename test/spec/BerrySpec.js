@@ -84,7 +84,7 @@ describe('Berry in action', function () {
 		expect(myBerry.toJSON()).toEqual({test: ''});
 		myBerry.destroy();
 
-		myBerry = new Berry({attributes: {test: null}, fields:{test:{type: 'select', choices: ['hello', 'stuff'],value: null }}}, $('#berry'));
+		myBerry = new Berry({attributes: {test: null}, fields:{test:{type: 'select', choices: ['hello', 'stuff'], value: null }}}, $('#berry'));
 
 		//possibly revisit this
 		expect(myBerry.toJSON()).toEqual({test: '' });
