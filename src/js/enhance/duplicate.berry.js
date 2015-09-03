@@ -8,14 +8,13 @@ Berry.prototype.events.initialize.push({
 			var count = $(target).siblings('[name=' + this.name + ']').length + 1;
 			if(max == -1 || max > count){
 				var item = $.extend({}, this.owner.options.default, this.item, {id: Berry.getUID(), name: this.name});
-				this.owner.processField(item, $(target), this.parent, 'after');
-				// this.owner.each(function() {
-				// 	this.createAttributes();
-				// });
-
+				this.owner.processField(
+					$.extend({}, this.owner.options.default, this.item, {id: Berry.getUID(), name: this.name})
+					$(target), this.parent, 'after');
 				this.trigger('change');
 			}
 		}
+
 		Berry.field.prototype.dropMe = function() {
 			var target = this.self;
 			var min = this.multiple.min || 1;
@@ -34,12 +33,11 @@ Berry.prototype.events.initialize.push({
 
 		this.on('dropped', function(info){
 			var temp = this.findByID(info.id);
-			Berry.search(self.attributes, info.path).splice(temp.instance_id, 1);
+			var target = this.fields;
 			if(temp.isChild()){
-				temp.parent.children[temp.name].instances.splice(temp.instance_id, 1);
-			}else{
-				this.fields[temp.name].instances.splice(temp.instance_id, 1);
+				target = temp.parent.children;
 			}
+			target[temp.name].instances.splice(temp.instance_id, 1);
 		}, this);
 
 		this.on('initializedField', function(opts){
