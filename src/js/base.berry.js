@@ -62,7 +62,7 @@ Berry = function(options, target) {
 		if(typeof s === 'string' && s.length > 0){
 			return this.find(s).getValue();
 		} else {
-			return this.parsefields(this.options);
+			return this.processArrays(this.parsefields(this.options));
 		}
 	};
 
@@ -102,10 +102,10 @@ Berry = function(options, target) {
 				var d = this.multiple.min || 1;
 				if(d< attcount){d=attcount;}
 				// if(this.multiple.max > this.multiple.min){
-						while(this.parent.children[this.name].instances.length < d){
-							this.dupeMe();
-						}
-					}
+				while(this.parent.children[this.name].instances.length < d){
+					this.dupeMe();
+				}
+			}
 				// }
 		}, [attributes], fields);
 
@@ -442,6 +442,58 @@ Berry = function(options, target) {
 		return altered;
 	};
 
+	this.parseArrays = function(atts) {
+		var altered = $.extend({}, atts);
+		this.each(function(altered) {
+			if(this.isContainer && this.multiple && this.toArray){
+				var localAtts = Berry.search(altered, this.getPath());
+				var newAtts = {};
+				for(var i in this.children){
+					newAtts[i] = [];
+					for(var j in localAtts){
+						newAtts[i].push(localAtts[j][i]);
+					}
+				}
+				localAtts = newAtts;
+			}
+		}, [altered]);
+		return altered;
+	};
+
+	this.processArrays = function(atts) {
+		var altered = $.extend({}, atts);
+		this.each(function(altered) {
+			if(this.isContainer && this.multiple && this.toArray){
+				var localAtts = Berry.search(altered, this.getPath());
+				var newAtts = [];
+				var i = 0;
+				while(i >= 0){
+					for(var j in localAtts){
+						if(localAtts[j].length > i){
+							// if(typeof newAtts[i] === 'undefined'){newAtts[i]={};}
+							newAtts[i] = newAtts[i] || {};
+							newAtts[i][j] = localAtts[j][i];
+						}else{i = -2;break;}
+					}
+					i++;
+				}
+				// this.children
+debugger;
+
+				// for(var j in localAtts){
+				// 	newAtts[i].push(localAtts[j][i]);
+				// 	for(var i in this.children){
+				// 		newAtts[i] = [];
+				// 	}
+				// }
+
+
+				localAtts = newAtts;
+			}
+		}, [altered]);
+
+		return altered;
+	};
 	// this.initializefield = function(id){
 	// 	delete this.initializing[id];
 	// 	if(!this.fieldsinitialized) {
@@ -458,7 +510,7 @@ Berry = function(options, target) {
 			if(options.flatten){
 				options.attributes = this.inflate(options.attributes);
 			}
-			this.populate(options.attributes);
+			this.populate(this.parseArrays(options.attributes));
 		}
 		if(options.autoFocus){
 			this.each(function(){

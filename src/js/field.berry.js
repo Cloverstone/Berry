@@ -87,7 +87,7 @@ $.extend(Berry.field.prototype, {
 		var path = '';
 		if(this.parent !== null && this.parent !== undefined) {
 			path = this.parent.getPath(force) + '.';
-			if(!this.parent.toArray && (this.parent.multiple || force)){
+			if(this.parent.multiple || force){
 				path += this.parent.instance_id + '.';
 			}
 		}

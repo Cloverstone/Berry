@@ -103,7 +103,7 @@ describe('Berry Multiple', function () {
 								"duplicate": true,
 								"max": 2
 							},
-							"toArray": false,
+							"toArray": true,
 							"fields": {
 								"Candy Type": {}
 							}
