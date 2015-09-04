@@ -19,7 +19,7 @@ describe('Berry Multiple', function () {
 								"duplicate": true,
 								"max": 2
 							},
-							"toArray": true,
+							"toArray": false,
 							"fields": {
 								"Candy Type": {value: "Kit Kat"}
 							}
@@ -50,6 +50,39 @@ describe('Berry Multiple', function () {
 	it('should return expected json', function () {
 		expect(myBerry.parsefields({flatten: true})).toEqual({fs: [{candy_type: "Kit Kat"}]} );
 	});
+
+
+	it('should return expected json min = 2', function () {
+    myBerry.destroy();
+    // debugger;
+		myBerry = new Berry({
+			flatten: false,
+			fields: [
+				{
+					"name": "candies",
+					"type": "fieldset",
+					"legend": "Favorite Candies",
+					"fields": {
+						"fs": {
+							"label": false,
+							"type": "fieldset",
+							"multiple": {
+								"duplicate": true,
+								"min": 2,
+								"max": 3
+							},
+							"toArray": false,
+							"fields": {
+								"Candy Type": {}
+							}
+						}
+					}
+				}
+			] }, $('#berry')).on('change', triggerOnChange);
+
+		expect(myBerry.toJSON()).toEqual({ candies: { fs: [ { candy_type: '' }, { candy_type: '' } ] } });
+	});
+
 
 
 	it('should return expected json with multiple supplied', function () {
@@ -85,7 +118,38 @@ describe('Berry Multiple', function () {
 	});
 
 
-	it('should return expected json with multiple supplied', function () {
+	it('should return expected json with multiple supplied - flatten', function () {
+    myBerry.destroy();
+    // debugger;
+		myBerry = new Berry({
+			flatten: true,
+			fields: [
+				{
+					"name": "candies",
+					"type": "fieldset",
+					"legend": "Favorite Candies",
+					"fields": {
+						"fs": {
+							"label": false,
+							"type": "fieldset",
+							"multiple": {
+								"duplicate": true,
+								"max": 3
+							},
+							"toArray": false,
+							"fields": {
+								"Candy Type": {}
+							}
+						}
+					}
+				}
+			],
+		'attributes': { fs: [ { candy_type: 'Kit Kat' }, { candy_type: 'Reases' } ] }  }, $('#berry')).on('change', triggerOnChange);
+
+		expect(myBerry.toJSON()).toEqual({ fs: [ { candy_type: 'Kit Kat' }, { candy_type: 'Reases' } ] });
+	});
+
+	it('should return expected json with multiple supplied w/array', function () {
     myBerry.destroy();
 		myBerry = new Berry({
 			flatten: false,
@@ -118,6 +182,40 @@ describe('Berry Multiple', function () {
 		expect(actual).toEqual(expected);
 	});
 
+
+	it('should return expected json with multiple supplied - flatten w/array', function () {
+    myBerry.destroy();
+		myBerry = new Berry({
+			flatten: true,
+			fields:
+			[
+				{
+					"name": "candies",
+					"type": "fieldset",
+					"legend": "Favorite Candies",
+					"fields": {
+						"fs": {
+							"label": false,
+							"type": "fieldset",
+							"multiple": {
+								"duplicate": true,
+								"max": 2
+							},
+							"toArray": true,
+							"fields": {
+								"Candy Type": {}
+							}
+						}
+					}
+				}
+			],
+		'attributes': { fs: { candy_type: ['Hello', 'Stuff'] } }  }, $('#berry')).on('change', triggerOnChange);
+
+		var actual = myBerry.toJSON()
+		var expected = { fs: { candy_type: [ 'Hello' , 'Stuff' ] } };
+		expect(actual).toEqual(expected);
+	});
+
  //  it('should have triggerable events', function () {
  //    myBerry.trigger('change');
  //    expect(triggerOnChange).toHaveBeenCalled();
@@ -131,20 +229,17 @@ describe('Berry Multiple', function () {
 });
 
 
-
-
 // {
-//   "attributes": {"test": [{
-// 		"name": "dafasda",
-// 		"title": "more",
-// 		"candy": "Tuesday"
-// 	},{
-// 		"name": "dafasda",
-// 		"title": "more",
-// 		"candy": "Monday"
-// 	}]},
+//   "attributes":{
+// 	"name": "",
+// 	"title": "",
+// 	"fs": 
+// 		{
+// 			"candy_type": ["asdfasfda", "asdfasdfa"]
+// 		}
+// },
+//   "flatten":true,
 // 	"fields": [
-//     {"type":"fieldset","multiple":{"min":2}, "label":"Test", "fields":[
 // 		{
 // 			"label": "Name",
 // 			"type": "text",
@@ -157,34 +252,71 @@ describe('Berry Multiple', function () {
 // 			"name": "title"
 // 		},
 // 		{
-// 			"label": "Favorite Candy",
-// 			"name": "candy",
-// 			"type": "select",
-// 			"value": "",
-// 			"choices": "./data/days.json"
-// 		}]}
+// 			"name": "fs_c",
+// 			"type": "fieldset",
+// 			"legend": "Favorite Candies",
+// 			"fields": {
+// 				"fs": {
+// 					"label": false,
+// 					"type": "fieldset",
+// 					"multiple": {
+// 						"duplicate": true,
+// 						"max": 2
+// 					},
+// 					"toArray": true,
+// 					"fields": {
+// 						"Candy Type": {}
+// 					}
+// 				}
+// 			}
+// 		}
 // 	]
 // }
 
 // {
-//   "attributes": {"test": {
-// 		"name": "dafasda",
-// 		"title": "more",
-// 		"candy": "Tuesday"
-// 	}},
+//   "attributes":{
+// 	"name": "",
+// 	"title": "",
+// 	"fs": [
+// 		{
+// 			"candy_type": "asdfasfda"
+// 		},
+// 		{
+// 			"candy_type": "asdfasdfa"
+// 		}
+// 	]
+// },
+//   "flatten":true,
 // 	"fields": [
-//     {"type":"fieldset", "label":"Test", "fields":[
 // 		{
-// 			"label": "Name"
+// 			"label": "Name",
+// 			"type": "text",
+// 			"required": false,
+// 			"name": "name"
 // 		},
 // 		{
-// 			"label": "Title"
+// 			"label": "Title",
+// 			"type": "text",
+// 			"name": "title"
 // 		},
 // 		{
-// 			"label": "Favorite Candy",
-// 			"name": "candy",
-// 			"type": "select",
-// 			"choices": "./data/days.json"
-// 		}]}
+// 			"name": "fs_c",
+// 			"type": "fieldset",
+// 			"legend": "Favorite Candies",
+// 			"fields": {
+// 				"fs": {
+// 					"label": false,
+// 					"type": "fieldset",
+// 					"multiple": {
+// 						"duplicate": true,
+// 						"max": 2
+// 					},
+// 					"toArray": false,
+// 					"fields": {
+// 						"Candy Type": {}
+// 					}
+// 				}
+// 			}
+// 		}
 // 	]
 // }

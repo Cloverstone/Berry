@@ -8,7 +8,7 @@ Berry.options = {
 	inline: false,
 	modifiers: '',
 	renderer: 'base',
-	flatten: false,
+	flatten: true,
 	columns: 12,
 	autoDestroy: false,
 	autoFocus: true,
@@ -54,11 +54,15 @@ Berry.processOpts = function(item, object) {
 	if(typeof item.max !== 'undefined') {
 		item.min = (item.min || 0);
 		item.choices = (item.choices || []);
-		if(item.min <= item.max) {
-			for (var i = item.min; i <= item.max; i=i+(item.step || 1) ) { 
-				item.choices.push(i.toString());
+		if(item.step != 0){
+			if(item.min <= item.max) {
+				for (var i = item.min; i <= item.max; i=i+(item.step || 1) ) { 
+					item.choices.push(i.toString());
+				}
 			}
 		}
+
+
 	}
 
 	// If a function is defined for choices use that.
@@ -150,6 +154,16 @@ Berry.register({
 	getValue: function() { return null;},
 	create: function() {
 		this.name = this.name || Berry.getUID();
+		if(typeof this.multiple !== 'undefined'){
+			this.multiple.min = this.multiple.min || 1;
+			if(typeof this.multiple.max !== 'undefined'){
+				if(this.multiple.max > this.multiple.min){
+					this.multiple.duplicate = true;
+				}else if(this.multiple.min > this.multiple.max){
+					this.multiple.min = this.multiple.max;
+				}
+			}//else{this.multiple.duplicate = true;}
+		}
 		if(!this.isChild()){
 			++this.owner.section_count;
 			this.owner.sections.push(this);

@@ -71,7 +71,7 @@ Berry.register({
 		this.owner.each(function(){
 			this.focus();
 			return false;
-		},{}, this.children);
+		}, {}, this.children);
 		return false;
 	},
 	setValue: function(value){return true;},

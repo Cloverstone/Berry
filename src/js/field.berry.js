@@ -144,40 +144,7 @@ $.extend(Berry.field.prototype, {
 			this.$el.mask(this.item.mask);
 		}
 	},
-	createAttributes: function() {
-		// var o = this.owner.attributes;
-		// if(this.isChild()) {
-		// 	o = Berry.search(o, this.parent.getPath());
-		// }
-		// if(this.isContainer) {
-		// 	if(this.multiple) {
-
-		// 		o[this.name] = (o[this.name] || []);
-		// 	}else{
-		// 		o[this.name] = {};
-		// 	}
-		// } else {
-			
-		// 	var s = this.getPath();
-		// 	s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-		// 	s = s.replace(/^\./, '');           // strip a leading dot
-		// 	var a = s.split('.');
-		// 	while (a.length) {
-		// 		var n = a.shift();
-		// 		if (n in o) {
-		// 			o = o[n];
-		// 		}else{
-		// 			if(n == this.name) {
-		// 				o = o[n] = this.value;
-		// 			}else{
-		// 				o = o[n] = {};
-		// 			}
-		// 		}
-		// 	}
-		// }
-	},
 	initialize: function() {
-		// this.createAttributes();
 		this.setup();
 		if(typeof this.show !== 'undefined') {
 			this.isVisible = true;
