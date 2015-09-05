@@ -38,9 +38,10 @@ Berry.search = function(o, s) {
 			var n = a.shift();
 			if (typeof o !== 'undefined' && n in o) {
 				o = o[n];
-			} else {
-				return o;
-			}
+			} 
+			// else {
+			// 	return o;
+			// }
 		}
 		return o;
 	}
@@ -53,11 +54,15 @@ Berry.processOpts = function(item, object) {
 	if(typeof item.max !== 'undefined') {
 		item.min = (item.min || 0);
 		item.choices = (item.choices || []);
-		if(item.min <= item.max) {
-			for (var i = item.min; i <= item.max; i=i+(item.step || 1) ) { 
-				item.choices.push(i.toString());
+		if(item.step != 0){
+			if(item.min <= item.max) {
+				for (var i = item.min; i <= item.max; i=i+(item.step || 1) ) { 
+					item.choices.push(i.toString());
+				}
 			}
 		}
+
+
 	}
 
 	// If a function is defined for choices use that.
@@ -149,6 +154,16 @@ Berry.register({
 	getValue: function() { return null;},
 	create: function() {
 		this.name = this.name || Berry.getUID();
+		if(typeof this.multiple !== 'undefined'){
+			this.multiple.min = this.multiple.min || 1;
+			if(typeof this.multiple.max !== 'undefined'){
+				if(this.multiple.max > this.multiple.min){
+					this.multiple.duplicate = true;
+				}else if(this.multiple.min > this.multiple.max){
+					this.multiple.min = this.multiple.max;
+				}
+			}//else{this.multiple.duplicate = true;}
+		}
 		if(!this.isChild()){
 			++this.owner.section_count;
 			this.owner.sections.push(this);
@@ -168,7 +183,7 @@ Berry.register({
 	setValue: function(value) {return true;},
 	setup: function() {
 		if(this.fields !== undefined) {
-			this.owner.processfields(this.fields, this.self, this);
+			return this.owner.processfields(this.fields, this.self, this);
 		}
 	},
 	isContainer: true
@@ -243,6 +258,9 @@ Berry.prototype.sum = function(search) {
 	return inputs;
 };
 
+// Berry.prototype.on('fieldsinitialized', function(){
+// 	this.load();
+// });
 
 $((function($){
 	$.fn.berry = function(options) {

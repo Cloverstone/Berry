@@ -1,9 +1,10 @@
 describe('Berry Initialization', function () {
 	var myBerry;
 
-	beforeEach(function() {
+	beforeEach(function(done) {
     triggerOnChange = jasmine.createSpy();
-		myBerry = new Berry({fields:{test:{value: 'hello'}}}, $('#berry')).on('change', triggerOnChange);
+		myBerry = new Berry({name: 'berryTest', fields:{test:{value: 'hello'}}}, $('#berry')).on('change', triggerOnChange);
+		myBerry.on('initialized', function(){ done(); }, this, myBerry.initialized);
 	});
 
   afterEach(function() {
@@ -11,7 +12,7 @@ describe('Berry Initialization', function () {
   });
 
   it('should create a global reference', function () {
-    expect(Berry.instances.b0).toBeDefined();
+    expect(Berry.instances.berryTest).toBeDefined();
   });
 
   it('should be defined', function () {
@@ -45,10 +46,22 @@ describe('Berry Initialization', function () {
     expect(triggerOnChange).toHaveBeenCalled();
   });
 
-  it('should allow attributes paramater', function () {
-    myBerry.destroy();
+});
+
+describe('Berry Post Initialization', function () {
+	var myBerry;
+
+	beforeEach(function(done) {
     myBerry = new Berry({attributes: {test: 'hello'}, fields:{test:{}}}, $('#berry'));
-    expect(myBerry.toJSON()).toEqual({test: 'hello'});
+  	myBerry.on('initialized', function(){ done(); }, this, myBerry.initialized);
+	});
+
+  afterEach(function() {
+    myBerry.destroy();
+  });
+
+  it('should support attributes paramater', function () {
+    expect(myBerry.toJSON()).toEqual({test: 'hello'});   
   });
 });
 
@@ -71,15 +84,15 @@ describe('Berry in action', function () {
 		expect(myBerry.toJSON()).toEqual({test: ''});
 		myBerry.destroy();
 
-		myBerry = new Berry({attributes: {test: null}, fields:{test:{type: 'select', choices: ['hello', 'stuff'],value: null }}}, $('#berry'));
+		myBerry = new Berry({attributes: {test: null}, fields:{test:{type: 'select', choices: ['hello', 'stuff'], value: null }}}, $('#berry'));
 
 		//possibly revisit this
-		expect(myBerry.toJSON()).toEqual({test: {}});
+		expect(myBerry.toJSON()).toEqual({test: '' });
 	});
 
 	it('returns expected json - select default', function () {
 		myBerry = new Berry({fields:{test:{type: 'select', choices: ['hello', 'stuff'] }}}, $('#berry'));
-		expect(myBerry.toJSON()).toEqual({test: {}});
+		expect(myBerry.toJSON()).toEqual({test: '' });
 	});
 
 	it('returns expected json - select w/ default value', function () {

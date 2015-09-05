@@ -101,7 +101,7 @@ Berry.renderers.popins.prototype.create = function(field){
 	target.on('shown.bs.popover', function () {
 		var field = Berry.instances[$('.berry.popover').find('.row').data('berry')].find($('.berry.popover').find('.row').attr('name'));
 		field.initialize();
-		debugger;
+		// debugger;
 		field.focus();
 	});
 };

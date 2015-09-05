@@ -87,7 +87,7 @@ $.extend(Berry.field.prototype, {
 		var path = '';
 		if(this.parent !== null && this.parent !== undefined) {
 			path = this.parent.getPath(force) + '.';
-			if(!this.parent.toArray && (this.parent.multiple || force)){
+			if(this.parent.multiple || force){
 				path += this.parent.instance_id + '.';
 			}
 		}
@@ -144,40 +144,7 @@ $.extend(Berry.field.prototype, {
 			this.$el.mask(this.item.mask);
 		}
 	},
-	createAttributes: function() {
-		// var o = this.owner.attributes;
-		// if(this.isChild()) {
-		// 	o = Berry.search(o, this.parent.getPath());
-		// }
-		// if(this.isContainer) {
-		// 	if(this.multiple) {
-
-		// 		o[this.name] = (o[this.name] || []);
-		// 	}else{
-		// 		o[this.name] = {};
-		// 	}
-		// } else {
-			
-		// 	var s = this.getPath();
-		// 	s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-		// 	s = s.replace(/^\./, '');           // strip a leading dot
-		// 	var a = s.split('.');
-		// 	while (a.length) {
-		// 		var n = a.shift();
-		// 		if (n in o) {
-		// 			o = o[n];
-		// 		}else{
-		// 			if(n == this.name) {
-		// 				o = o[n] = this.value;
-		// 			}else{
-		// 				o = o[n] = {};
-		// 			}
-		// 		}
-		// 	}
-		// }
-	},
 	initialize: function() {
-		this.createAttributes();
 		this.setup();
 		if(typeof this.show !== 'undefined') {
 			this.isVisible = true;
@@ -231,8 +198,9 @@ $.extend(Berry.field.prototype, {
 				}
 			);
 		}
-
+		
 		this.owner.trigger('initializedField', {field: this});
+		// return this.owner.initializefield(this.id);
 	},
 	on: function(topic, func) {
 		this.owner.on(topic + ':' + this.name, func);
@@ -243,11 +211,11 @@ $.extend(Berry.field.prototype, {
 	trigger: function(topic) {
 		this.value = this.getValue();
 		this.owner.trigger(topic + ':' + this.name, {
-			type: this.type,
-			name: this.name,
+			// type: this.type,
+			// name: this.name,
 			id: this.id,
-			value: this.value,
-			path: this.getPath()
+			// value: this.value,
+			// path: this.getPath()
 		});
 		//this.owner.trigger(topic);
 	},
