@@ -60,12 +60,12 @@ Berry = function(options, target) {
 		if(typeof s === 'string' && s.length > 0){
 			return this.find(s).getValue();
 		} else {
-			return this.processMultiples(this.parsefields(this.options));
+			return processMultiples.call(this, this.parsefields(this.options));
 		}
 	};
 
 
-	this.cloneMultiples = function(attributes, fields){
+	var cloneMultiples = function(attributes, fields){
 		this.each(function(attributes) {
 			if(this.multiple) {
 
@@ -183,7 +183,7 @@ Berry = function(options, target) {
 	 */
 	this.processfields = function(fields, target, parent) {
 		for(var i in fields) {
-			var state = this.processField(normalizeItem(fields[i], i, this.options.default), target, parent);
+			var state = this.createField(normalizeItem(fields[i], i, this.options.default), target, parent);
 		}
 	};
 
@@ -252,9 +252,9 @@ Berry = function(options, target) {
 	 * @param {Berry.field} parent This is the parent field
 	 * @param {string} insert Location relative to target to place the new field
 	 */
-	this.processField = function(item, target, parent, insert) {
+	this.createField = function(item, target, parent, insert) {
 		if(target[0] !== undefined){target = target[0];}
-		var field = this.addField(item, parent, target, insert);
+		var field = addField.call(this, item, parent, target, insert);
 		// this.initializing[field.id] = true;
 		if(typeof field.fieldset === 'undefined') { field.fieldset = target; }
 
@@ -287,7 +287,7 @@ Berry = function(options, target) {
 		return field;
 	};
 
-	this.addField = function(item , parent, target, insert) {
+	var addField = function(item , parent, target, insert) {
 		var field = new Berry.types[item.type](item, this);
 		field.parent = parent;
 
@@ -395,7 +395,7 @@ Berry = function(options, target) {
 		}
 	};
 
-	this.inflate = function(atts) {
+	var inflate = function(atts) {
 		var altered = {};
 		this.each(function(atts, altered) {
 
@@ -426,7 +426,7 @@ Berry = function(options, target) {
 
 
 
-	this.processMultiples = function(attributes) {
+	var processMultiples = function(attributes) {
 		var altered = $.extend(true, {}, attributes);
 		this.each(function(attributes, altered) {
 			if(this.multiple && this.toArray){
@@ -444,7 +444,7 @@ Berry = function(options, target) {
 		return altered;
 	};
 
-	this.importArrays = function(attributes) {
+	var importArrays = function(attributes) {
 		var altered = $.extend(true, {}, attributes);
 		this.each(function(attributes, altered) {
 			if(this.isContainer && this.multiple && this.toArray){
@@ -471,11 +471,11 @@ Berry = function(options, target) {
 	this.load = function(options){
 		if(typeof options.attributes !== 'undefined'){
 			if(options.flatten){
-				options.attributes = this.inflate(options.attributes);
+				options.attributes = inflate.call(this, options.attributes);
 			}
-			this.populate(this.cloneMultiples(this.importArrays(options.attributes)));
+			this.populate(cloneMultiples.call(this, importArrays.call(this, options.attributes)));
 		}else{
-			this.cloneMultiples();
+			cloneMultiples.call(this);
 		}
 		if(options.autoFocus){
 			this.each(function(){
@@ -533,8 +533,6 @@ Berry = function(options, target) {
 	if(typeof this.renderer.initialize === 'function') {
 		this.renderer.initialize();
 	}
-
-
 
 	if(typeof Berry.instances[this.options.name] !== 'undefined') {
 		Berry.instances[this.options.name].on('destroyed', $.proxy(function(){

@@ -6,7 +6,7 @@ Berry.prototype.events.initialize.push({
 			var max = this.multiple.max;
 			if(typeof max === 'undefined' || max > this.parent.children[this.name].instances.length){
 				var item = $.extend({}, this.owner.options.default, this.item, {id: Berry.getUID(), name: this.name});
-				this.owner.processField(
+				this.owner.createField(
 					$.extend({}, this.owner.options.default, this.item, {id: Berry.getUID(), name: this.name}),
 					$(this.self), this.parent, 'after');
 				this.trigger('change');

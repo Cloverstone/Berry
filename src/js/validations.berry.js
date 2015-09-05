@@ -1,6 +1,8 @@
+
+
 Berry.prototype.valid = true;
 Berry.prototype.validate = function(){
-	//this.toJSON();
+	this.toJSON();
 	this.parsefields();
 	this.clearErrors();
 	this.each(this.validateItem);
@@ -11,27 +13,27 @@ Berry.prototype.validateItem = function(){
 	this.owner.errors[this.item.name] = this.errors;
 	this.owner.valid = this.valid && this.owner.valid;
 };
-Berry.prototype.performValidate = function(processee,processValue){
-	var item = processee.item;
-	var value = processee.value;
-	if(typeof processValue !== 'undefined'){value = processValue;}
-	processee.valid = true;
-	processee.errors = '';
+Berry.prototype.performValidate = function(target, pValue){
+	var item = target.item;
+	var value = target.value;
+	if(typeof pValue !== 'undefined'){value = pValue;}
+	target.valid = true;
+	target.errors = '';
 
 	if(typeof item.validate !== 'undefined' && typeof item.validate === 'object'){
 		for(var r in item.validate){
 			if(!Berry.validations[r].method(value,item.validate[r])){
-				if((typeof item.show === 'undefined') || processee.owner.isVisible){
-					processee.valid = false;
-					var errorstring = Berry.validations[r].message;
+				if((typeof item.show === 'undefined') || target.owner.isVisible){
+					target.valid = false;
+					var estring = Berry.validations[r].message;
 					if(typeof item.validate[r] == 'string') {
-						errorstring = item.validate[r];
+						estring = item.validate[r];
 					}
-					processee.errors = errorstring.replace('{{label}}',item.label);
+					target.errors = estring.replace('{{label}}', item.label);
 				}
 			}
-			processee.self.toggleClass(processee.owner.options.errorClass, !processee.valid);
-			processee.self.find('.' + processee.owner.options.errorTextClass).html(processee.errors);
+			target.self.toggleClass(target.owner.options.errorClass, !target.valid);
+			target.self.find('.' + target.owner.options.errorTextClass).html(target.errors);
 		}
 	}
 };
