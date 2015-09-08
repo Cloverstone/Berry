@@ -469,16 +469,30 @@ Berry = function(options, target) {
 	};
 
 	this.load = function(options){
-		if(typeof options.attributes !== 'undefined'){
-			if(options.flatten){
-				options.attributes = inflate.call(this, options.attributes);
+		if(typeof options.attributes !== 'undefined') {
+			if(typeof options.attributes === 'string') {
+				$.ajax({
+					url: this.options.attributes, 
+					method: 'GET',
+					success: $.proxy(function(data){
+						options = this.options = data; 
+						if(options.flatten) {
+							options.attributes = inflate.call(this, options.attributes);
+						}
+						this.populate(cloneMultiples.call(this, importArrays.call(this, options.attributes)));
+					})
+				});
+			}else{
+				if(options.flatten) {
+					options.attributes = inflate.call(this, options.attributes);
+				}
+				this.populate(cloneMultiples.call(this, importArrays.call(this, options.attributes)));
 			}
-			this.populate(cloneMultiples.call(this, importArrays.call(this, options.attributes)));
 		}else{
 			cloneMultiples.call(this);
 		}
-		if(options.autoFocus){
-			this.each(function(){
+		if(options.autoFocus) {
+			this.each(function() {
 				this.focus();
 				return false;
 			});

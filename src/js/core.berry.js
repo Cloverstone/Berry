@@ -62,7 +62,6 @@ Berry.processOpts = function(item, object) {
 			}
 		}
 
-
 	}
 
 	// If a function is defined for choices use that.
@@ -244,6 +243,21 @@ Berry.btn = {
 		}
 	}
 };
+
+Berry.prototype.events.save = [{
+	token: Berry.getUID(),
+	func: function() {
+		if(typeof this.options.action === "string") {
+		$.ajax({
+			url: this.options.action, 
+			data: this.toJSON(),
+			method: this.options.method || 'POST',
+			success: $.proxy(function(){this.trigger('saved')})
+		});
+		}
+	}
+}];
+
 
 function containsKey(l,k){var r={};for(var j in k){if(typeof l[k[j]]!=='undefined'){r[k[j]]=l[k[j]];}}return r;}
 Berry.prototype.sum = function(search) {
