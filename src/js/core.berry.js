@@ -113,11 +113,11 @@ Berry.processOpts = function(item, object) {
 			var cOpt = item.options[o];
 			if(typeof cOpt === 'string' || typeof cOpt === 'number') {
 				cOpt = {label: cOpt};
-				if(item.key !== 'index'){
+				if(item.label_key !== 'index'){
 					cOpt.value = cOpt.label;
 				}
 			}
-			item.options[o] = $.extend({label: cOpt.name, value: o}, {label: cOpt[(item.key || 'title')], value: cOpt[(item.reference || 'id')]}, cOpt);
+			item.options[o] = $.extend({label: cOpt.name, value: o}, {label: cOpt[(item.label_key || 'title')], value: cOpt[(item.value_key || 'id')]}, cOpt);
 
 			//if(!set) {
 				if(typeof item.value !== 'undefined' && item.value !== '') {

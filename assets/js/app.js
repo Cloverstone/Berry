@@ -153,6 +153,25 @@ editor.setValue(JSON.stringify(
 }
 , undefined, "\t"));
 });
+
+
+
+$('#auto').on('click',function() {
+  //editor.setValue('{\n\t"attributes":{"name": "Adam Smallcomb"},\n\t"options":{"inline": false}, \n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
+editor.setValue(JSON.stringify(
+{
+  "fields": {
+    "Text": {},
+    "Text 2": "",
+    "Color": "color",
+    "Options 1": ["hello"],
+    "Options 2": ["hello","goodbye"],
+    "Options 3": ["hello", "more","Another", "dasdf"],
+    "Options 5": ["hello", "more","Another", "final","past"],
+    "Is?": {"type": "checkbox"}
+  }
+}, undefined, "\t"));
+});
 $('#builder').on('click',function() {
 	//editor.setValue('{\n\t"attributes":{"name": "Adam Smallcomb"},\n\t"options":{"inline": false}, \n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
 			var stuff = JSON.parse($.jStorage.get('form'));

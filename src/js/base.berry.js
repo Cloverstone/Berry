@@ -198,6 +198,9 @@ Berry = function(options, target) {
 		if(typeof item === 'string') {
 			item = { type : item, label : i };
 		}
+		if($.isArray(item)) {
+			item = { options : item, label : i };
+		}
 		item = $.extend({}, defaultItem, item);
 
 		//if no name given and a name is needed, check for a given id else use the key
@@ -230,15 +233,29 @@ Berry = function(options, target) {
 					item.type = 'fieldset';
 				}
 			}else{
-				if(item.options.length ==  1){
-					item.type = 'checkbox';
-					item.name = item.options[0].toLowerCase().split(' ').join('_');
-				}else 
-				if(item.options.length <= 3){
-					item.type = 'radio';
-				}else{
-					item.type = 'select';
+				switch(item.options.length){
+					case 2:
+						item.falsestate = item.options[1].toLowerCase().split(' ').join('_');
+					case 1:
+						item.type = 'checkbox';
+						item.truestate = item.options[0].toLowerCase().split(' ').join('_');
+						break;
+					case 3:
+					case 4:
+						item.type = 'radio';
+						break;
+					default:
+						item.type = 'select';
 				}
+				// if(item.options.length ==  1){
+				// 	item.type = 'checkbox';
+				// 	item.truestate = item.options[0].toLowerCase().split(' ').join('_');
+				// }else 
+				// if(item.options.length <= 4){
+				// 	item.type = 'radio';
+				// }else{
+				// 	item.type = 'select';
+				// }
 			}
 		}
 		return item;
