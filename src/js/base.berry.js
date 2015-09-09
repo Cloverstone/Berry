@@ -1,4 +1,4 @@
-//		BerryJS 0.10.0
+//		BerryJS 0.10.1
 //		(c) 2011-2015 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -475,12 +475,13 @@ Berry = function(options, target) {
 					url: this.options.attributes, 
 					method: 'GET',
 					success: $.proxy(function(data){
-						options = this.options = data; 
+						this.options.attributes = data; 
+						options = this.options;
 						if(options.flatten) {
 							options.attributes = inflate.call(this, options.attributes);
 						}
 						this.populate(cloneMultiples.call(this, importArrays.call(this, options.attributes)));
-					})
+					}, this)
 				});
 			}else{
 				if(options.flatten) {
