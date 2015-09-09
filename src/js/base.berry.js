@@ -1,4 +1,4 @@
-//		BerryJS 0.10.0
+//		BerryJS 0.10.1
 //		(c) 2011-2015 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -469,16 +469,31 @@ Berry = function(options, target) {
 	};
 
 	this.load = function(options){
-		if(typeof options.attributes !== 'undefined'){
-			if(options.flatten){
-				options.attributes = inflate.call(this, options.attributes);
+		if(typeof options.attributes !== 'undefined') {
+			if(typeof options.attributes === 'string') {
+				$.ajax({
+					url: this.options.attributes, 
+					method: 'GET',
+					success: $.proxy(function(data){
+						this.options.attributes = data; 
+						options = this.options;
+						if(options.flatten) {
+							options.attributes = inflate.call(this, options.attributes);
+						}
+						this.populate(cloneMultiples.call(this, importArrays.call(this, options.attributes)));
+					}, this)
+				});
+			}else{
+				if(options.flatten) {
+					options.attributes = inflate.call(this, options.attributes);
+				}
+				this.populate(cloneMultiples.call(this, importArrays.call(this, options.attributes)));
 			}
-			this.populate(cloneMultiples.call(this, importArrays.call(this, options.attributes)));
 		}else{
 			cloneMultiples.call(this);
 		}
-		if(options.autoFocus){
-			this.each(function(){
+		if(options.autoFocus) {
+			this.each(function() {
 				this.focus();
 				return false;
 			});
