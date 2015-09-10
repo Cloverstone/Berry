@@ -21,7 +21,6 @@ Berry.renderers['tabs'] = function(owner) {
 			this.owner.options.tabsTarget = this.owner.$el;
 		}
 		this.owner.options.tabsTarget.prepend(Berry.render('berry_tabs', this.owner)).find('a:first').tab('show');
-
 	};
 };
 Berry.prototype.events.initialize.push({

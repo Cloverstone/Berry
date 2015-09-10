@@ -204,7 +204,7 @@ Berry = function(options, target) {
 		item = $.extend({}, defaultItem, item);
 
 		//if no name given and a name is needed, check for a given id else use the key
-		if(typeof item.name === 'undefined' && !item.isContainer){
+		if((typeof item.name === 'undefined' || item.name.length === 0)  && !item.isContainer){
 			if(typeof item.label !== 'undefined' && !isNaN(parseFloat(i))){
 				item.name = item.label.toLowerCase().split(' ').join('_');
 			}else if(typeof item.id !== 'undefined') {
@@ -511,8 +511,10 @@ Berry = function(options, target) {
 		}
 		if(options.autoFocus) {
 			this.each(function() {
-				this.focus();
-				return false;
+				if(!this.isContainer){
+					this.focus();
+					return false;
+				}
 			});
 		}
 	};
@@ -560,12 +562,12 @@ Berry = function(options, target) {
 
 	this.setActions(this.options.actions);
 
-	this.load(this.options);
 
 	if(typeof this.renderer.initialize === 'function') {
 		this.renderer.initialize();
 	}
 
+	this.load(this.options);
 	if(typeof Berry.instances[this.options.name] !== 'undefined') {
 		Berry.instances[this.options.name].on('destroyed', $.proxy(function(){
 			Berry.instances[this.options.name] = this;
