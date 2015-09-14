@@ -214,7 +214,7 @@ $.extend(Berry.field.prototype, {
 			// type: this.type,
 			// name: this.name,
 			id: this.id,
-			// value: this.value,
+			value: this.value,
 			// path: this.getPath()
 		});
 		//this.owner.trigger(topic);

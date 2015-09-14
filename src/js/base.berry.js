@@ -510,11 +510,12 @@ Berry = function(options, target) {
 			cloneMultiples.call(this);
 		}
 
-		// this.each(function() {
-		// 	// if(!this.isContainer){
-		// 		this.trigger('updated');
-		// 	// }
-		// });
+		//Sets the initial state of conditionals
+		this.each(function() {
+			if(!this.isContainer){
+				this.trigger('change');
+			}
+		});
 		if(options.autoFocus) {
 			this.each(function() {
 				if(!this.isContainer){

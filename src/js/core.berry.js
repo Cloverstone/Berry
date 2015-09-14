@@ -252,7 +252,7 @@ Berry.prototype.events.save = [{
 			url: this.options.action, 
 			data: this.toJSON(),
 			method: this.options.method || 'POST',
-			success: $.proxy(function(){this.trigger('saved')})
+			success: $.proxy(function(){this.trigger('saved')}, this)
 		});
 		}
 	}
