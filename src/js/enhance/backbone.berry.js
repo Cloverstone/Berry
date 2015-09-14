@@ -1,3 +1,4 @@
+Berry.backbone = true;
 Berry.prototype.events.initialize.push({
 	token: Berry.getUID(),
 	func: function() {

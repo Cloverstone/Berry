@@ -6,7 +6,7 @@ Berry.field = function(item, owner) {
 
 	this.owner.trigger('initializeField', {field: this});
 
-	$.extend(this, this.owner.options.options, this.item);
+	$.extend(this, this.owner.options, this.item);
 	if(this.item.value !== 0){
 		if(typeof item.value === 'function') {
 			this.valueFunc = item.value;

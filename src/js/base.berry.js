@@ -509,6 +509,12 @@ Berry = function(options, target) {
 		}else{
 			cloneMultiples.call(this);
 		}
+
+		// this.each(function() {
+		// 	// if(!this.isContainer){
+		// 		this.trigger('updated');
+		// 	// }
+		// });
 		if(options.autoFocus) {
 			this.each(function() {
 				if(!this.isContainer){
@@ -517,6 +523,8 @@ Berry = function(options, target) {
 				}
 			});
 		}
+
+			this.trigger('loaded');
 	};
 
 
