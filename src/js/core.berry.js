@@ -111,20 +111,41 @@ Berry.processOpts = function(item, object) {
 		var set = false;
 		for ( var o in item.options ) {
 			var cOpt = item.options[o];
+
 			if(typeof cOpt === 'string' || typeof cOpt === 'number') {
 				cOpt = {label: cOpt};
-				if(item.label_key !== 'index'){
+				if(item.value_key !== 'index'){
 					cOpt.value = cOpt.label;
 				}
 			}
-			item.options[o] = $.extend({label: cOpt.name, value: o}, {label: cOpt[(item.label_key || 'title')], value: cOpt[(item.value_key || 'id')]}, cOpt);
+
+			if(typeof item.value_key !== 'undefined'){
+				if(item.value_key === 'index'){
+					cOpt.value = o;
+				}else{
+					cOpt.value = cOpt[item.value_key];
+				}
+			}
+			if(typeof cOpt.value === 'undefined'){
+				cOpt.value = cOpt.id;
+			}
+
+			if(typeof item.label_key !== 'undefined'){
+				cOpt.label = cOpt[item.label_key];
+			}
+			if(typeof cOpt.label === 'undefined'){
+				cOpt.label = cOpt.label || cOpt.name || cOpt.title;
+			}
+
+
+			item.options[o] = cOpt;//$.extend({label: cOpt.name, value: o}, {label: cOpt[(item.label_key || 'title')], value: cOpt[(item.value_key || 'id')]}, cOpt);
 
 			//if(!set) {
 				if(typeof item.value !== 'undefined' && item.value !== '') {
 					if(!$.isArray(item.value)) {
-						item.options[o].selected = (item.options[o].value == item.value);
+						item.options[o].selected = (cOpt.value == item.value);
 					} else {
-						item.options[o].selected = ($.inArray(item.options[o].value, item.value) > -1);
+						item.options[o].selected = ($.inArray(cOpt.value, item.value) > -1);
 					}
 				}
 				// else {
