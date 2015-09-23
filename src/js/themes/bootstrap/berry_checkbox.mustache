@@ -14,7 +14,7 @@
 	{{/label}}
 		<div class="checkbox">
 			<label class="{{alt-display}}">
-				<input name="{{name}}" type="checkbox" {{#value}}checked=checked{{/value}}><{{container}} style="position:relative;display:inline-block">{{text}}</{{container}}>
+				<input name="{{name}}" type="checkbox" {{#value}}checked=checked{{/value}}>{{#container}}<{{container}} style="position:relative;display:inline-block">{{text}}</{{container}}>{{/container}}
 			</label>
 		</div>
 	{{#post}}<span class="input-group-addon">{{{post}}}</span></div>{{/post}}
