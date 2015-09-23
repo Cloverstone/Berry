@@ -1,9 +1,11 @@
 
 
 Berry.prototype.valid = true;
-Berry.prototype.validate = function(){
-	this.toJSON();
-	this.parsefields(this.options);
+Berry.prototype.validate = function(processed){
+	if(!processed) {
+		this.toJSON();
+	}
+	//this.parsefields(this.options);
 	this.clearErrors();
 	this.each(this.validateItem);
 	return this.valid;

@@ -54,14 +54,16 @@ Berry = function(options, target) {
 	 */
 	this.toJSON = function(s, validate) {
 		// validate if desired this.valid will hold the result
-		if(validate || !this.valid) { this.validate(); }
 
 		// if a search string return the valu of the field with that name
 		if(typeof s === 'string' && s.length > 0){
-			return this.find(s).getValue();
+			this.attributes = this.find(s).getValue();
 		} else {
-			return processMultiples.call(this, this.parsefields(this.options));
+			this.attributes = processMultiples.call(this, this.parsefields(this.options));
 		}
+
+		if(validate || !this.valid) { this.validate(true); }
+		return this.attributes;
 	};
 
 
@@ -75,8 +77,12 @@ Berry = function(options, target) {
 					if(min < attcount){min = attcount;}
 				}
 				var status = true;
-				while(this.parent.children[this.name].instances.length < min && status){
-					status = this.clone();
+				var root = this.fields;
+				if(this.parent){root = this.parent.children;}
+				if(root[this.name]){
+					while(root[this.name].instances.length < min && status){
+						status = this.clone();
+					}
 				}
 			}
 		}, [attributes], fields);
