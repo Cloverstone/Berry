@@ -1,4 +1,4 @@
-//		BerryJS 0.10.1
+//		BerryJS 0.10.2
 //		(c) 2011-2015 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -29,7 +29,6 @@ Berry = function(options, target) {
 
 		//Trigger the destroy methods for each field
 		this.each(function() {if(typeof this.destroy === 'function') {this.destroy();}});
-
 		//Clean up affected containers
 		this.$el.empty();
 		for(var i = this.fieldsets.length-1;i >=0; i--) { $(this.fieldsets[i]).empty(); }
@@ -584,17 +583,19 @@ Berry = function(options, target) {
 		this.renderer.initialize();
 	}
 
-	this.load(this.options);
 	if(typeof Berry.instances[this.options.name] !== 'undefined') {
 		Berry.instances[this.options.name].on('destroyed', $.proxy(function(){
+			debugger;
 			Berry.instances[this.options.name] = this;
 			this.initialized = true;
+			this.load(this.options);
 			this.trigger('initialized');
 		},this));
 		Berry.instances[this.options.name].destroy();
 	}else{
 		Berry.instances[this.options.name] = this;
 		this.initialized = true;
+		this.load(this.options);
 		this.trigger('initialized');
 	}
 };

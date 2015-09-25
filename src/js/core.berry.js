@@ -10,7 +10,7 @@ Berry.options = {
 	renderer: 'base',
 	flatten: true,
 	columns: 12,
-	autoDestroy: false,
+	autoDestroy: true,
 	autoFocus: true,
 	actions: ['cancel', 'save']
 };
@@ -72,14 +72,18 @@ Berry.processOpts = function(item, object) {
 	if(typeof item.choices !== 'undefined' && item.choices.length > 0) {
 		if(typeof item.choices === 'string') {
 			if(typeof Berry.collections[item.choices] === 'undefined') {
-				$.ajax({
-					url: item.choices,
-					type: 'get',
-					success: $.proxy(function(data) {
-						Berry.collections[item.choices] = data;
-						this.update({choices: data, value: Berry.search(this.owner.attributes, this.getPath())});
-					}, object)
-				});
+				var getAttributes = function(object){
+					$.ajax({
+						url: item.choices,
+						type: 'get',
+						success: function(data) {
+							Berry.collections[item.choices] = data;
+							object.update({choices: data, value: Berry.search(object.owner.options.attributes, object.getPath())});
+						}
+					});
+				}
+				getAttributes(object);
+
 				item.options = [];
 				return item;
 			} else {

@@ -13,7 +13,7 @@
 	{{/label}}
 		{{#pre}}<div class="input-group"><span class="input-group-addon">{{{pre}}}</span>{{/pre}}
 		{{^pre}}{{#post}}<div class="input-group">{{/post}}{{/pre}}
-			<select class="form-control"  name="{{name}}" {{#multiple_enable}}multiple{{/multiple_enable}} >
+			<select class="form-control"  name="{{name}}" {{^isEnabled}}readonly disabled="true"{{/isEnabled}}  {{#multiple_enable}}multiple{{/multiple_enable}} >
 			{{#options}}
 				<option {{#selected}}selected='selected'{{/selected}} value="{{value}}">
 					{{label}}

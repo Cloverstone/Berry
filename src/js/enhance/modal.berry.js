@@ -2,6 +2,8 @@ Berry.prototype.events.initialize.push({
 	token: Berry.getUID(),
 	func: function() {
 		if((typeof this.$el == 'undefined') || !this.$el.length) {
+			this.options.autoDestroy = false;
+
 			this.$el = $('<div/>');
 			this.options.modal = (this.options.modal || {});
 			this.options.modal.header_class = this.options.modal.header_class || 'bg-success';

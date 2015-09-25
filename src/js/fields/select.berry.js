@@ -6,6 +6,7 @@
 		},
 		setup: function() {
 			this.$el = this.self.find('select');
+			this.$el.off();
 			if(this.onchange !== undefined){
 				this.on('change', this.onchange);
 			}

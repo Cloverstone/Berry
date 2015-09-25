@@ -45,10 +45,10 @@ Berry.prototype.events.initialize.push({
 							temp.set(this.options.model.changed[i]);
 						}
 					}
-				},this);
+				}, this);
 
 				this.on('destroy',function(){
-					this.options.model.on('change', null, this);
+					this.options.model.off('change', null, this);
 				});
 			}
 		}

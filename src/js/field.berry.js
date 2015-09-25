@@ -166,6 +166,7 @@ $.extend(Berry.field.prototype, {
 			if(typeof this.showConditions === 'boolean') {
 				this.self.toggle(this.showConditions);
 				this.isVisible = this.showConditions;
+				this.update({}, true);
 			}
 		}
 		if(typeof this.enabled !== 'undefined') {
@@ -183,6 +184,10 @@ $.extend(Berry.field.prototype, {
 					}
 				}
 			);
+			if(typeof this.enabledConditions == 'boolean'){
+				this.isEnabled = this.enabledConditions;
+				this.update({}, true);
+			}
 		}
 		if(typeof this.parsable !== 'undefined') {
 			this.parsableConditions = Berry.processConditions.call(this, this.parsable,
@@ -197,6 +202,7 @@ $.extend(Berry.field.prototype, {
 					}
 				}
 			);
+			if(typeof this.parsableConditions == 'boolean'){this.isParsable = this.parsableConditions;}
 		}
 		
 		this.owner.trigger('initializedField', {field: this});

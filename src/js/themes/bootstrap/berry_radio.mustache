@@ -16,7 +16,7 @@
 			{{#options}}
 			<div class="radio">
 				<label {{#inline}}class="radio-inline"{{/inline}}>
-					<input data-label="{{label}}" name="{{name}}" value="{{value}}" type="radio" {{#selected}}checked=checked{{/selected}} >
+					<input data-label="{{label}}" name="{{name}}" value="{{value}}" {{^isEnabled}}readonly{{/isEnabled}} type="radio" {{#selected}}checked=checked{{/selected}} >
 					{{{label}}}{{^label}}&nbsp;{{/label}}
 				</label>
 			</div>

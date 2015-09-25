@@ -6,6 +6,7 @@
 		},
 		setup: function() {
 			this.$el = this.self.find('[type=radio]');
+			this.$el.off();
 			if(this.onchange !== undefined) {
 				this.on('change', this.onchange);
 			}
