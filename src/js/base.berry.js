@@ -72,7 +72,11 @@ Berry = function(options, target) {
 
 				var min = this.multiple.min || 1;
 				if(typeof attributes !== 'undefined'){
-					var attcount = Berry.search(attributes, this.getPath()).length;
+					var items = Berry.search(attributes, this.getPath());
+					var attcount = 0;
+					if(items !== null){
+						attcount = items.length;
+					}
 					if(min < attcount){min = attcount;}
 				}
 				var status = true;
@@ -233,14 +237,22 @@ Berry = function(options, target) {
 
 		// Set a sensible type default if type is not defined or not found
 		if(typeof Berry.types[item.type] === 'undefined') {
-			if(typeof item.choices === 'undefined' && typeof item.options === 'undefined'){
-				if(typeof item.fields === 'undefined'){
-					item.type = 'text';
-				}else{
-					item.type = 'fieldset';
-				}
-			}else{
-				switch(item.options.length){
+			// if(typeof item.choices === 'undefined' && typeof item.options === 'undefined'){
+
+			// }else{
+				var length = 0;
+				if(typeof item.choices !== 'undefined'){length = item.choices.length;}
+				if(typeof item.options !== 'undefined'){length = item.options.length;}
+
+				// if(item.options)
+				switch(length){
+					case 0:
+						if(typeof item.fields === 'undefined'){
+							item.type = 'text';
+						}else{
+							item.type = 'fieldset';
+						}						
+						break;
 					case 2:
 						item.falsestate = item.options[1].toLowerCase().split(' ').join('_');
 					case 1:
@@ -264,8 +276,9 @@ Berry = function(options, target) {
 				// 	item.type = 'select';
 				// }
 			}
-		}
+		// }
 		return item;
+		
 	};
 
 	/**
