@@ -2,7 +2,7 @@ Berry.prototype.events.initialize.push({
 	token: Berry.getUID(),
 	func: function() {
 		if((typeof this.$el == 'undefined') || !this.$el.length) {
-			this.options.autoDestroy = false;
+			this.autoDestroy = false;
 
 			this.$el = $('<div/>');
 			this.options.modal = (this.options.modal || {});

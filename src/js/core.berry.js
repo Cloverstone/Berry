@@ -284,7 +284,7 @@ Berry.prototype.events.save = [{
 			}
 		}
 	}
-}]; && o !== null
+}];
 
 function containsKey(l,k){var r={};for(var j in k){if(typeof l[k[j]]!=='undefined'){r[k[j]]=l[k[j]];}}return r;}
 Berry.prototype.sum = function(search) {
