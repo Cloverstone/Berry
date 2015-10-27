@@ -1,4 +1,4 @@
-//		BerryJS 0.10.2
+//		BerryJS 0.10.4
 //		(c) 2011-2015 Adam Smallcomb
 //		Licensed under the MIT license.
 //		For all details and documentation:
@@ -423,6 +423,7 @@ Berry = function(options, target) {
 		if(actions) {
 			actions = containsKey(Berry.btn, actions);
 			for(var action in actions) {
+				actions[action].form = this.options.name;
 				var temp = $(Berry.render('berry__action', actions[action]));
 					if(typeof actions[action].click === 'function'){
 						temp.click($.proxy(actions[action].click, this));
@@ -595,6 +596,7 @@ Berry = function(options, target) {
 	if(typeof this.renderer.initialize === 'function') {
 		this.renderer.initialize();
 	}
+	this.$el.find('form').on('submit', $.proxy(function(){this.trigger('save')}, this) );
 
 	if(typeof Berry.instances[this.options.name] !== 'undefined') {
 		Berry.instances[this.options.name].on('destroyed', $.proxy(function(){

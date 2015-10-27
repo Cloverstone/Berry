@@ -40,7 +40,8 @@ Berry.prototype.events.initialize.push({
 
 			//After the form has been destroyed remove it from the dom
 			this.on('destroyed', $.proxy(function(){
-				this.ref.remove();
+				// this.ref.remove();
+				this.ref.modal('hide');
 				this.trigger('completed');
 			},this));
 		}

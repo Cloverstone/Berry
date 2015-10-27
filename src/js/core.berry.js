@@ -123,7 +123,7 @@ Berry.processOpts = function(item, object) {
 				}
 			}
 
-			if(typeof item.value_key !== 'undefined'){
+			if(typeof item.value_key !== 'undefined' && item.value_key !== ''){
 				if(item.value_key === 'index'){
 					cOpt.value = o;
 				}else{
@@ -134,9 +134,10 @@ Berry.processOpts = function(item, object) {
 				cOpt.value = cOpt.id;
 			}
 
-			if(typeof item.label_key !== 'undefined'){
+			if(typeof item.label_key !== 'undefined' || item.label_key === ''){
 				cOpt.label = cOpt[item.label_key];
 			}
+			
 			if(typeof cOpt.label === 'undefined'){
 				cOpt.label = cOpt.label || cOpt.name || cOpt.title;
 			}
