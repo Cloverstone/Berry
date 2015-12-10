@@ -569,7 +569,7 @@ Berry = function(options, target) {
 	this.fields = {};
 
 	this.options = $.extend({name: Berry.getUID()}, Berry.options, options);
-	this.events = $.extend({}, Berry.prototype.events);
+	this.events = $.extend(true, {}, Berry.prototype.events);
 
 
 	this.trigger('initialize');

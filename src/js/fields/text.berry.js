@@ -2,7 +2,16 @@
 	b.register({type: 'text' });
 	b.register({type: 'raw' });
 	b.register({type: 'password' });
-	b.register({type: 'date' });
+	b.register({type: 'date' ,
+		setValue: function(value) {
+			value = moment.utc(value).format('YYYY-MM-DD');
+			if(typeof this.lastSaved === 'undefined'){
+				this.lastSaved = value;
+			}
+			this.value = value;
+			return this.$el.val(value);
+		}
+	});
 	b.register({type: 'range' });
 
 	b.register({type: 'hidden',

@@ -41,6 +41,9 @@
 		},
 		focus: function(){
 			this.$el.focus();
-		}
+		},
+		satisfied: function(){
+			return this.$el.is(':checked');
+		},
 	});
 })(Berry, jQuery);

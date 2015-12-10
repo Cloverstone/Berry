@@ -4,7 +4,7 @@
 		{{^isContainer}}
 		<tr>
 			<td width="50%">{{label}}</td>
-			<td width="50%"><a href="javascript:void(0)" class="popins" name="{{name}}">{{display}}{{^display}}-empty-{{/display}}</a></td>
+			<td width="50%"><a href="javascript:void(0)" data-popins="{{name}}">{{display}}{{^display}}-empty-{{/display}}</a></td>
 		</tr>
 		{{/isContainer}}
 		{{#isContainer}}
@@ -16,7 +16,7 @@
 		{{#fields}}
 		<tr>
 			<td width="50%">{{label}}</td>
-			<td width="50%"><a href="javascript:void(0)" class="popins" name="{{name}}">{{display}}{{^display}}-empty-{{/display}}</a></td>
+			<td width="50%"><a href="javascript:void(0)" data-popins="{{name}}">{{display}}{{^display}}-empty-{{/display}}</a></td>
 		</tr>
 		{{/fields}}
 		{{/instances}}

@@ -256,6 +256,9 @@ $.extend(Berry.field.prototype, {
 	enable: function() {
 		this.$el.prop('disabled', false);
 	},
+	satisfied: function(){
+		return (typeof this.value !== 'undefined' && this.value !== null && this.value !== '');
+	},
 	displayAs: function() {
 		return this.lastSaved;
 	},

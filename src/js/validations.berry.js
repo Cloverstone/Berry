@@ -24,7 +24,7 @@ Berry.prototype.performValidate = function(target, pValue){
 
 	if(typeof item.validate !== 'undefined' && typeof item.validate === 'object'){
 		for(var r in item.validate){
-			if(!Berry.validations[r].method(value,item.validate[r])){
+			if(!Berry.validations[r].method.call(target, value, item.validate[r])){
 				if((typeof item.show === 'undefined') || target.owner.isVisible){
 					target.valid = false;
 					var estring = Berry.validations[r].message;
@@ -66,7 +66,8 @@ Berry.validations = {
 //      if (field.type === 'checkbox') {
 //          return (field.checked === true);
 //      }
-			return (value !== null && value !== '');
+			return this.satisfied();
+			// return (value !== null && value !== '');
 		},
 		message: 'The {{label}} field is required.'
 	},
