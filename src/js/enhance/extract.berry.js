@@ -4,7 +4,7 @@ Berry.prototype.events.initialize.push({
 	func: function() {
 		if(typeof this.options.template !== 'undefined'){
 			
-			var myRegexp = /\{\{(.[\s\S]*?)\}\}/g;
+			var myRegexp = /\{\{\{?(.[\s\S]*?)\}\}\}?/g;
 			text = this.options.template;
 			var tempdiv = text;
 			var match = myRegexp.exec(text);
