@@ -8,7 +8,7 @@ Berry.prototype.events.initialize.push({
 			text = this.options.template;
 			var tempdiv = text;
 			var match = myRegexp.exec(text);
-			var form = {};
+			// var form = {};
 
 			while (match != null) {
 				var splits = match[1].split(':{');
@@ -19,7 +19,7 @@ Berry.prototype.events.initialize.push({
 					if(splits.length>1){cobj = JSON.parse('{'+splits[1] )}
 
 
-					this.fields[splits[0]] = $.extend(this.fields[splits[0]], cobj);
+					this.options.fields[splits[0]] = $.extend(this.options.fields[splits[0]], cobj);
 					tempdiv = tempdiv.replace(match[0], "{{"+pre+splits[0].toLowerCase().split(' ').join('_')+"}}");
 				}
 				match = myRegexp.exec(text);
