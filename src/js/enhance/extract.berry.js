@@ -9,7 +9,7 @@ Berry.prototype.events.initialize.push({
 			var tempdiv = text;
 			var match = myRegexp.exec(text);
 			// var form = {};
-
+			this.options.fields = this.options.fields || {};
 			while (match != null) {
 				var splits = match[1].split(':{');
 				var pre = '';
