@@ -66,7 +66,6 @@ Berry.renderers['popins'] = function(owner) {
 };
 
 Berry.renderers.popins.prototype.create = function(field){
-	// debugger;
 	var target = field.owner.$el.find('[data-popins="' + field.name + '"]');
 	var pOpts = $.extend(/*{trigger: "manual" , html: true, animation:false},*/{container: '#'+field.owner.$el.attr('id'), viewport:{ selector: '#content', padding: 20 }}, {    title:'<div style="padding-left:0"><div class="btn-group pull-right"><div style="margin-left:2px;" class="btn-xs popoverCancel fa fa-times btn btn-danger" data-name="'+field.name+'" data-berry="'+field.owner.options.name+'"></div><div class="btn-xs fa fa-check btn btn-success popoverSave" data-name="'+field.name+'" data-berry="'+field.owner.options.name+'"></div></div></div>'+(field.prompt || field.label), content: field.self, html: true, placement: 'left auto', template: '<div class="popover berry"><div class="arrow"></div><h3 class="popover-title"></h3><div style="min-width:270px" class="popover-content"></div></div>'}, field.owner.options.popins, field.popins);
 
@@ -80,7 +79,6 @@ Berry.renderers.popins.prototype.create = function(field){
 	target.on('shown.bs.popover', function () {
 		var field = Berry.instances[$('.berry.popover').find('.row').data('berry')].find($('.berry.popover').find('.row').attr('name'));
 		field.initialize(); //maybe not needed
-		 // debugger;
 		field.focus();
 	});
 };
@@ -91,12 +89,7 @@ Berry.prototype.events.initialize.push({
 		if(this.options.renderer == 'popins'){
 			this.options.default = {hideLabel: true};
 			this.options.inline = true;
-			// default: {hideLabel: true}
-		$.extend(this.options.default,{hideLabel: true});
-			// if(this.save){
-			// 	this.on('updated',	function() { this.save(); });
-			// }
-			//this.on('updated', function() {debugger; this.trigger('save'); });
+			$.extend(this.options.default,{hideLabel: true});
 		}
 	}
 });

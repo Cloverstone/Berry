@@ -268,13 +268,13 @@ $.extend(Berry.field.prototype, {
 				this.display = this.displayAs();
 				return Berry.render(this.item.template, this);
 			} else {
-				return this.displayAs() || this.item.default || 'Empty';
+				return this.displayAs() || this.item.default || this.item.value  || 'Empty';
 			}
 		}else{
 			if(this.item.template !== undefined) {
 				return Berry.render(this.item.template, this);
 			} else {
-				return this.lastSaved || this.item.default ||  'Empty';
+				return this.lastSaved || this.item.default || this.item.value  ||  'Empty';
 			}
 		}
 	},

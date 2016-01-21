@@ -86,7 +86,11 @@
 			// 	this.revert();
 			// 	return 0;
 			// }
+		},
+		satisfied: function(){
+			return (typeof this.value !== 'undefined' && this.value !== null && this.value !== '' && this.value !== 0);
 		}
+
 	});
 
 	b.register({ type: 'tags',

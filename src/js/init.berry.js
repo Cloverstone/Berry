@@ -135,7 +135,7 @@ Berry.processOpts = function(item, object) {
 				cOpt.value = cOpt.id;
 			}
 
-			if(typeof item.label_key !== 'undefined' || item.label_key === ''){
+			if(typeof item.label_key !== 'undefined' && item.label_key !== ''){
 				cOpt.label = cOpt[item.label_key];
 			}
 			
