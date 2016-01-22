@@ -16,7 +16,7 @@
 	{{#size}}<div>{{/size}}
 		<input placeholder="Enter image url here or..." type="hidden" name="imgUrl" value="{{value}}">
 	    {{^value}}<button class="btn btn-default">Select Image</button>{{/value}}
-	    {{#value}}<img class="thumbnail pull-left" style="max-width:100%;" {{#value}}src="{{path}}{{value}}"{{/value}}>{{/value}}
+	    {{#value}}<img class="thumbnail pull-left" style="max-width:100%;max-height:200px" {{#value}}src="{{path}}{{value}}"{{/value}}>{{/value}}
 		{{>berry__addons}}
 	</div>
 </div>
