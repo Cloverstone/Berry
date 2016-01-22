@@ -3,10 +3,10 @@
 		create: function() {
 			//return f.render('berry_grid_select', f.processOpts(this.item));
 			this.options = b.processOpts.call(this.owner, this.item, this).options;
-			if(this.value_key){
+			// if(this.value_key){
 				for(var i in this.options){
-					this.options[i].image = this.options[i][this.value_key];
-				}
+					this.options[i].image = this.options[i][(this.value_key || 'value')];
+				// }
 			}
 			return b.render('berry_' + (this.elType || this.type), this);
 		},

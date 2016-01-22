@@ -16,8 +16,8 @@
 			<div name="{{name}}" style="max-height:200px;overflow-y:scroll;margin:0 -5px -10px;color:#fefefe" class="list">
 			{{#options}}
 				<div data-title="{{label}}" class="col-md-3 {{#selected}}text-success{{/selected}}" {{#value}}data-value="{{value}}"{{/value}}>
-<div style="border:solid 3px;height:85px;margin:5px -10px ;">
-					{{#image}}<img src="{{root}}{{image}}" alt="contact" class="img-rounded avatar hidden-phone" style="max-width: 100%;">{{/image}}
+<div style="border:solid 3px;height:85px;margin:5px -10px;text-align:center">
+					{{#image}}<img src="{{root}}{{image}}" alt="{{label}}" class="img-rounded avatar hidden-phone" style="max-width:100%;max-height:100%">{{/image}}
 </div>
 				</div>
 			{{/options}}
