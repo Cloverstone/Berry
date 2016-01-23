@@ -1,5 +1,6 @@
 (function(b, $){
 	b.register({ type: 'grid_select',
+		defaults: {select_class: "text-info",},
 		create: function() {
 			//return f.render('berry_grid_select', f.processOpts(this.item));
 			this.options = b.processOpts.call(this.owner, this.item, this).options;
@@ -14,9 +15,8 @@
 			this.$el = this.self.find('.list');
 			this.$el.children('.col-md-3').off();
 			this.$el.children('.col-md-3').on('click', $.proxy(function(e){
-				
-				this.$el.children('.text-success').removeClass('text-success');
-				$(e.target).closest('.col-md-3').addClass('text-success');
+				this.$el.children('.'+this.select_class).removeClass(this.select_class);
+				$(e.target).closest('.col-md-3').addClass(this.select_class);
 
 				if(typeof this.onchange === 'function'){
 					this.onchange();
@@ -25,7 +25,7 @@
 			}, this));
 		},
 		getValue: function() {
-			return this.$el.children('.text-success').attr('data-value');
+			return this.$el.children('.'+this.select_class).attr('data-value');
 		},
 		setValue: function(val) {
 			return this.$el.children('[data-value="'+val+'"]').click();

@@ -1,7 +1,7 @@
 (function(b, $){
 	b.register({
 		type: 'upload',
-		default: {autosize: true, advanced: false},
+		defaults: {autosize: true, advanced: false},
 		setup: function() {
 			this.$el = this.self.find('form input');
 			this.$el.off();
