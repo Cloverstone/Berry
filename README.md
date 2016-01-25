@@ -16,6 +16,6 @@ Berry is also built very modulerly, each field type is defined independently and
 
 There is documentation, an editor for building forms and a few examples [here](http://cloverstone.github.io/Berry) I will attempt to improve all of that as time permits and if people actually want to use it.
 
-Tests can be run [here](http://cloverstone.github.io/Berry/test/specrunner.html)
+Tests can be run [here](http://cloverstone.github.io/Berry/test/SpecRunner.html)
 
 I know this doesn't have every modern piece we expect from open source projects like ways to install or support for require or badges and stuff like that, but it works quite well and has been a huge time saver for me over the last few years and I don't have infinite time. So if you would like to contribute and help bring this up to modern expectations I would greatly appreciate that. However if you think this is garbage I really don't care to hear that.
