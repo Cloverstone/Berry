@@ -10,9 +10,7 @@ Berry is a javascript library that aims to make form creation, usage and maintan
 Berry tries to solve many of the problems that creating forms often comes with. Consistancy is one of the first problems Berry trys to solve, both when the same type us used multiple places as well as when different types are used. For example if you have two text boxs that you want to look the same the html is auto generated so you only need to fix/change it in the template that is used. Additionally since the format is similar for the different types, if you want to change a 'radio' to a 'select' type input you simply change the type in the definition, you don't need to go through each option and change the html. Many of these problems have been solved in different projects in different ways, Berry attempts to do this in a project agnostic way.
 
 ======
-
 Berry is also built very modulerly, each field type is defined independently and allows for custom types to be created including types with no html spec analog if desired. The theme is completely separated out as well meaning themes could be created for any popular framework or custom for your own project. Also the way the form is rendered is modular, allowing the same definition to be rendered as a set of fieldsets, a table, tabs by fieldset, or a wizard by fieldset and more could be created as needed. Additionally the framework is able to be extended without modifying the main code, included are three example of this: creating the form in a modal by simply not passing a target, tying the form to a backbone model by passing a model with a schema defined for the form allowing for auto syncing and populating, and the third is a way to derive the fiels form a modified mustache template.
-
 
 There is documentation, an editor for building forms and a few examples [here](http://cloverstone.github.io/Berry). I will attempt to improve all of that as time permits and depending on if people actually want to use it.
 
@@ -25,4 +23,5 @@ I know this doesn't have every modern piece we expect from open source projects 
 * Try to remove dependence on jQuery
 * Support for other common css frameworks
 * Full test coverage
+* Restructure conditions to allow for multiple
 * More
