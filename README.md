@@ -19,3 +19,10 @@ There is documentation, an editor for building forms and a few examples [here](h
 Tests can be run [here](http://cloverstone.github.io/Berry/test/SpecRunner.html)
 
 I know this doesn't have every modern piece we expect from open source projects like ways to install or support for require or badges and stuff like that, but it works quite well and has been a huge time saver for me over the last few years and I don't have infinite time. So if you would like to contribute and help bring this up to modern expectations I would greatly appreciate that. However if you think this is garbage I really don't care to hear that.
+
+##ToDo?
+
+* Try to remove dependence on jQuery
+* Support for other common css frameworks
+* Full test coverage
+* More
