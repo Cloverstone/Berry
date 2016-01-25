@@ -11,12 +11,10 @@ document.addEventListener('DOMContentLoaded', function(){
 			}
       $('.target').berry(
       	$.extend({autoFocus: false, actions: false, name: 'myForm'}, JSON.parse(editor.getValue())) ).delay('change', function(){
-				// console.clear();
-				// console.log(this.toJSON(null, true));
         var json = this.toJSON();
 				$('.result').html("<pre>"+JSON.stringify(json, undefined, "\t")+"</pre>");
         location.hash = '#'+$.param(json);
-			}, true);//.trigger("change");
+			}, true);
     } catch (e) {
         return false;
     }
@@ -25,18 +23,10 @@ document.addEventListener('DOMContentLoaded', function(){
 			for(var i in stuff){
 				delete stuff[i].widgetType;
 			}
-//	editor.setValue('{\n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
 	editor.setValue(JSON.stringify({fields: stuff}, undefined, "\t"));
-	//editor.setValue();
-	// $('.target').berry({autoFocus: false, actions: false,
-	// 	fields: JSON.parse(editor.getValue())
-	// });
-
-	//$('.source').html(JSON.stringify(fields));
 });
 
 $('#basic').on('click',function() {
-	//editor.setValue('{\n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
 editor.setValue(JSON.stringify({"fields": [
   {
     "label": "Name",
@@ -61,9 +51,6 @@ editor.setValue(JSON.stringify({"fields": [
 });
 
 $('#conditional').on('click', function(){
-	//editor.setValue('{\n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]},\n\t\t	"Reason": {"type": "textarea", "show": {"matches": {"name": "salutation", "value": "Hello"}}}  \n\t}\n}');
-
-
 editor.setValue(JSON.stringify({"fields": [
   {
     "label": "Name",
@@ -121,10 +108,9 @@ editor.setValue(JSON.stringify({"fields": [
 });
 
 $('#nonfields').on('click',function() {
-	//editor.setValue('{\n\t"attributes":{"name": "Adam Smallcomb"},\n\t"options":{"inline": false}, \n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
 editor.setValue(JSON.stringify(
 {
-"attributes":{"name": "Adam Smallcomb", "candy": "Other"},
+"attributes":{"name": "John Doe", "candy": "Other"},
 "options":{"inline": false},
 "fields": [
   {
@@ -157,7 +143,6 @@ editor.setValue(JSON.stringify(
 
 
 $('#auto').on('click',function() {
-  //editor.setValue('{\n\t"attributes":{"name": "Adam Smallcomb"},\n\t"options":{"inline": false}, \n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
 editor.setValue(JSON.stringify(
 {
   "fields": {
@@ -173,11 +158,9 @@ editor.setValue(JSON.stringify(
 }, undefined, "\t"));
 });
 $('#builder').on('click',function() {
-	//editor.setValue('{\n\t"attributes":{"name": "Adam Smallcomb"},\n\t"options":{"inline": false}, \n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
 			var stuff = JSON.parse($.jStorage.get('form'));
 			for(var i in stuff){
 				delete stuff[i].widgetType;
 			}
-//	editor.setValue('{\n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]}\n\t}\n}');
 	editor.setValue(JSON.stringify({"fields": stuff}, undefined, "\t"));
 });
