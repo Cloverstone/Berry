@@ -1,0 +1,13 @@
+<div class="row clearfix form-group {{modifiers}} {{#multiple.duplicate}}dupable" data-min="{{multiple.min}}" data-max="{{multiple.max}}{{/multiple.duplicate}}" name="{{name}}" data-type="{{type}}">
+	{{>berry__label}}
+	{{#label}}
+	{{#inline}}<div class="col-md-12" {{#advanced}}style="padding:0px 13px"{{/advanced}}>{{/inline}}
+	{{^inline}}<div class="col-md-8" {{#advanced}}style="padding:0px 13px"{{/advanced}}>{{/inline}}
+	{{/label}}
+	{{^label}}
+	<div class="col-md-12" {{#advanced}}style="padding:0px 13px"{{/advanced}}>
+	{{/label}}
+		<textarea class="form-control"  {{^isEnabled}}readonly{{/isEnabled}} style="width:100%;height:auto;min-height:20px" rows="{{rows}}{{^rows}}3{{/rows}}" name="{{name}}" id="{{guid}}" placeholder="{{placeholder}}">{{content}}{{value}}</textarea>
+			{{>berry__addons}}
+	</div>
+</div>

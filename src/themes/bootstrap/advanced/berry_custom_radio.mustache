@@ -1,0 +1,27 @@
+<div class="row clearfix form-group {{modifiers}} {{#multiple.duplicate}}dupable" data-min="{{multiple.min}}" data-max="{{multiple.max}}{{/multiple.duplicate}}" name="{{name}}" data-type="{{type}}">
+	{{>berry__label}}
+	{{#multiple.duplicate}}
+	<div class="duplicate add btn btn-default"><i class="fa fa-plus"></i></div>
+	<div class="btn btn-default remove"><i class="fa fa-minus"></i></div>
+	{{/multiple.duplicate}}
+	{{#label}}
+	{{#inline}}<div class="col-md-12">{{/inline}}
+	{{^inline}}<div class="col-md-8">{{/inline}}
+	{{/label}}
+	{{^label}}
+	<div class="col-md-12">
+	{{/label}}
+		{{#pre}}<div class="input-group"><span class="input-group-addon">{{{pre}}}</span>{{/pre}}
+		{{^pre}}{{#post}}<div class="input-group">{{/post}}{{/pre}}
+			<div class="custom-group"  name="{{name}}" style="max-height:200px;overflow-y:scroll;">
+			{{#options}}
+				<a href="javascript:void(0);" class="btn{{^selected}} {{defaultClass}}{{/selected}}{{#selected}} {{selectedClass}}{{/selected}}" data-value="{{value}}">
+					{{{label}}}
+				</a>&nbsp;
+			{{/options}}
+			</div>
+		{{#post}}<span class="input-group-addon">{{{post}}}</span></div>{{/post}}
+		{{^post}}{{#pre}}</div>{{/pre}}{{/post}}
+		{{>berry__addons}}
+	</div>
+</div>

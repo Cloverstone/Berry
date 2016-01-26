@@ -1,0 +1,23 @@
+<div class="row clearfix {{modifiers}} {{#multiple.duplicate}}dupable" data-min="{{multiple.min}}" data-max="{{multiple.max}}{{/multiple.duplicate}}" name="{{name}}" data-type="{{type}}">
+	{{>berry__label}}
+	{{#multiple.duplicate}}
+	<div class="duplicate add btn btn-default"><i class="fa fa-plus"></i></div>
+	<div class="btn btn-default remove"><i class="fa fa-minus"></i></div>
+	{{/multiple.duplicate}}
+	{{#label}}
+	{{#inline}}<div class="col-md-12" style="margin:0 0 5px">{{/inline}}
+	{{^inline}}<div class="col-md-8" style="margin:0 0 15px">{{/inline}}
+	{{/label}}
+	{{^label}}
+	{{#inline}}<div class="col-md-12" style="margin: -10px 0 5px;"">{{/inline}}
+	{{^inline}}<div class="col-md-8" style="margin: -5px 0 10px">{{/inline}}
+	{{/label}}
+		<div class="checkbox">
+			<label class="{{alt-display}}">
+				<input name="{{name}}" type="checkbox" {{^isEnabled}}readonly{{/isEnabled}} {{#value}}checked=checked{{/value}}>{{#container}}<{{container}} style="position:relative;display:inline-block">{{text}}</{{container}}>{{/container}}
+			</label>
+		</div>
+	{{#post}}<span class="input-group-addon">{{{post}}}</span></div>{{/post}}
+		{{>berry__addons}}
+	</div>
+</div>

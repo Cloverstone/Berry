@@ -1,0 +1,26 @@
+<table id="{{id}}" class="table table-bordered table-striped" style="clear: both">
+	<tbody>
+		{{#fields}}
+		{{^isContainer}}
+		<tr>
+			<td width="50%">{{label}}</td>
+			<td width="50%"><a href="javascript:void(0)" data-popins="{{name}}">{{display}}{{^display}}-empty-{{/display}}</a></td>
+		</tr>
+		{{/isContainer}}
+		{{#isContainer}}
+		{{#instances}}
+		<tr>
+			<td width="50%"><b>{{legend}}{{^legend}}{{label}}{{/legend}}</b></td>
+			<td width="50%"></td>
+		</tr>
+		{{#fields}}
+		<tr>
+			<td width="50%">{{label}}</td>
+			<td width="50%"><a href="javascript:void(0)" data-popins="{{name}}">{{display}}{{^display}}-empty-{{/display}}</a></td>
+		</tr>
+		{{/fields}}
+		{{/instances}}
+		{{/isContainer}}
+		{{/fields}}
+	</tbody>
+</table>

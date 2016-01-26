@@ -1,0 +1,23 @@
+<div class="{{^size}} form-group {{/size}}{{#size}}col-sm-{{size}} {{/size}} clearfix{{modifiers}} {{#multiple.duplicate}}dupable" data-min="{{multiple.min}}" data-max="{{multiple.max}}{{/multiple.duplicate}}" name="{{name}}" data-type="{{type}}">
+	{{>berry__label}}
+	{{#multiple.duplicate}}
+	<div class="duplicate add btn btn-default"><i class="fa fa-plus"></i></div>
+	<div class="btn btn-default remove"><i class="fa fa-minus"></i></div>
+	{{/multiple.duplicate}}
+	{{^size}}
+	{{#label}}
+	{{#inline}}<div class="col-md-12">{{/inline}}
+	{{^inline}}<div class="col-md-8">{{/inline}}
+	{{/label}}
+	{{^label}}
+	<div class="col-md-12">
+	{{/label}}
+	{{/size}}
+	{{#size}}<div>{{/size}}
+		<input placeholder="Enter image url here or..." type="hidden" name="imgUrl" value="{{value}}">
+	    {{^value}}<button class="btn btn-default">Select Image</button>{{/value}}
+	    {{#value}}<img class="thumbnail pull-left" style="max-width:100%;max-height:200px" {{#value}}src="{{path}}{{value}}"{{/value}}>{{/value}}
+		{{>berry__addons}}
+	</div>
+</div>
+
