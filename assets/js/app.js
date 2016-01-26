@@ -13,17 +13,31 @@ document.addEventListener('DOMContentLoaded', function(){
       	$.extend({autoFocus: false, actions: false, name: 'myForm'}, JSON.parse(editor.getValue())) ).delay('change', function(){
         var json = this.toJSON();
 				$('.result').html("<pre>"+JSON.stringify(json, undefined, "\t")+"</pre>");
-        location.hash = '#'+$.param(json);
+        // location.hash = '#'+$.param(json);
 			}, true);
     } catch (e) {
         return false;
     }
 	});
-			var stuff = JSON.parse(($.jStorage.get('form') || "{}"));
-			for(var i in stuff){
-				delete stuff[i].widgetType;
-			}
-	editor.setValue(JSON.stringify({fields: stuff}, undefined, "\t"));
+	var stuff = JSON.parse(($.jStorage.get('form') || "{}"));
+	for(var i in stuff){
+		delete stuff[i].widgetType;
+	}
+  $('#example').click();
+	//editor.setValue(JSON.stringify({fields: stuff}, undefined, "\t"));
+});
+
+$('#example').on('click',function() {
+editor.setValue(JSON.stringify({      
+  "attributes": {"first_name": "", "name_last": ""},
+  "fields":[
+    {"label": "First Name"}, 
+    {"label": "Last Name", "name": "name_last"},
+    {"label": "Age", "type": "number"},
+    {"label": "Favorite Color", "type": "color"}
+  ]
+}
+, undefined, "\t"));
 });
 
 $('#basic').on('click',function() {

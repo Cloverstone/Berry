@@ -76,7 +76,12 @@
     &lt;script type='text/javascript' src='berry.min.js'&gt;&lt;/script&gt;
     &lt;script type='text/javascript' src='bootstrap.berry.js'&gt;&lt;/script&gt;
     &lt;script type="text/javascript"&gt;
-      $('.myForm').berry({fields:[{}]});
+      $('.myForm').berry({
+      attributes: {first_name: 'John', last_name: 'Doe'},//optional
+      fields: [
+        {label: 'First Name'}, 
+        {label: 'Last Name'}
+      ], actions: false});
     &lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
@@ -85,7 +90,8 @@
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 			<hr>
-
+			<div class="myForm"></div>
+			<hr>
 			<footer>
 				<p>&copy; Adam Smallcomb 2016</p>
 			</footer>
@@ -96,11 +102,14 @@
 		<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
 		<script type='text/javascript' src='//twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js'></script>
 
-		<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3//jquery-ui.min.js'></script>
+		<!-- // <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3//jquery-ui.min.js'></script> -->
 		<script type='text/javascript' src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
 
 		<script type='text/javascript' src='bin/berry.min.js'></script>
 		<script type='text/javascript' src='bin/bootstrap.berry.js'></script>
 		<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+
+		<script>$('.myForm').berry({      attributes: {first_name: 'John', last_name: 'Doe'},
+fields:[{label:'First Name'}, {label: 'Last Name'}], actions: false});</script>
 	</body>
 </html>
