@@ -118,7 +118,7 @@ Berry.validations = {
 	},
 	exact_length:{
 		method: function(value, length) {
-			if (!Berry.regex.numericBerry.test(length)) {
+			if (!Berry.regex.numeric.test(length)) {
 				return false;
 			}
 			return (value.length === parseInt(length, 10));
@@ -127,7 +127,7 @@ Berry.validations = {
 	},
 	greater_than:{
 		method: function(value, param) {
-			if (!decimalRegex.test(value)) {
+			if (!Berry.regex.decimal.test(value)) {
 				return false;
 			}
 			return (parseFloat(value) > parseFloat(param));
@@ -136,7 +136,7 @@ Berry.validations = {
 	},
 	less_than:{
 		method: function(value, param) {
-			if (!decimalRegex.test(value)) {
+			if (!Berry.regex.decimal.test(value)) {
 				return false;
 			}
 			return (parseFloat(value) < parseFloat(param));
@@ -145,25 +145,25 @@ Berry.validations = {
 	},
 	alpha:{
 		method: function(value) {
-			return (alphaRegex.test(value) || value === '');
+			return (Berry.regex.alpha.test(value) || value === '');
 		},
 		message: 'The {{label}} field must only contain alphabetical characters.'
 	},
 	alpha_numeric:{
 		method: function(value) {
-			return (alphaNumericRegex.test(value) || value === '');
+			return (Berry.regex.alphaNumeric.test(value) || value === '');
 		},
 		message: 'The {{label}} field must only contain alpha-numeric characters.'
 	},
 	alpha_dash:{
 		method: function(value) {
-			return (alphaDashRegex.test(value) || value === '');
+			return (Berry.regex.alphaDash.test(value) || value === '');
 		},
 		message: 'The {{label}} field must only contain alpha-numeric characters, underscores, and dashes.'
 	},
 	numeric:{
 		method: function(value) {
-			return (decimalRegex.test(value) || value === '');
+			return (Berry.regex.decimal.test(value) || value === '');
 		},
 		message: 'The {{label}} field must contain only numbers.'
 	},
@@ -175,37 +175,37 @@ Berry.validations = {
 	},
 	decimal:{
 		method: function(value) {
-			return (decimalRegex.test(value) || value === '');
+			return (Berry.regex.decimal.test(value) || value === '');
 		},
 		message: 'The {{label}} field must contain a decimal number.'
 	},
 	is_natural:{
 		method: function(value) {
-			return (naturalRegex.test(value) || value === '');
+			return (Berry.regex.natural.test(value) || value === '');
 		},
 		message: 'The {{label}} field must contain only positive numbers.'
 	},
 	is_natural_no_zero:{
 		method: function(value) {
-			return (naturalNoZeroRegex.test(value) || value === '');
+			return (Berry.regex.naturalNoZero.test(value) || value === '');
 		},
 		message: 'The {{label}} field must contain a number greater than zero.'
 	},
 	valid_ip:{
 		method: function(value) {
-			return (ipRegex.test(value) || value === '');
+			return (Berry.regex.ip.test(value) || value === '');
 		},
 		message: 'The {{label}} field must contain a valid IP.'
 	},
 	valid_url:{
 		method: function(value) {
-			return (urlRegex.test(value) || value === '');
+			return (Berry.regex.url.test(value) || value === '');
 		},
 		message: 'The {{label}} field must contain a valid Url.'
 	},
 	valid_base64:{
 		method: function(value) {
-			return (base64Regex.test(value) || value === '');
+			return (Berry.regex.base64.test(value) || value === '');
 		},
 		message: 'The {{label}} field must contain a base64 string.'
 	}

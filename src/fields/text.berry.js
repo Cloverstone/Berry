@@ -4,7 +4,7 @@
 	b.register({type: 'password' });
 	b.register({type: 'date' ,
 		setValue: function(value) {
-			value = moment.utc(value).format('YYYY-MM-DD');
+			if(typeof moment !== 'undefined'){value = moment.utc(value).format('YYYY-MM-DD');}
 			if(typeof this.lastSaved === 'undefined'){
 				this.lastSaved = value;
 			}

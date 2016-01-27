@@ -14,7 +14,6 @@ Berry is a comprehensive form library that aims to make form creation, usage and
 * [Tests](http://cloverstone.github.io/Berry/test/SpecRunner.html)
 * Build a form with a [GUI](http://cloverstone.github.io/Berry/editor.html)
 
-http://localhost/Berry/sandbox.html
 ###Powerful features
 * Built in duplication of fields
 * Conditionally display fields
