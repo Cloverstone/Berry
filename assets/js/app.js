@@ -1,4 +1,3 @@
-
 var urlParams;
 (window.onpopstate = function () {
     var match,
@@ -46,129 +45,132 @@ document.addEventListener('DOMContentLoaded', function(){
 	//editor.setValue(JSON.stringify({fields: stuff}, undefined, "\t"));
 });
 
-$('#example').on('click',function() {
-editor.setValue(JSON.stringify({      
-  "attributes": {"first_name": "John", "name_last": "Doe"},
-  "fields":[
-    {"label": "First Name"}, 
-    {"label": "Last Name", "name": "name_last"},
-    {"label": "Age", "type": "number"},
-    {"label": "Favorite Color", "type": "color"}
-  ]
-}
-, undefined, "\t"));
-});
 
-$('#basic').on('click',function() {
-editor.setValue(JSON.stringify({"fields": [
-  {
-    "label": "Name"
-  },
-  {
-    "label": "Job Title",
-    "name": "title"
-  },
-  {
-    "label": "Favorite State",
-    "choices": "data/states.json"
-  }
-]}
-, undefined, "\t"));
-});
-
-$('#conditional').on('click', function(){
-editor.setValue(JSON.stringify({"fields": [
-  {
-    "label": "Name"
-  },
-  {
-    "label": "Title"
-  },
-  {
-    "label": "Favorite Candy",
-    "name": "candy",
-    "choices": [
-      "Lolipops",
-      "Chocolate",
-      "Other"
-    ]
-  },
-	{"label": "Reason", "type": "textarea", "show": {"matches": {"name": "candy", "value": "Chocolate"}}}  
-]}
-, undefined, "\t"));
-
-
-
-});
-
-$('#duplicate').on('click', function(){
-editor.setValue(JSON.stringify({"fields": [
-  {
-    "label": "Name"
-  },
-  {
-    "label": "Title"
-  },
-	{"name": "fc_container", "legend": "Favorite Candies", "fields": {
-		"fc": {"label":false, "multiple": {"duplicate": true, "max": 4, "min": 2}, "fields": {
-			"Candy Type": {}
-		}
-  }}}
-]}
-, undefined, "\t"));
-
-
-});
-
-$('#nonfields').on('click',function() {
-editor.setValue(JSON.stringify(
-{
-"attributes":{"name": "John Doe", "candy": "Other"},
-"inline": true,
-"fields": [
-  {
-    "label": "Name"
-  },
-  {
-    "label": "Title"
-  },
-  {
-    "label": "Favorite Candy",
-    "name": "candy",
-    "type": "select",
-    "value": "",
-    "choices": [
-      "Lolipops",
-      "Chocolate",
-      "Other"
-    ]
-  }
-]
-}
-, undefined, "\t"));
-});
-
-
-
-$('#auto').on('click',function() {
-editor.setValue(JSON.stringify(
-{
-  "fields": {
-    "Text": {},
-    "Text 2": "",
-    "Color": "color",
-    "Options 1": ["hello"],
-    "Options 2": ["hello","goodbye"],
-    "Options 3": ["hello", "more","Another", "dasdf"],
-    "Options 5": ["hello", "more","Another", "final","past"],
-    "Is?": {"type": "checkbox"}
-  }
-}, undefined, "\t"));
-});
 $('#builder').on('click',function() {
-			var stuff = JSON.parse($.jStorage.get('form'));
-			for(var i in stuff){
-				delete stuff[i].widgetType;
-			}
-	editor.setValue(JSON.stringify({"fields": stuff}, undefined, "\t"));
+      var stuff = JSON.parse($.jStorage.get('form'));
+      for(var i in stuff){
+        delete stuff[i].widgetType;
+      }
+  editor.setValue(JSON.stringify({"fields": stuff}, undefined, "\t"));
 });
+
+
+
+
+$('#example').on('click', function(e) {
+  debugger;
+ editor.setValue(JSON.stringify(forms.example, undefined, "\t"));
+});
+$('#basic').on('click', function() {
+  editor.setValue(JSON.stringify(forms.basic, undefined, "\t"));
+});
+$('#conditional').on('click', function(){
+  editor.setValue(JSON.stringify(forms.conditional, undefined, "\t"));
+});
+$('#duplicate').on('click', function(){
+  editor.setValue(JSON.stringify(forms.duplicate, undefined, "\t"));
+});
+$('#nonfields').on('click', function() {
+  editor.setValue(JSON.stringify(forms.nonfields, undefined, "\t"));
+});
+$('#auto').on('click', function() {
+  editor.setValue(JSON.stringify(forms.auto, undefined, "\t"));
+});
+
+
+forms = {
+  "auto": {
+    "fields": {
+      "Text": {},
+      "Text 2": "",
+      "Color": "color",
+      "Options 1": ["hello"],
+      "Options 2": ["hello","goodbye"],
+      "Options 3": ["hello", "more","Another", "dasdf"],
+      "Options 5": ["hello", "more","Another", "final","past"],
+      "Is?": {"type": "checkbox"}
+    }
+  },
+  "nonfields": {
+    "attributes":{"name": "John Doe", "candy": "Other"},
+    "inline": true,
+    "fields": [
+      {
+        "label": "Name"
+      },
+      {
+        "label": "Title"
+      },
+      {
+        "label": "Favorite Candy",
+        "name": "candy",
+        "type": "select",
+        "value": "",
+        "choices": [
+          "Lolipops",
+          "Chocolate",
+          "Other"
+        ]
+      }
+    ]
+  },
+  "duplicate": {
+    "fields": [
+      {
+        "label": "Name"
+      },
+      {
+        "label": "Title"
+      },
+      {"name": "fc_container", "legend": "Favorite Candies", "fields": {
+        "fc": {"label":false, "multiple": {"duplicate": true, "max": 4, "min": 2}, "fields": {
+          "Candy Type": {}
+        }
+      }}}
+    ]
+  },
+  "conditional": {
+    "fields": [
+      {
+        "label": "Name"
+      },
+      {
+        "label": "Title"
+      },
+      {
+        "label": "Favorite Candy",
+        "name": "candy",
+        "choices": [
+          "Lolipops",
+          "Chocolate",
+          "Other"
+        ]
+      },
+      {"label": "Reason", "type": "textarea", "show": {"matches": {"name": "candy", "value": "Chocolate"}}}  
+    ]
+  },
+  "basic": {
+    "fields": [
+      {
+        "label": "Name"
+      },
+      {
+        "label": "Job Title",
+        "name": "title"
+      },
+      {
+        "label": "Favorite State",
+        "choices": "data/states.json"
+      }
+    ]
+  },
+  "example": {      
+    "attributes": {"first_name": "John", "name_last": "Doe"},
+    "fields":[
+      {"label": "First Name"}, 
+      {"label": "Last Name", "name": "name_last"},
+      {"label": "Age", "type": "number"},
+      {"label": "Favorite Color", "type": "color"}
+    ]
+  }
+}
