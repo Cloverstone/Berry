@@ -20,13 +20,14 @@ http://localhost/Berry/sandbox.html
 * Conditionally display fields
 * Validation
 * Multiple rendering types (wizard, tabs, normal)
+* Custom Form elements
 * Load field options from JSON source
 * [Many more!](http://cloverstone.github.io/Berry/docs.html)
 
 ###Very basic example
-```
+```html
 options = {      
-	"attributes": {"first_name": "", "name_last": ""},
+	"attributes": {"first_name": "John", "name_last": "Doe"},
 	"fields":[
 		{"label": "First Name"}, 
 		{"label": "Last Name", "name": "name_last"},
