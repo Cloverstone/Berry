@@ -14,19 +14,19 @@ Berry is a comprehensive form library that aims to make form creation, usage and
 * [Tests](http://cloverstone.github.io/Berry/test/SpecRunner.html)
 * Build a form with a [GUI](http://cloverstone.github.io/Berry/editor.html)
 
-http://localhost/Berry/sandbox.html
 ###Powerful features
 * Built in duplication of fields
 * Conditionally display fields
 * Validation
 * Multiple rendering types (wizard, tabs, normal)
+* Custom Form elements
 * Load field options from JSON source
 * [Many more!](http://cloverstone.github.io/Berry/docs.html)
 
 ###Very basic example
-```
+```js
 options = {      
-	"attributes": {"first_name": "", "name_last": ""},
+	"attributes": {"first_name": "John", "name_last": "Doe"},
 	"fields":[
 		{"label": "First Name"}, 
 		{"label": "Last Name", "name": "name_last"},
