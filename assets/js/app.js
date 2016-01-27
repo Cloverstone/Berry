@@ -70,7 +70,7 @@ editor.setValue(JSON.stringify({"fields": [
   },
   {
     "label": "Favorite State",
-    "choices": "data/states"
+    "choices": "data/states.json"
   }
 ]}
 , undefined, "\t"));
@@ -102,7 +102,6 @@ editor.setValue(JSON.stringify({"fields": [
 });
 
 $('#duplicate').on('click', function(){
-	//editor.setValue('{\n\t"fields": {\n\t\t"Name": {"type": "text"}, \n\t\t"Salutation": {"type": "select", "choices": ["Hello", "Bye"]},\n\t\t	"Reason": {"type": "textarea", "show": {"matches": {"name": "salutation", "value": "Hello"}}},\t"fs_c":{"type": "fieldset", "legend": "Thing", "fields": {\n\t\t"fs": {"label":false, "type": "fieldset","max":2, "multiple": {"duplicate": true}, "toArray": true, "fields": {\n\t\t\t"Name2": {}\n\t\t}\n\t}}}  \n\t}\n}');
 editor.setValue(JSON.stringify({"fields": [
   {
     "label": "Name"
@@ -110,8 +109,8 @@ editor.setValue(JSON.stringify({"fields": [
   {
     "label": "Title"
   },
-	{"name": "fs_c", "legend": "Favorite Candies", "fields": {
-		"fs": {"label":false, "multiple": {"duplicate": true, "max": 4, "min": 2}, "fields": {
+	{"name": "fc_container", "legend": "Favorite Candies", "fields": {
+		"fc": {"label":false, "multiple": {"duplicate": true, "max": 4, "min": 2}, "fields": {
 			"Candy Type": {}
 		}
   }}}
