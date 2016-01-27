@@ -25,7 +25,7 @@ http://localhost/Berry/sandbox.html
 * [Many more!](http://cloverstone.github.io/Berry/docs.html)
 
 ###Very basic example
-```html
+```js
 options = {      
 	"attributes": {"first_name": "John", "name_last": "Doe"},
 	"fields":[
