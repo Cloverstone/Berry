@@ -289,7 +289,8 @@ var QueryStringToHash = function QueryStringToHash  (query) {
   for (var i=0;i<vars.length;i++) {
     var pair = vars[i].split("=");
     pair[0] = decodeURIComponent(pair[0]);
-    pair[1] = decodeURIComponent(pair[1]);
+    debugger;
+    pair[1] = decodeURIComponent((pair[1] || "").split('+').join(' '));
       // If first entry with this name
     if (typeof query_string[pair[0]] === "undefined") {
       query_string[pair[0]] = pair[1];
