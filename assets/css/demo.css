@@ -21,10 +21,6 @@ height: 60px;
 border-top: 10px solid #191c21;
 opacity: .95
 }
-.container{
-
-    width: 100%;
-}
 .navbar-inverse .navbar-nav>li>a {
 background: #2f353e;
 padding-top: 15px;
