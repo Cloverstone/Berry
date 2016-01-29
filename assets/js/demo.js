@@ -1,30 +1,28 @@
-$('#json').on('click', function(e){
+$('#json, #schema').on('click', function(e){
   $(e.target).siblings().removeClass('active');
   $(e.target).addClass('active');
   $('.view').addClass('hidden');
-  $('.view_json').removeClass('hidden');  
+  $('.view_'+$(e.target).attr('id')).removeClass('hidden');  
   $('.target').removeClass('hidden');
 
   $('#editor').addClass('hidden');
+  setSchema(forms[form]);
 });
 $('#cobler').on('click', function(e) {
   $(e.target).siblings().removeClass('active');
   $(e.target).addClass('active');
-  $('.view').addClass('hidden');
+  $('.view, .target').addClass('hidden');
+  $('.view_result, .view_source, #editor').removeClass('hidden');
 
-  $('.view_result').removeClass('hidden');
-  $('.view_source').removeClass('hidden');
-  $('#editor').removeClass('hidden');
-  $('.target').addClass('hidden');
     if(typeof cb === 'undefined'){
       cb = new cobler({target: '#editor', types: ['form']});
-          cb.on("change", function(){
-          if(typeof forms[form] !== 'undefined'){
-            $.extend(forms[form], {fields:this.toJSON()});
-          }else{
-            $.jStorage.set('form', JSON.stringify(this.toJSON(), undefined, "\t"));
-          }
-    })
+      cb.on("change", function(){
+        if(typeof forms[form] !== 'undefined'){
+          $.extend(forms[form], {fields:this.toJSON()});
+        }else{
+          $.jStorage.set('form', JSON.stringify(this.toJSON(), undefined, "\t"));
+        }
+      })
     }
     if(typeof forms[form] !== 'undefined'){
       var temp = $.extend(true, {}, forms[form]);
@@ -39,7 +37,41 @@ $('#cobler').on('click', function(e) {
               temp.fields[i].widgetType = 'checkbox';
               break;
             default:
-              temp.fields[i].widgetType = 'textbox';
+              options = temp.fields[i].options || temp.fields[i].choices;
+              if(typeof options !== 'undefined'){
+                // if(options.length )
+        // if(item.options)
+        switch(options.length){
+          case 0:
+            if(typeof temp.fields[i].fields === 'undefined'){
+              temp.fields[i].type = 'text';
+            }else{
+              temp.fields[i].type = 'fieldset';
+            }         
+
+            temp.fields[i].widgetType = 'textbox';  
+            break;
+          case 2:
+            temp.fields[i].falsestate = temp.fields[i].options[1].toLowerCase().split(' ').join('_');
+          case 1:
+            temp.fields[i].type = 'checkbox';
+            temp.fields[i].truestate = temp.fields[i].options[0].toLowerCase().split(' ').join('_');
+
+            temp.fields[i].widgetType = 'checkbox';
+            break;
+          case 3:
+          case 4:
+            temp.fields[i].type = 'radio';
+            temp.fields[i].widgetType = 'select';
+            break;
+          default:
+            temp.fields[i].type = 'select';
+            temp.fields[i].widgetType = 'select';
+        }
+
+              }else{
+                temp.fields[i].widgetType = 'textbox';
+              }
               break;
           }
         }else{
@@ -52,124 +84,54 @@ $('#cobler').on('click', function(e) {
     }
 
 });
-$('#schema').on('click', function(e) {
-  $(e.target).siblings().removeClass('active');
-  $(e.target).addClass('active');
-  $('.view').addClass('hidden');
-  $('.view_schema').removeClass('hidden'); 
-  $('.target').removeClass('hidden');
-
-  $('#editor').addClass('hidden');
-              for(var i in forms[form].fields){
-                delete forms[form].fields[i].widgetType;
-              }
-  editor.setValue(JSON.stringify(forms[form], undefined, "\t"));
-});
 
 
 
 
-block = false;
 document.addEventListener('DOMContentLoaded', function(){
 
-	editor = ace.edit("schema_editor");
-	//	editor.setTheme("ace/theme/monokai");
-	editor.getSession().setMode("ace/mode/javascript");
+  editor = ace.edit("schema_editor");
+  editor.getSession().setMode("ace/mode/javascript");
   editor.getSession().setTabSize(2);
-	editor.getSession().on('change', function(e) {
-    if(!block){
-      var stringified = editor.getValue()
-      if(!(/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test(stringified.replace(/"(\\.|[^"\\])*"/g,'')))) {
-        try {
-          forms[form] = JSON.parse(stringified);
-    			for(var i in Berry.instances){
-    				Berry.instances[i].destroy();
-    			}
-          $('.target').berry(
-          	$.extend({autoFocus: false, actions: ['save'], name: 'myForm', attributes: QueryStringToHash(document.location.hash.substr(1) || "") }, forms[form] ) ).delay('change', function(){
-            var json = this.toJSON();
-
-            if(this.options.template){
-
-              $('.result').html("<pre>"+this.options.template.render(json)+"</pre>");
-            }else{
-    				  $('.result').html("<pre>"+JSON.stringify(json, undefined, "\t")+"</pre>");
-            }
-    			}, true).on('save', function(){
-            if(this.validate()){
-              location.hash = '#'+$.param(this.toJSON());
-            }
-            // $.extend(forms[form], {attributes: this.toJSON()});
-            // if(!$('.view_schema').hasClass('hidden')){
-            //   block = true;
-            //   for(var i in forms[form].fields){
-            //     delete forms[form].fields[i].widgetType;
-            //   }
-
-            //   editor.setValue(JSON.stringify(forms[form], undefined, "\t"));
-            // }
-          });
-
-          block = false;
-        } catch (e) {
-            return false;
-        }
+  editor.getSession().on('change', function(e) {
+    try {
+      forms[form] = JSON.parse(editor.getValue());
+      for(var i in Berry.instances){
+        Berry.instances[i].destroy();
       }
+      $('.target').berry(
+        $.extend({autoFocus: false, actions: ['save'], name: 'myForm', attributes: QueryStringToHash(document.location.hash.substr(1) || "") }, forms[form] ) )
+      .delay('change', function(){
+        $('.result').html("<pre>"+JSON.stringify(this.toJSON(), undefined, "\t")+"</pre>");
+      }, true)
+      .on('save', function(){
+        if(this.validate()) { location.hash = '#'+$.param(this.toJSON());}}
+      );
+    } catch (e) {
+      return false;
     }
-	});
-	var stuff = JSON.parse(($.jStorage.get('form') || "{}"));
-	for(var i in stuff){
-		delete stuff[i].widgetType;
-	}
+  });
+
+  forms['builder'] = JSON.parse(($.jStorage.get('form') || "{}"));
+  for(var i in forms['builder']){
+    delete forms['builder'][i].widgetType;
+  }
+
   form = (urlParams['demo'] || 'example');
-  $('#'+form).click();
 
+  setSchema(forms[form])
+});
+
+
+function setSchema(obj){
+  forms[form] = obj;
+  for(var i in forms[form].fields){
+    delete forms[form].fields[i].widgetType;
+  }
   editor.setValue(JSON.stringify(forms[form], undefined, "\t"));
-	//editor.setValue(JSON.stringify({fields: stuff}, undefined, "\t"));
-});
+}
 
-
-$('#builder').on('click',function() {
-      var stuff = JSON.parse($.jStorage.get('form'));
-      for(var i in stuff){
-        delete stuff[i].widgetType;
-      }
-      editor.setValue(JSON.stringify({"fields": stuff}, undefined, "\t"));
-});
-
-
-
-
-// $('#example').on('click', function(e) {
-//   form = 'example';
-//   editor.setValue(JSON.stringify(forms.example, undefined, "\t"));
-// });
-// $('#basic').on('click', function() {
-//   form = 'basic';
-//   editor.setValue(JSON.stringify(forms.basic, undefined, "\t"));
-// });
-// $('#conditional').on('click', function(){  
-//   form = 'conditional';
-//   editor.setValue(JSON.stringify(forms.conditional, undefined, "\t"));
-// });
-// $('#duplicate').on('click', function(){
-//   form = 'duplicate';
-//   editor.setValue(JSON.stringify(forms.duplicate, undefined, "\t"));
-// });
-// $('#nonfields').on('click', function() {
-//   form = 'nonfields';
-//   editor.setValue(JSON.stringify(forms.nonfields, undefined, "\t"));
-// });
-// $('#auto').on('click', function() {
-//   form = 'auto';
-//   editor.setValue(JSON.stringify(forms.auto, undefined, "\t"));
-// });
-
-// $('#builder').on('click', function() {
-//     form = '';
-// });
-
-
+//data
 forms = {
   "auto": {
     "fields": {
