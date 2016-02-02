@@ -4,9 +4,11 @@
 	<div class="duplicate add btn btn-white"><i class="fa fa-plus text-success"></i></div><div class="btn btn-white remove"><i class="fa fa-minus text-danger"></i></div>
 </div>
 {{/multiple.duplicate}}
+{{^hideLabel}}
 {{#item.legend}}<legend>{{{item.legend}}}</legend>{{/item.legend}}
 {{^item.legend}}
 {{#item.label}}<legend>{{{item.label}}}</legend>{{/item.label}}
-{{/item.legend}}		
+{{/item.legend}}
+{{/hideLabel}}
 <div style="position:relative;top:-20px">{{>berry__addons}}</div>
 </fieldset>

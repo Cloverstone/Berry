@@ -86,7 +86,14 @@
 					  <div class="panel-body">
 							<div id="schema_editor" class="view view_schema"></div>		
 							<div class="hidden result view view_json"></div>	
-							<div class="hidden source view view_source" id="alt-sidebar"></div>
+							<div class="hidden source view view_source" id="alt-sidebar">
+								<ul id="sortableList" class="list-group sortableGroup ">
+									<li class="list-group-item" data-type="text">Text</li>
+									<li class="list-group-item" data-type="select">Select</li>
+									<li class="list-group-item" data-type="checkbox">Checkbox</li>
+								</ul>			
+							<div id="form"></div>				
+							</div>
 					  </div>
 					</div>
 				</div>
@@ -95,7 +102,7 @@
 					  <div class="panel-heading"><b>Form</b></div>
 					  <div class="panel-body">
 							<div class="target"></div>
-							<div id="editor"></div>
+							<div id="editor" class="form-horizontal widget_container sortableGroup"></div>
 				  	</div>
 					</div>
 				</div>
@@ -105,10 +112,12 @@
 
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" charset="utf-8"></script>
 
-		<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+		/<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
 		<script type='text/javascript' src='//twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js'></script>
 
-		<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3//jquery-ui.min.js'></script>
+		<!-- // <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3//jquery-ui.min.js'></script> -->
+
+		<script type="text/javascript" src="assets/js/sortable.js"></script>
 		<script type='text/javascript' src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
 		<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/autosize.js/1.18.13/jquery.autosize.min.js'></script>
 		
@@ -138,10 +147,10 @@
 		<script type='text/javascript' src='src/enhance/extract.berry.js'></script>
 	-->
 		
-		<script type='text/javascript' src='assets/js/bootstrap.cobler.js'></script>
+		<!-- // <script type='text/javascript' src='assets/js/bootstrap.cobler.js'></script> -->
 		
-		<script type='text/javascript' src='assets/js/cobler.min.js'></script>
-		<script type='text/javascript' src='assets/js/form.cobler.min.js'></script>		
+		<script type='text/javascript' src='assets/js/cob.js'></script>
+		<script type='text/javascript' src='assets/js/form.cob.js'></script>		
 		<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>
 
 
@@ -149,5 +158,74 @@
 		<script type='text/javascript' src='src/vendor/js/colorpicker.min.js'></script>
 		<script type='text/javascript' src='bin/bootstrap.full.berry.js'></script>
 		<script type='text/javascript' src='assets/js/demo.js'></script>
+
+		<script type='text/template' name="itemContainer">
+			<div class="cobler-li-content"></div>
+			<div class="btn-group parent-hover">
+				<span class="remove-item btn btn-danger fa fa-trash-o" data-title="Remove"></span>
+				<span class="duplicate-item btn btn-default fa fa-copy" data-title="Duplicate"></span>
+			</div>
+		</script>
+
+
+
+		<script type='text/javascript' >
+			templates['itemContainer'] = Hogan.compile(document.getElementsByName('itemContainer')[0].innerHTML)
+
+		</script>
+				<script type='text/javascript' >
+			// var cb = new Cobler({
+			// 	targets: [document.getElementById('sortableList2'), document.getElementById('sortableList3')],
+			// 	items: [
+			// 		[
+			// 			{
+			// 				wType: 'select',
+			// 				type: 'select',
+			// 				label: 'Name',
+			// 				name: 'name',
+			// 				options:[
+			// 					{label: 'First',value: '1'}
+			// 				]
+			// 			},			
+			// 			{
+			// 				wType: 'text',
+			// 				type: 'text',
+			// 				label: 'Name',
+			// 				name: 'name'
+			// 			},			
+			// 			{
+			// 				wType: 'checkbox',
+			// 				type: 'checkbox'
+			// 			}
+			// 		],
+			// 		[]
+			// 	]
+			// })
+
+			//This section establishes the list of addable items
+			// var list = document.getElementById('sortableList');
+			// cb.addSource(list);
+			// cb.on('activate', function(){
+			// 	if(list.className.indexOf('hidden') == -1){
+			// 		list.className += ' hidden';
+			// 	}
+			// })
+			// cb.on('deactivate', function(){
+			// 	list.className = list.className.replace('hidden', '');
+			// })
+			// document.getElementById('sortableList').addEventListener('click', function(e) {
+			// 	cb.collections[0].addItem(e.target.dataset.type);
+			// })
+
+
+
+			$('body').keydown(function(event) {
+				switch(event.keyCode) {
+					case 27://escape
+							cb.deactivate();
+						break;
+				}
+			});
+		</script>
 
 </body></html>

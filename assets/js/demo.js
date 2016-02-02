@@ -15,14 +15,34 @@ $('#cobler').on('click', function(e) {
   $('.view_result, .view_source, #editor').removeClass('hidden');
 
     if(typeof cb === 'undefined'){
-      cb = new cobler({target: '#editor', types: ['form']});
-      cb.on("change", function(){
-        if(typeof forms[form] !== 'undefined'){
-          $.extend(forms[form], {fields:this.toJSON()});
-        }else{
-          $.jStorage.set('form', JSON.stringify(this.toJSON(), undefined, "\t"));
+      // cb = new cobler({target: '#editor', types: ['form']});
+
+
+      cb = new Cobler({targets: [document.getElementById('editor')],items:[]})
+      var list = document.getElementById('sortableList');
+      cb.addSource(list);
+      cb.on('activate', function(){
+        if(list.className.indexOf('hidden') == -1){
+          list.className += ' hidden';
         }
       })
+      cb.on('deactivate', function(){
+        list.className = list.className.replace('hidden', '');
+      })
+      document.getElementById('sortableList').addEventListener('click', function(e) {
+        cb.collections[0].addItem(e.target.dataset.type);
+      })
+      cb.on("change", function(){
+        if(typeof forms[form] !== 'undefined'){
+          $.extend(forms[form], {fields: cb.toJSON()[0]});
+        }else{
+          $.jStorage.set('form', JSON.stringify(cb.toJSON()[0], undefined, "\t"));
+        }
+      })
+
+
+
+
     }
     if(typeof forms[form] !== 'undefined'){
       var temp = $.extend(true, {}, forms[form]);
@@ -78,9 +98,12 @@ $('#cobler').on('click', function(e) {
           temp.fields[i].widgetType = 'textbox';
         }
       }
-      cb.load(temp.fields);
+      //cb.load(temp.fields);
+      cb.collections[0].load(temp.fields);
     }else{
-      cb.load(JSON.parse(($.jStorage.get('form') || "{}")));
+      // cb.load(JSON.parse(($.jStorage.get('form') || "{}")));
+
+      cb.collections[0].load(JSON.parse(($.jStorage.get('form') || "{}")));
     }
 
 });
