@@ -181,92 +181,11 @@ Berry = function(options, target) {
 	 */
 	this.processfields = function(fields, target, parent) {
 		for(var i in fields) {
-			var state = this.createField(normalizeItem(fields[i], i, this.options.default), target, parent);
+			var state = this.createField(Berry.normalizeItem(fields[i], i, this.options.default), target, parent);
 		}
 	};
 
-	/**
-	 * Takes the item descriptor passed in and makes sure the required attributes
-	 * are set and if they are not tries to apply sensible defaults
-	 *
-	 * @param {object} item This is the raw field descriptor to be normalized
-	 * @param {string or int} i The key index of the item
-	 */
-	var normalizeItem = function(item, i, defaultItem){
-		if(typeof item === 'string') {
-			item = { type : item, label : i };
-		}
-		if($.isArray(item)) {
-			item = { options : item, label : i };
-		}
-		item = $.extend({}, defaultItem, item);
 
-		//if no name given and a name is needed, check for a given id else use the key
-		if((typeof item.name === 'undefined' || item.name.length === 0)  && !item.isContainer){
-			if(typeof item.label !== 'undefined' && !isNaN(parseFloat(i))){
-				item.name = item.label.toLowerCase().split(' ').join('_');
-			}else if(typeof item.id !== 'undefined') {
-				item.name = item.id;
-			} else {
-				item.name = i.toLowerCase().split(' ').join('_');
-			}
-		}
-		if(typeof item.label === 'undefined' && item.label !== false) {
-			item.label = i;
-		}
-
-		// Sync the validation with the 'required' shorthand
-		if(item.required){
-			$.extend(item, {validate: {required: true}});
-		} else if(typeof item.validate !== 'undefined'){
-			item.required = item.validate.required;
-		}
-
-		// Set a sensible type default if type is not defined or not found
-		if(typeof Berry.types[item.type] === 'undefined') {
-			// if(typeof item.choices === 'undefined' && typeof item.options === 'undefined'){
-
-			// }else{
-				var length = 0;
-				if(typeof item.choices !== 'undefined'){length = item.choices.length;}
-				if(typeof item.options !== 'undefined'){length = item.options.length;}
-
-				// if(item.options)
-				switch(length){
-					case 0:
-						if(typeof item.fields === 'undefined'){
-							item.type = 'text';
-						}else{
-							item.type = 'fieldset';
-						}						
-						break;
-					case 2:
-						item.falsestate = item.options[1].toLowerCase().split(' ').join('_');
-					case 1:
-						item.type = 'checkbox';
-						item.truestate = item.options[0].toLowerCase().split(' ').join('_');
-						break;
-					case 3:
-					case 4:
-						item.type = 'radio';
-						break;
-					default:
-						item.type = 'select';
-				}
-				// if(item.options.length ==  1){
-				// 	item.type = 'checkbox';
-				// 	item.truestate = item.options[0].toLowerCase().split(' ').join('_');
-				// }else 
-				// if(item.options.length <= 4){
-				// 	item.type = 'radio';
-				// }else{
-				// 	item.type = 'select';
-				// }
-			}
-		// }
-		return item;
-		
-	};
 
 	/**
 	 * 
@@ -600,3 +519,86 @@ Berry = function(options, target) {
 		this.trigger('initialized');
 	}
 };
+
+	/**
+	 * Takes the item descriptor passed in and makes sure the required attributes
+	 * are set and if they are not tries to apply sensible defaults
+	 *
+	 * @param {object} item This is the raw field descriptor to be normalized
+	 * @param {string or int} i The key index of the item
+	 */
+	Berry.normalizeItem = function(item, i, defaultItem){
+		if(typeof item === 'string') {
+			item = { type : item, label : i };
+		}
+		if($.isArray(item)) {
+			item = { options : item, label : i };
+		}
+		item = $.extend({}, defaultItem, item);
+
+		//if no name given and a name is needed, check for a given id else use the key
+		if((typeof item.name === 'undefined' || item.name.length === 0)  && !item.isContainer){
+			if(typeof item.label !== 'undefined' && !isNaN(parseFloat(i))){
+				item.name = item.label.toLowerCase().split(' ').join('_');
+			}else if(typeof item.id !== 'undefined') {
+				item.name = item.id;
+			} else {
+				item.name = i.toLowerCase().split(' ').join('_');
+			}
+		}
+		if(typeof item.label === 'undefined' && item.label !== false) {
+			item.label = i;
+		}
+
+		// Sync the validation with the 'required' shorthand
+		if(item.required){
+			$.extend(item, {validate: {required: true}});
+		} else if(typeof item.validate !== 'undefined'){
+			item.required = item.validate.required;
+		}
+
+		// Set a sensible type default if type is not defined or not found
+		if(typeof Berry.types[item.type] === 'undefined') {
+			// if(typeof item.choices === 'undefined' && typeof item.options === 'undefined'){
+
+			// }else{
+				var length = 0;
+				if(typeof item.choices !== 'undefined'){length = item.choices.length;}
+				if(typeof item.options !== 'undefined'){length = item.options.length;}
+
+				// if(item.options)
+				switch(length){
+					case 0:
+						if(typeof item.fields === 'undefined'){
+							item.type = 'text';
+						}else{
+							item.type = 'fieldset';
+						}						
+						break;
+					case 2:
+						item.falsestate = item.options[1].toLowerCase().split(' ').join('_');
+					case 1:
+						item.type = 'checkbox';
+						item.truestate = item.options[0].toLowerCase().split(' ').join('_');
+						break;
+					case 3:
+					case 4:
+						item.type = 'radio';
+						break;
+					default:
+						item.type = 'select';
+				}
+				// if(item.options.length ==  1){
+				// 	item.type = 'checkbox';
+				// 	item.truestate = item.options[0].toLowerCase().split(' ').join('_');
+				// }else 
+				// if(item.options.length <= 4){
+				// 	item.type = 'radio';
+				// }else{
+				// 	item.type = 'select';
+				// }
+			}
+		// }
+		return item;
+		
+	};
