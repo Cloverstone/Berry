@@ -20,8 +20,10 @@ function Cobler(options){
 				}
 				items.splice(evt.newIndex, 0 , Cobler.types[A.dataset.type].default);
 			}, onEnd: function (evt) {
-				items.splice(evt.newIndex, 0 , items.splice(evt.oldIndex, 1)[0]);
-			}
+				items.splice(getNodeIndex(evt.item), 0 , items.splice(evt.item.dataset.start, 1)[0]);
+			}, onStart: function (evt) {
+        evt.item.dataset.start = getNodeIndex(evt.item);  // element index within parent
+    	}
 		});
 		load(items);
 		function reset(items) {
@@ -111,7 +113,6 @@ function Cobler(options){
 		}
 	}
 
-
 	function renderItem(item){
 		var LI = document.createElement('LI');
 		LI.dataset.type = item.widgetType;
@@ -144,25 +145,17 @@ function Cobler(options){
 			return temp;
 		}.bind(this)
 	}
-  this.topics = {};
-
+  var topics = {};
   this.subscribe = function(topic, listener) {
-    // create the topic if not yet created
     if(!this.topics[topic]) this.topics[topic] = [];
-
-    // add the listener
     this.topics[topic].push(listener);
-  }
-
+  }.bind({topics: topics})
   this.publish = function(topic, data) {
-    // return if the topic doesn't exist, or there are no listeners
     if(!this.topics[topic] || this.topics[topic].length < 1) return;
-
-    // send the event to all listeners
     this.topics[topic].forEach(function(listener) {
       listener(data || {});
     });
-  }
+  }.bind({topics: topics})
 
 	var c = [];
 	for(var i in options.targets){
@@ -176,13 +169,9 @@ function Cobler(options){
 		toHTML: applyToEach.call(this,'toHTML'),
 		clear: applyToEach.call(this,'clear'),
 		deactivate: applyToEach.call(this, 'deactivate'),
-		on: this.subscribe.bind(this)//,
-		// trigger: this.publish.bind(this)
+		on: this.subscribe//,
+		//trigger: this.publish.bind(this)
 	};
 }
 
-
-
 Cobler.types={};
-
-

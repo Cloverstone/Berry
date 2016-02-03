@@ -17,9 +17,8 @@ $('#cobler').on('click', function(e) {
     if(typeof cb === 'undefined'){
       // cb = new cobler({target: '#editor', types: ['form']});
 
-
-      cb = new Cobler({targets: [document.getElementById('editor')],items:[]})
-      var list = document.getElementById('sortableList');
+      cb = new Cobler({targets: [document.getElementById('editor')],items:[[]]})
+      list = document.getElementById('sortableList');
       cb.addSource(list);
       cb.on('activate', function(){
         if(list.className.indexOf('hidden') == -1){
@@ -39,9 +38,6 @@ $('#cobler').on('click', function(e) {
           $.jStorage.set('form', JSON.stringify(cb.toJSON()[0], undefined, "\t"));
         }
       })
-
-
-
 
     }
     if(typeof forms[form] !== 'undefined'){
@@ -88,7 +84,6 @@ $('#cobler').on('click', function(e) {
             temp.fields[i].type = 'select';
             temp.fields[i].widgetType = 'select';
         }
-
               }else{
                 temp.fields[i].widgetType = 'textbox';
               }
@@ -97,8 +92,11 @@ $('#cobler').on('click', function(e) {
         }else{
           temp.fields[i].widgetType = 'textbox';
         }
+
       }
       //cb.load(temp.fields);
+      
+      list.className = list.className.replace('hidden', '');
       cb.collections[0].load(temp.fields);
     }else{
       // cb.load(JSON.parse(($.jStorage.get('form') || "{}")));

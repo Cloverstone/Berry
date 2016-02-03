@@ -75,6 +75,7 @@ Cobler.types.checkbox = {
 	},
 	default: {
 			widgetType: 'checkbox',
+			type: 'checkbox',
 			container: 'span',
 			label: 'Label'
 		},
