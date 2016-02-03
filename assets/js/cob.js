@@ -5,26 +5,49 @@
 //		https://github.com/Cloverstone/Cobler
 
 function Cobler(options){
+	this.options = options
+  var topics = {};
+  this.subscribe = function(topic, listener) {
+    if(!topics[topic]) topics[topic] = [];
+    topics[topic].push(listener);
+  }.bind({topics: topics})
+
+  this.publish = function(topic, data) {
+    if(!topics[topic] || topics[topic].length < 1) return;
+    topics[topic].forEach(function(listener) {
+      listener(data || {});
+    });
+  }.bind({topics: topics})
+
+	var c = [];
+	for(var i in options.targets){
+		addCollection.call(this, options.targets[i], options.items[i]);
+	}
+
 	function collection(target, items, cob){
 		var active;
 		var myBerry;
-		target.addEventListener('click', instanceManager);
-		Sortable.create(target, {
-			group: 'sortableGroup',
-			animation: 150,
-			onAdd: function (evt){
-				var A = evt.item; // the current dragged HTMLElement
-				//handle if dragged over target and put back in original
-				if(A.parentNode === target) {
-				 	var a = A.parentNode.replaceChild(renderItem(Cobler.types[A.dataset.type].default), A);
-				}
-				items.splice(evt.newIndex, 0 , Cobler.types[A.dataset.type].default);
-			}, onEnd: function (evt) {
-				items.splice(getNodeIndex(evt.item), 0 , items.splice(evt.item.dataset.start, 1)[0]);
-			}, onStart: function (evt) {
-        evt.item.dataset.start = getNodeIndex(evt.item);  // element index within parent
-    	}
-		});
+		if(!cob.options.disabled) {
+			target.addEventListener('click', instanceManager);
+			Sortable.create(target, {
+				group: 'sortableGroup',
+				animation: 150,
+				onAdd: function (evt) {
+					var A = evt.item;
+					//handle if dragged over target and put back in original
+					if(A.parentNode === target) {
+						var newItem = Cobler.types[A.dataset.type]();
+					 	var a = A.parentNode.replaceChild(renderItem(newItem), A);
+						items.splice(evt.newIndex, 0 , newItem);
+					}
+				}, onEnd: function (evt) {
+					items.splice(getNodeIndex(evt.item), 0 , items.splice(evt.item.dataset.start, 1)[0]);
+				}, onStart: function (evt) {
+	        evt.item.dataset.start = getNodeIndex(evt.item);  // element index within parent
+	    	}
+			});
+		}
+
 		load(items);
 		function reset(items) {
 			target.innerHTML = "";
@@ -32,34 +55,29 @@ function Cobler(options){
 		}
 		function instanceManager(e) {
 			var referenceNode = e.target.parentElement.parentElement;
-			var container = referenceNode.parentElement;
+			// var container = referenceNode.parentElement;
 			var classList = e.target.className.split(' ');
-
 			if(classList.indexOf('remove-item') >= 0){
 				items.splice(getNodeIndex(referenceNode), 1);
-				container.removeChild(referenceNode);
-			 	cob.publish('change')
+				target.removeChild(referenceNode);
+			 	cob.publish('change');
 			}else if(classList.indexOf('duplicate-item') >= 0){
 				deactivate();
-				container.insertBefore(referenceNode.cloneNode(true), referenceNode.nextSibling);
-				//neds to be extended -currently references same item
-				items.splice(getNodeIndex(referenceNode) + 1, 0 , items[getNodeIndex(referenceNode)] );
-			 	cob.publish('change')
+				var index = getNodeIndex(referenceNode);
+				addItem(items[index].toJSON(), index+1);
 			}else if(e.target.tagName === 'LI') {
 				activate(e.target);
 			}
 		}
-		function activate(targetEL){
+		function activate(targetEL) {
 			deactivate();
 			targetEL.className += ' widget_active';
 			active = getNodeIndex(targetEL);
 			activeEl = targetEL;
 			cob.publish('activate');
-			myBerry = new Berry({renderer: 'tabs', actions: false, attributes: items[active], fields: Cobler.types[items[active].widgetType].fields}, $(document.getElementById('form'))).on('change', function(){
+			myBerry = new Berry({renderer: 'tabs', actions: false, attributes: items[active].toJSON(), fields: items[active].fields}, $(document.getElementById('form'))).on('change', function(){
 				//needs to be more comprehensive
-				var widgetType = items[active].widgetType;
-				items[active] = this.toJSON();
-				items[active].widgetType = widgetType;
+				items[active].set(this.toJSON())
 				var temp = renderItem(items[active]);
 				temp.className += ' widget_active';
 			 	var a = activeEl.parentNode.replaceChild(temp, activeEl);
@@ -67,7 +85,7 @@ function Cobler(options){
 			 	cob.publish('change')
 			});
 		}
-		function deactivate(){
+		function deactivate() {
 			if(typeof myBerry !== 'undefined'){
 				myBerry.destroy();
 				myBerry = undefined;
@@ -79,24 +97,36 @@ function Cobler(options){
 			    el.className = el.className.replace('widget_active', '');
 			});
 		}
-		function load(obj){
+		function load(obj) {
 			reset(obj);
-			items = obj;
-			for(var i in obj){
-				target.appendChild(renderItem(obj[i]));
+			// items = obj;
+			items = [];
+			for(var i in obj) {
+				addItem(obj[i],false,true);
 			}
 		}
-		function addItem(widgetType){
-			var renderedItem = renderItem(Cobler.types[widgetType].default);
-			target.appendChild(renderedItem);
-			items.splice(items.length, 0, Cobler.types[widgetType].default);
-			activate(renderedItem);
-			cob.publish('change')
+		function addItem(widgetType, index, silent) {
+			index = index || items.length;
+			var newItem = new Cobler.types[widgetType.widgetType || widgetType](this)
+			if(typeof widgetType !== 'string'){
+				newItem.set(widgetType);
+			}
+			items.splice(index, 0, newItem);
+			var renderedItem = renderItem(newItem);
+			target.insertBefore(renderedItem, target.getElementsByTagName("LI")[index]);
+			if(!silent){
+				activate(renderedItem);
+				cob.publish('change')
+			}
 		}
-		function toJSON(){
-			return items;
+		function toJSON() {
+			var json = [];
+			for(var i in items){
+				json.push(items[i].toJSON());
+			}
+			return json;
 		}
-		function toHTML(){
+		function toHTML() {
 			var temp = "";
 			for(var i in items){
 				temp += Cobler.types[items[i].widgetType].render(items[i]);
@@ -114,15 +144,20 @@ function Cobler(options){
 	}
 
 	function renderItem(item){
-		var LI = document.createElement('LI');
-		LI.dataset.type = item.widgetType;
-		LI.innerHTML = templates.itemContainer.render();
-		LI.getElementsByClassName('cobler-li-content')[0].innerHTML = Cobler.types[item.widgetType].render(item);//templates['berry_' + item.widgetType].render(item, templates);
-		return LI;
+		var EL;// = document.createElement('LI');
+		if(options.disabled){
+			EL = document.createElement('DIV');
+			EL.innerHTML = item.render();
+		} else {
+			EL = document.createElement('LI');
+			EL.innerHTML = templates.itemContainer.render();
+			EL.getElementsByClassName('cobler-li-content')[0].innerHTML = item.render();
+		}
+		return EL;
 	}
 	function getNodeIndex(node) {
 	  var index = 0;
-	  while ( (node = node.previousSibling) ) {
+	  while (node = node.previousSibling) {
 	    if (node.nodeType != 3 || !/^\s*$/.test(node.data)) {
 	      index++;
 	    }
@@ -145,22 +180,7 @@ function Cobler(options){
 			return temp;
 		}.bind(this)
 	}
-  var topics = {};
-  this.subscribe = function(topic, listener) {
-    if(!this.topics[topic]) this.topics[topic] = [];
-    this.topics[topic].push(listener);
-  }.bind({topics: topics})
-  this.publish = function(topic, data) {
-    if(!this.topics[topic] || this.topics[topic].length < 1) return;
-    this.topics[topic].forEach(function(listener) {
-      listener(data || {});
-    });
-  }.bind({topics: topics})
 
-	var c = [];
-	for(var i in options.targets){
-		addCollection.call(this, options.targets[i], options.items[i]);
-	}
 	return {
 		collections: c,
 		addCollection: addCollection,

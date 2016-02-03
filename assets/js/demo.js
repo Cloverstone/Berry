@@ -17,7 +17,7 @@ $('#cobler').on('click', function(e) {
     if(typeof cb === 'undefined'){
       // cb = new cobler({target: '#editor', types: ['form']});
 
-      cb = new Cobler({targets: [document.getElementById('editor')],items:[[]]})
+      cb = new Cobler({disabled: false, targets: [document.getElementById('editor')],items:[[]]})
       list = document.getElementById('sortableList');
       cb.addSource(list);
       cb.on('activate', function(){
@@ -32,69 +32,37 @@ $('#cobler').on('click', function(e) {
         cb.collections[0].addItem(e.target.dataset.type);
       })
       cb.on("change", function(){
-        if(typeof forms[form] !== 'undefined'){
+        if(typeof forms[form] !== 'undefined' && form !== 'builder'){
           $.extend(forms[form], {fields: cb.toJSON()[0]});
         }else{
-          $.jStorage.set('form', JSON.stringify(cb.toJSON()[0], undefined, "\t"));
+
+          $.extend(forms[form], {fields: cb.toJSON()[0]});
+          $.jStorage.set('form', JSON.stringify(forms[form], undefined, "\t"));
         }
       })
 
     }
+
     if(typeof forms[form] !== 'undefined'){
       var temp = $.extend(true, {}, forms[form]);
       for(var i in temp.fields){
-        if(typeof temp.fields[i].type !== 'undefined' && temp.fields[i].type.length > 0){
-          switch(temp.fields[i].type){
-            case "select":
-            case "radio":
-              temp.fields[i].widgetType = 'select';
-              break;
-            case "checkbox":
-              temp.fields[i].widgetType = 'checkbox';
-              break;
-            default:
-              options = temp.fields[i].options || temp.fields[i].choices;
-              if(typeof options !== 'undefined'){
-                // if(options.length )
-        // if(item.options)
-        switch(options.length){
-          case 0:
-            if(typeof temp.fields[i].fields === 'undefined'){
-              temp.fields[i].type = 'text';
-            }else{
-              temp.fields[i].type = 'fieldset';
-            }         
 
-            temp.fields[i].widgetType = 'textbox';  
+        temp.fields[i] = Berry.normalizeItem(Berry.processOpts(temp.fields[i]), i);
+        switch(temp.fields[i].type) {
+          case "select":
+          case "radio":
+            temp.fields[i].widgetType = 'select';
             break;
-          case 2:
-            temp.fields[i].falsestate = temp.fields[i].options[1].toLowerCase().split(' ').join('_');
-          case 1:
-            temp.fields[i].type = 'checkbox';
-            temp.fields[i].truestate = temp.fields[i].options[0].toLowerCase().split(' ').join('_');
-
+          case "checkbox":
+          debugger;
             temp.fields[i].widgetType = 'checkbox';
             break;
-          case 3:
-          case 4:
-            temp.fields[i].type = 'radio';
-            temp.fields[i].widgetType = 'select';
-            break;
           default:
-            temp.fields[i].type = 'select';
-            temp.fields[i].widgetType = 'select';
-        }
-              }else{
-                temp.fields[i].widgetType = 'textbox';
-              }
-              break;
-          }
-        }else{
-          temp.fields[i].widgetType = 'textbox';
+            temp.fields[i].widgetType = 'textbox';
         }
 
       }
-      //cb.load(temp.fields);
+
       
       list.className = list.className.replace('hidden', '');
       cb.collections[0].load(temp.fields);

@@ -181,7 +181,7 @@ Berry = function(options, target) {
 	 */
 	this.processfields = function(fields, target, parent) {
 		for(var i in fields) {
-			var state = this.createField(normalizeItem(fields[i], i, this.options.default), target, parent);
+			var state = this.createField(Berry.normalizeItem(fields[i], i, this.options.default), target, parent);
 		}
 	};
 
@@ -192,7 +192,7 @@ Berry = function(options, target) {
 	 * @param {object} item This is the raw field descriptor to be normalized
 	 * @param {string or int} i The key index of the item
 	 */
-	var normalizeItem = function(item, i, defaultItem){
+	Berry.normalizeItem = function(item, i, defaultItem){
 		if(typeof item === 'string') {
 			item = { type : item, label : i };
 		}

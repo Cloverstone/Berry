@@ -40,23 +40,22 @@ color: #ccc;
     padding: 5px 15px;
 }
 #schema_editor { 
-
 	height:500px;
 }
 #editor { 
 	position: relative;
 }
-#cb-form{
+/*#cb-form{
     left: 50px !important;
     right: 50px !important;
     top: 130px !important;
     bottom: 30px !important;
 
-}
+}*/
 #showwidgets{float:right;}
 #alt-sidebar { 
 	padding-top:0px;
-	height:500px;
+	/*height:500px;*/
 }
 
 li a, li a:hover, li a:active, li a:visited{

@@ -1,16 +1,25 @@
-Cobler.types.textbox = {
-	render: function(item){
+Cobler.types.textbox = function(owner) {
+	function render(){
 		if(item.type == 'textarea'){
 			return templates['berry_textarea'].render(item, templates);
 		}
 		return templates['berry_text'].render(item, templates);
-	},
-	default: {
-			widgetType: 'textbox',
-			type: 'text',
-			label: 'Label'
-		},
-	fields: [
+	}
+	function toJSON(){
+		item.widgetType = 'textbox';
+		item.isEnabled = true;
+		return item;
+	}
+	function set(newItem){
+		item = newItem;
+	}
+	var item = {
+		widgetType: 'textbox',
+		type: 'text',
+		label: 'Label',
+		isEnabled: true
+	}
+	var fields = [
 		{type: 'text', required: true, label: 'Field Label', name: 'label'},
 		{type: 'text', label: 'Name', name: 'name'},
 		{type: 'select', label: 'Display', name: 'type', value: 'dropdown', 'choices': [
@@ -27,18 +36,33 @@ Cobler.types.textbox = {
 		{type: 'textarea', label: 'Instructions', name: 'help'},
 		{type: 'checkbox', label: 'Required', name: 'required'},
 	]
-};
+	return {
+		fields: fields,
+		render: render,
+		toJSON: toJSON,
+		set: set
+	}
+}
 
-Cobler.types.select = {
-	render: function(item){
+Cobler.types.select = function(owner) {
+	function render() {
 		return templates['berry_' + item.type].render(item, templates);
-	},
-	default: {
-			widgetType: 'select',
-			type: 'select',
-			label: 'Label'
-		},
-	fields: [
+	}
+	function toJSON() {
+		item.widgetType = 'select';
+		item.isEnabled = true;
+		return item;
+	}
+	function set(newItem) {
+		item = newItem;
+	}
+	var item = {
+		widgetType: 'select',
+		type: 'select',
+		label: 'Label',
+		isEnabled: true
+	}
+	var fields = [
 		{type: 'fieldset', name:'basics', legend: '<i class="fa fa-th"></i> Basics', hideLabel: true, inline: true, fields:[
 			{type: 'text', required: true, label: 'Field Label', name: 'label'},
 			{type: 'text', label: 'Name', name: 'name'},
@@ -64,26 +88,47 @@ Cobler.types.select = {
 				{label: 'Label'},
 				{label: 'Value'}
 			]}
-		]},
+		]}
 	]
+	return {
+		fields: fields,
+		render: render,
+		toJSON: toJSON,
+		set: set
+	}
 }
 
-Cobler.types.checkbox = {
-	render: function(item){
+Cobler.types.checkbox = function(owner) {
+	function render() {
 		item.container = 'span';
 		return templates['berry_checkbox'].render(item, templates);
-	},
-	default: {
-			widgetType: 'checkbox',
-			type: 'checkbox',
-			container: 'span',
-			label: 'Label'
-		},
-	fields: [
+	}
+	function toJSON() {
+		item.widgetType = 'checkbox';
+		item.isEnabled = true;
+		item.type = 'checkbox';
+		return item;
+	}
+	function set(newItem) {
+		item = newItem;
+	}
+	var item = {
+		widgetType: 'checkbox',
+		type: 'checkbox',
+		label: 'Label',
+		isEnabled: true
+	}
+	var fields = [
 		{type: 'text', required: true, label: 'Field Label', name: 'label'},
 		{type: 'text', label: 'Name', name: 'name'},
 		{type: 'checkbox', label: 'Default Value', name: 'value'},
 		{type: 'textarea', label: 'Instructions', name: 'help'},
 		{type: 'checkbox', label: 'Required', name: 'required'},
 	]
+	return {
+		fields: fields,
+		render: render,
+		toJSON: toJSON,
+		set: set,
+	}
 }
