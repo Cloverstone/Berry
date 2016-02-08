@@ -54,7 +54,6 @@ $('#cobler').on('click', function(e) {
             temp.fields[i].widgetType = 'select';
             break;
           case "checkbox":
-          debugger;
             temp.fields[i].widgetType = 'checkbox';
             break;
           default:

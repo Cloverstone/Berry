@@ -4,14 +4,16 @@
 //		For all details and documentation:
 //		https://github.com/Cloverstone/Cobler
 
-function Cobler(options){
-	this.options = options
+function Cobler(options) {
   var topics = {};
+
+	this.options = options
+	this.options.active = this.options.active || 'widget_active';
+	//simple event bus with the topics object bound
   this.subscribe = function(topic, listener) {
     if(!topics[topic]) topics[topic] = [];
     topics[topic].push(listener);
   }.bind({topics: topics})
-
   this.publish = function(topic, data) {
     if(!topics[topic] || topics[topic].length < 1) return;
     topics[topic].forEach(function(listener) {
@@ -19,6 +21,7 @@ function Cobler(options){
     });
   }.bind({topics: topics})
 
+  //initialize collections array and then create a collection for each target
 	var c = [];
 	for(var i in options.targets){
 		addCollection.call(this, options.targets[i], options.items[i]);
@@ -30,7 +33,7 @@ function Cobler(options){
 		if(!cob.options.disabled) {
 			target.addEventListener('click', instanceManager);
 			Sortable.create(target, {
-				group: 'sortableGroup',
+				group: 'cb',
 				animation: 150,
 				onAdd: function (evt) {
 					var A = evt.item;
@@ -42,6 +45,7 @@ function Cobler(options){
 					}
 				}, onEnd: function (evt) {
 					items.splice(getNodeIndex(evt.item), 0 , items.splice(evt.item.dataset.start, 1)[0]);
+					cob.publish('change');
 				}, onStart: function (evt) {
 	        evt.item.dataset.start = getNodeIndex(evt.item);  // element index within parent
 	    	}
@@ -55,7 +59,6 @@ function Cobler(options){
 		}
 		function instanceManager(e) {
 			var referenceNode = e.target.parentElement.parentElement;
-			// var container = referenceNode.parentElement;
 			var classList = e.target.className.split(' ');
 			if(classList.indexOf('remove-item') >= 0){
 				items.splice(getNodeIndex(referenceNode), 1);
@@ -71,15 +74,14 @@ function Cobler(options){
 		}
 		function activate(targetEL) {
 			deactivate();
-			targetEL.className += ' widget_active';
+			targetEL.className += ' ' + cob.options.active;
 			active = getNodeIndex(targetEL);
 			activeEl = targetEL;
 			cob.publish('activate');
-			myBerry = new Berry({renderer: 'tabs', actions: false, attributes: items[active].toJSON(), fields: items[active].fields}, $(document.getElementById('form'))).on('change', function(){
-				//needs to be more comprehensive
+			myBerry = new Berry({renderer: 'tabs', actions: false, attributes: items[active].toJSON(), fields: items[active].fields}, $(cob.options.formTarget || document.getElementById('form'))).on('change', function(){
 				items[active].set(this.toJSON())
 				var temp = renderItem(items[active]);
-				temp.className += ' widget_active';
+				temp.className += ' ' + cob.options.active;
 			 	var a = activeEl.parentNode.replaceChild(temp, activeEl);
 			 	activeEl = temp;
 			 	cob.publish('change')
@@ -92,14 +94,13 @@ function Cobler(options){
 			}
 			active = null;
 			activeEl = null;
-			var elems = target.getElementsByClassName('widget_active');
+			var elems = target.getElementsByClassName(cob.options.active);
 			[].forEach.call(elems, function(el) {
-			    el.className = el.className.replace('widget_active', '');
+			    el.className = el.className.replace(cob.options.active, '');
 			});
 		}
 		function load(obj) {
 			reset(obj);
-			// items = obj;
 			items = [];
 			for(var i in obj) {
 				addItem(obj[i],false,true);
@@ -144,7 +145,7 @@ function Cobler(options){
 	}
 
 	function renderItem(item){
-		var EL;// = document.createElement('LI');
+		var EL;
 		if(options.disabled){
 			EL = document.createElement('DIV');
 			EL.innerHTML = item.render();
@@ -168,7 +169,7 @@ function Cobler(options){
 		c.push(new collection(target, item, this));
 	}
 	function addSource(element){
-		Sortable.create(element, {group: {name: 'sortableGroup', pull: 'clone', put: false}, sort: false });
+		Sortable.create(element, {group: {name: 'cb', pull: 'clone', put: false}, sort: false });
 	}
 	function applyToEach(func){
 		return function(){
