@@ -11,22 +11,24 @@ $('#json, #schema').on('click', function(e){
 $('#cobler').on('click', function(e) {
   $(e.target).siblings().removeClass('active');
   $(e.target).addClass('active');
-  $('.view, .target').addClass('hidden');
+  $('.view, .target, #form').addClass('hidden');
   $('.view_result, .view_source, #editor').removeClass('hidden');
 
     if(typeof cb === 'undefined'){
       // cb = new cobler({target: '#editor', types: ['form']});
 
-      cb = new Cobler({disabled: false, targets: [document.getElementById('editor')],items:[[]]})
+      cb = new Cobler({formTarget:$('#form') ,disabled: false, targets: [document.getElementById('editor')],items:[[]]})
       list = document.getElementById('sortableList');
       cb.addSource(list);
       cb.on('activate', function(){
         if(list.className.indexOf('hidden') == -1){
           list.className += ' hidden';
         }
+        $('#form').removeClass('hidden');
       })
       cb.on('deactivate', function(){
         list.className = list.className.replace('hidden', '');
+        $('#form').addClass('hidden');
       })
       document.getElementById('sortableList').addEventListener('click', function(e) {
         cb.collections[0].addItem(e.target.dataset.type);
