@@ -92,12 +92,12 @@ Berry = function(options, target) {
 			if(!this.isContainer) {
 				var temp = Berry.search(attributes, this.getPath());
 				//if(typeof temp !== 'undefined' && typeof temp !== 'object') {
-				if(typeof temp !== 'object') { 
+				// if(typeof temp !== 'object') { 
 
 					this.setValue(temp);
 					this.trigger('change');
 					this.toJSON();
-				}
+				// }
 			}
 		}, [attributes], fields);
 	};

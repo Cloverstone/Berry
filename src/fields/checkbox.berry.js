@@ -24,7 +24,8 @@
 			if(this.$el.is(':checked')){
 				return this.truestate || true
 			}else{
-				return this.falsestate || false;
+				if(typeof this.falsestate !== 'undefined') return this.falsestate;
+				return  false;
 			};
 		},
 		setValue: function(value) {

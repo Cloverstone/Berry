@@ -3,13 +3,16 @@
 	b.register({type: 'raw' });
 	b.register({type: 'password' });
 	b.register({type: 'date' ,
-		setValue: function(value) {
-			if(typeof moment !== 'undefined'){value = moment.utc(value).format('YYYY-MM-DD');}
-			if(typeof this.lastSaved === 'undefined'){
-				this.lastSaved = value;
+		setValue: function(value) {		
+			if(typeof value !== 'object'){
+				if(typeof moment !== 'undefined'){value = moment.utc(value).format('YYYY-MM-DD');}
+				if(typeof this.lastSaved === 'undefined'){
+					this.lastSaved = value;
+				}
+				this.value = value;
+				return this.$el.val(value);
 			}
-			this.value = value;
-			return this.$el.val(value);
+			return this.value;
 		}
 	});
 	b.register({type: 'range' });
@@ -39,12 +42,15 @@
 			type: 'text'
 		},	
 		setValue: function(value) {
-			if(typeof this.lastSaved === 'undefined'){
-				this.lastSaved = value;
+			if(typeof value !== 'object'){
+				if(typeof this.lastSaved === 'undefined'){
+					this.lastSaved = value;
+				}
+				this.value = value;
+				this.$el.parent().colorpicker('setValue', this.value)
+				return this.$el.val(value);
 			}
-			this.value = value;
-			this.$el.parent().colorpicker('setValue', this.value)
-			return this.$el.val(value);
+			return this.value;
 		},
 		setup: function() {
 				this.$el = this.self.find('input');

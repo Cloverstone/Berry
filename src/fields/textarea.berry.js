@@ -30,19 +30,22 @@
 			}
 		},
 		setValue: function(value){
-			if(typeof this.lastSaved === 'undefined'){
-				this.lastSaved = value;
-			}
-			this.value = value;
-			this.$el.val(value)
+			if(typeof value !== 'object'){
+				if(typeof this.lastSaved === 'undefined'){
+					this.lastSaved = value;
+				}
+				this.value = value;
+				this.$el.val(value)
 
-			if((this.autosize !== false) && $.fn.autosize){
-				this.$el.trigger('autosize.resize');
-			}
-			if(this.item.advanced && $.fn.htmlarea){
-				this.$el.htmlarea('updateHtmlArea', value);
+				if((this.autosize !== false) && $.fn.autosize){
+					this.$el.trigger('autosize.resize');
+				}
+				if(this.item.advanced && $.fn.htmlarea){
+					this.$el.htmlarea('updateHtmlArea', value);
+				}	
 			}
 			return this.$el;
+
 		},
 		focus: function(){
 			this.$el.focus().val('').val(this.value);

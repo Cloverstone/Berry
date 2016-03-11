@@ -226,11 +226,14 @@ $.extend(Berry.field.prototype, {
 		//this.owner.trigger(topic);
 	},
 	setValue: function(value) {
-		if(typeof this.lastSaved === 'undefined'){
-			this.lastSaved = value;
+		if(typeof value !== 'object'){
+			if(typeof this.lastSaved === 'undefined'){
+				this.lastSaved = value;
+			}
+			this.value = value;
+			return this.$el.val(value);
 		}
-		this.value = value;
-		return this.$el.val(value);
+		return this.value;
 	},
 	update: function(item, silent) {
 		if(typeof item === 'object') {
