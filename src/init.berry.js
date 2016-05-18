@@ -107,7 +107,7 @@ Berry.processOpts = function(item, object) {
 		});
 	}else{
 				// Insert the default value at the beginning 
-		if(typeof item.default !== 'undefined') {
+		if(typeof item.default !== 'undefined' && typeof item.options !== 'undefined') {
 			item.options.unshift(item.default);
 		}
 	}
