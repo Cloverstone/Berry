@@ -16,7 +16,9 @@ Berry.prototype.events.initialize.push({
 		}
 
 		Berry.field.prototype.remove = function() {
-			if((this.multiple.min || 1) < this.parent.children[this.name].instances.length){
+			// if((this.multiple.min || 1) < this.parent.children[this.name].instances.length){
+			if((this.multiple.min || 1) < this.owner.find(this.getPath()).length){
+
 				$(this.self).empty().remove();
 				this.trigger('dropped');
 

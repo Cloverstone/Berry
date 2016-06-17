@@ -21,7 +21,7 @@ Berry.prototype.events.initialize.push({
 				if($.inArray( splits[0].substr(0,1) , [ "^", "#", "/", ">" ] ) < 0  ){
 					var cobj = {};
 
-					//identify if their is more info about this field, if so map it to an object
+					//identify if there is more info about this field, if so map it to an object
 					if(splits.length>1){cobj = JSON.parse('{'+splits[1] )}
 
 					//update the fields array with the the values
