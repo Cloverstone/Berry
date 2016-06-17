@@ -193,7 +193,7 @@ Berry.register({
 		if(!this.isChild()){
 			++this.owner.section_count;
 			this.owner.sections.push(this);
-			this.owner.sectionList.push({'index': this.owner.section_count, 'text': this.item.legend, state: 'disabled', completed: false, active: false, error: false});
+			this.owner.sectionList.push({'index': this.owner.section_count, 'text': this.item.legend || this.item.label, state: 'disabled', completed: false, active: false, error: false});
 		}
 
 		this.owner.fieldsets.push( $('[name="' + this.name + '"]')[0]);

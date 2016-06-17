@@ -69,11 +69,11 @@ Berry = function(options, target) {
 				var status = true;
 				var root = this.fields;
 				if(this.parent){root = this.parent.children;}
-				if(root[this.name]){
-					while(root[this.name].instances.length < min && status){
+				// if(root[this.name]){
+					while(this.owner.find(this.getPath()).length < min && status){
 						status = this.clone();
 					}
-				}
+				// }
 			}
 		}, [attributes], fields);
 		return attributes;
@@ -363,6 +363,7 @@ Berry = function(options, target) {
 		return field;
 	};
 
+
 	this.parsefields = function(options) {
 		var newAttributes = {};//$.extend(true, {}, attributes);
 		// var newAttributes = JSON.parse(JSON.stringify(attributes))
@@ -388,9 +389,23 @@ Berry = function(options, target) {
 					}
 				}else{
 					if(this.multiple){
-						root[this.name] = root[this.name]||[];
+						// root[this.name] = root[this.name]||[];
+
+						if(this.isChild() && this.parent.multiple && $.isArray(root) ){
+							if(typeof root[this.parent.instance_id] == 'undefined'){root[this.parent.instance_id] = {}}
+							root[this.parent.instance_id][this.name] = root[this.parent.instance_id][this.name]||[];
+						}else{
+							// root[this.name] = {};
+							root[this.name] = root[this.name]||[];
+
+						}
 					}else if(!options.flatten){
-						root[this.name] = {};
+						if(this.isChild() && this.parent.multiple && $.isArray(root) ){
+							if(typeof root[this.parent.instance_id] == 'undefined'){root[this.parent.instance_id] = {}}
+							root[this.parent.instance_id][this.name] = {};
+						}else{
+							root[this.name] = {};
+						}
 					}
 				}
 
@@ -398,6 +413,7 @@ Berry = function(options, target) {
 		}, [newAttributes, options]);
 		return newAttributes;
 	};
+
 
 
 	this.setActions = function(actions) {
