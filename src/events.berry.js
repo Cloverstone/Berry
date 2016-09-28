@@ -39,12 +39,12 @@ Berry.prototype.on = function(topic, func, context, execute) {
 };
 
 //add code to handle parameters and cancelation of events for objects/forms that are deleted
-Berry.prototype.delay = function(topic, func, execute, delay) {
+Berry.prototype.delay = function(topic, func, context, execute, delay) {
 	var temp = function(args, topic, token){
 		clearTimeout(this.events[token].timer);
 		this.events[token].timer = setTimeout($.proxy(function(){
 			this.events[token].func.call(this);
-		}, this) , (delay || 250));
+		}, context || this) , (delay || 250));
 	};
 
 	var eventSplitter = /\s+/;
@@ -59,7 +59,7 @@ Berry.prototype.delay = function(topic, func, execute, delay) {
 		this.events[this.lastToken] = {func: func, timer: null};
 	}
 	if(execute){
-		func.call(this, null, topic);
+		func.call(context || this, null, topic);
 	}
 	return this;
 };

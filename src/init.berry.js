@@ -12,6 +12,7 @@ Berry.options = {
 	columns: 12,
 	autoDestroy: true,
 	autoFocus: true,
+	validate: false,
 	actions: ['cancel', 'save']
 };
 
@@ -35,7 +36,7 @@ Berry.search = function(o, s) {
 		var a = s.split('.');
 		while (a.length) {
 			var n = a.shift();
-			if (typeof o !== 'undefined' && o !== null && n in o) {
+			if (typeof o !== 'undefined' && o !== null && typeof o !== 'string' && n in o) {
 				o = o[n];
 			} 
 		}

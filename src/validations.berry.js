@@ -25,7 +25,7 @@ Berry.prototype.performValidate = function(target, pValue){
 	if(typeof item.validate !== 'undefined' && typeof item.validate === 'object'){
 		for(var r in item.validate){
 			if(!Berry.validations[r].method.call(target, value, item.validate[r])){
-				if((typeof item.show === 'undefined') || target.owner.isVisible){
+				if((typeof item.show === 'undefined') || target.isVisible){
 					target.valid = false;
 					var estring = Berry.validations[r].message;
 					if(typeof item.validate[r] == 'string') {

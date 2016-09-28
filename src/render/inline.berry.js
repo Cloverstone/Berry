@@ -18,7 +18,16 @@ Berry.prototype.events.initialize.push({
 			this.options.autoFocus = false;
 			this.options.default = {hideLabel: true,};
 			this.on('initializeField', function(opts){
+
 					opts.field.item.fieldset = this.$el.find('[data-inline="'+opts.field.item.name+'"]');
+					if(opts.field.item.fieldset.length > 1){
+						var test = this.$el.find('[data-inline="'+opts.field.item.name+'"][id='+opts.field.item.id+']');
+						if(test.length > 0){
+								
+
+							opts.field.item.fieldset = test;
+						}
+					}
 					if(opts.field.item.fieldset){$.extend(opts.field.item, opts.field.item.fieldset.data());}
 //					return temp;
 				});

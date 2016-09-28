@@ -39,6 +39,13 @@ Berry.conditions = {
 			}, this, args)
 		).lastToken;
 	},
+	test: function(Berry, args, func) {
+		return Berry.on('change:' + this.name, $.proxy(function(args, local, topic, token) {
+				func.call(this, args(), token);
+			}, this, args)
+		).lastToken;
+	}
+
 	// hasclass: function(Berry,args) {
 	// 	if($(args.selector).hasClass(args.match)){
 	// 		return true;

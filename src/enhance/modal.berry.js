@@ -17,7 +17,9 @@ Berry.prototype.events.initialize.push({
 			this.ref.modal();
 
 			this.ref.on('shown.bs.modal', $.proxy(function () {
-				this.$el.find('.form-control:first').focus();
+				if(this.options.autoFocus){
+					this.$el.find('.form-control:first').focus();
+				}
 			},this));
 
 			//Add two more ways to hide the modal (escape and X)

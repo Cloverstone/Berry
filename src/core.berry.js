@@ -47,8 +47,7 @@ Berry = function(options, target) {
 		} else {
 			this.attributes = processMultiples.call(this, this.parsefields(this.options));
 		}
-
-		if(validate || !this.valid) { this.validate(true); }
+		if(validate || (typeof valid == 'undefined' && this.options.validate) || !this.valid) { this.validate(true); }
 		return this.attributes;
 	};
 
@@ -69,15 +68,38 @@ Berry = function(options, target) {
 				var status = true;
 				var root = this.fields;
 				if(this.parent){root = this.parent.children;}
-				// if(root[this.name]){
+				if(root[this.name]){
 					while(this.owner.find(this.getPath()).length < min && status){
 						status = this.clone();
 					}
-				// }
+				}
+			}
+		}, [attributes], fields);
+		this.each(function(attributes) {
+			if(this.multiple) {
+
+				var min = this.multiple.min || 1;
+				if(typeof attributes !== 'undefined'){
+					var items = Berry.search(attributes, this.getPath());
+					var attcount = 0;
+					if(items !== null){
+						attcount = items.length;
+					}
+					if(min < attcount){min = attcount;}
+				}
+				var status = true;
+				var root = this.fields;
+				if(this.parent){root = this.parent.children;}
+				if(root[this.name]){
+					while(this.owner.find(this.getPath()).length < min && status){
+						status = this.clone();
+					}
+				}
 			}
 		}, [attributes], fields);
 		return attributes;
 	};
+
 
 
 
