@@ -42,7 +42,6 @@ Berry.search = function(o, s) {
 		}
 		return o;
 	}
-
 Berry.processOpts = function(item, object) {
  
 	// If max is set on the item, assume a number set is desired. 
@@ -99,18 +98,22 @@ Berry.processOpts = function(item, object) {
 		}
 
 		// Insert the default value at the beginning 
-		if(typeof item.default !== 'undefined') {
-			item.choices.unshift(item.default);
-		}
+		// if(typeof item.default !== 'undefined') {
+		// 	item.choices.unshift(item.default);
+		// }
 
 		item.options = $.map(item.choices, function(value, index) {
 			return [value];
 		});
-	}else{
-				// Insert the default value at the beginning 
-		if(typeof item.default !== 'undefined' && typeof item.options !== 'undefined') {
-			item.options.unshift(item.default);
-		}
+	}
+	// else{
+	// 			// Insert the default value at the beginning 
+	// 	if(typeof item.default !== 'undefined' && typeof item.options !== 'undefined') {
+	// 		item.options.unshift(item.default);
+	// 	}
+	// }
+	if(typeof item.default !== 'undefined' && typeof item.options !== 'undefined' && item.options[0] != item.default) {
+		item.options.unshift(item.default);
 	}
 
 	if(typeof item.options !== 'undefined' && item.options.length > 0) {

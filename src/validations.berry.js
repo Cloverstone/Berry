@@ -59,6 +59,8 @@ Berry.regex.naturalNoZero = /^[1-9][0-9]*$/i;
 Berry.regex.ip = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i;
 Berry.regex.base64 = /[^a-zA-Z0-9\/\+=]/i;
 Berry.regex.url = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+Berry.regex.date = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+
 Berry.validations = {
 	required:{
 		method: function(value, args) {
@@ -208,5 +210,11 @@ Berry.validations = {
 			return (Berry.regex.base64.test(value) || value === '');
 		},
 		message: 'The {{label}} field must contain a base64 string.'
+	},
+	date:{
+		method: function(value, args) {
+	        return (Berry.regex.date.test(value) || value === '');
+		},
+		message: 'The {{label}} field should be in the format MM/DD/YYYY.'
 	}
 };
