@@ -21,8 +21,10 @@
 			}
 		},
 		setValue: function(value) {
-			this.value = value;
-			this.self.find('[value="' + this.value + '"]').prop('checked', true);
+			if(typeof _.findWhere(this.options, {value: value}) !== 'undefined'){
+				this.value = value;
+				this.self.find('[value="' + this.value + '"]').prop('checked', true);
+			}
 		},
 		displayAs: function() {
 			for(var i in this.item.options) {

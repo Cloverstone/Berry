@@ -21,6 +21,16 @@
 					return o[i].label;
 				}
 			}
+		},
+		setValue: function(value){
+			if(typeof value !== 'object' && typeof _.findWhere(this.options, {value: value}) !== 'undefined'){
+				if(typeof this.lastSaved === 'undefined'){
+					this.lastSaved = value;
+				}
+				this.value = value;
+				return this.$el.val(value);
+			}
+			return this.value;
 		}
 	});
 })(Berry, jQuery);

@@ -147,17 +147,23 @@ $.extend(Berry.field.prototype, {
 	initialize: function() {
 		this.setup();
 		if(typeof this.show !== 'undefined') {
-			this.isVisible = true;
+			this.isVisible = (typeof this.show == 'undefined');
+		    this.self.toggle(this.isVisible);
+		  //  this.update({}, true);
+
 			this.showConditions = Berry.processConditions.call(this, this.show,
 				function(bool, token) {
-					this.showConditions[token] = bool;
-					this.self.show();
-					this.isVisible = true;
-					for(var c in this.showConditions) {
-						if(!this.showConditions[c]) {
-							this.isVisible = false;
-							this.self.hide();
-							break;
+					if(typeof bool == 'boolean') {
+					   // var temp = this.isVisible;
+						this.showConditions[token] = bool;
+						this.self.show();
+						this.isVisible = true;
+						for(var c in this.showConditions) {
+							if(!this.showConditions[c]) {
+								this.isVisible = false;
+								this.self.hide();
+								break;
+							}
 						}
 					}
 				}
@@ -172,14 +178,16 @@ $.extend(Berry.field.prototype, {
 		if(typeof this.enabled !== 'undefined') {
 			this.enabledConditions = Berry.processConditions.call(this, this.enabled,
 				function(bool, token) {
-					this.enabledConditions[token] = bool;
-					this.isEnabled = true;
-					this.enable();
-					for(var c in this.enabledConditions) {
-						if(!this.enabledConditions[c]) {
-							this.isEnabled = false;
-							this.disable();
-							break;
+					if(typeof bool == 'boolean') {
+						this.enabledConditions[token] = bool;
+						this.isEnabled = true;
+						this.enable();
+						for(var c in this.enabledConditions) {
+							if(!this.enabledConditions[c]) {
+								this.isEnabled = false;
+								this.disable();
+								break;
+							}
 						}
 					}
 				}
@@ -192,12 +200,18 @@ $.extend(Berry.field.prototype, {
 		if(typeof this.parsable !== 'undefined') {
 			this.parsableConditions = Berry.processConditions.call(this, this.parsable,
 				function(bool, token) {
-					this.parsableConditions[token] = bool;
-					this.isParsable = true;
-					for(var c in this.parsableConditions) {
-						if(!this.parsableConditions[c]) {
-							this.isParsable = false;
-							break;
+					if(typeof bool == 'boolean') {
+					    var temp = this.isParsable;
+						this.parsableConditions[token] = bool;
+						this.isParsable = true;
+						for(var c in this.parsableConditions) {
+							if(!this.parsableConditions[c]) {
+								this.isParsable = false;
+								break;
+							}
+						}
+						if(temp !== this.isParsable){
+						    this.trigger('change');
 						}
 					}
 				}
@@ -206,7 +220,6 @@ $.extend(Berry.field.prototype, {
 		}
 		
 		this.owner.trigger('initializedField', {field: this});
-		// return this.owner.initializefield(this.id);
 	},
 	on: function(topic, func) {
 		this.owner.on(topic + ':' + this.name, func);

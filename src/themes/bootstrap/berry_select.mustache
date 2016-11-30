@@ -16,7 +16,7 @@
 			<select class="form-control"  name="{{name}}" {{^isEnabled}}readonly disabled="true"{{/isEnabled}}  {{#multiple_enable}}multiple{{/multiple_enable}} >
 			{{#options}}
 				<option {{#selected}}selected='selected'{{/selected}} value="{{value}}">
-					{{label}}
+					{{{label}}}
 				</option>
 			{{/options}}
 			</select>
