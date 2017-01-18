@@ -46,19 +46,23 @@ Berry.conditions = {
 		).lastToken;
 	},
 	multiMatch: function(Berry, args, func) {
-		return b.on('change:' + _.pluck(args, 'name').join(' change:'), $.proxy(function(args, local, topic, token) {
-					func.call(this, function(args, local, topic, form){
-					    if(topic == 'change:walking_department'){debugger;}
-	    				if(form.findByID(local.id).isParsable){
-	                        var val = _.findWhere(args,{name:topic.split(':')[1]}).value;
-	                        if(typeof val == 'string'){
-	                            return _.findWhere(args,{name:topic.split(':')[1]}).value == local.value;
-	                        }else if(typeof val == 'object' && local.value !== null){
-	                            return  (val.indexOf(local.value) !== -1);
-	                        }
-					    }
-	                }(args, local,topic, b), token);
-			}, this, args)
-		).lastToken;
+		berry.on('change:' + _.pluck(args, 'name').join(' change:'), $.proxy(function(args, local, topic) {
+			func.call(this, function(args,form){
+				var status = false;
+				for(var i in args) {
+					var val = args[i].value; 
+					var localval = form.toJSON()[args[i].name];
+					
+					if(typeof val == 'object' && localval !== null){
+						status = (val.indexOf(localval) !== -1);
+					}else{
+						status = (val == localval);
+					}
+					if(!status)break;
+				}
+				return status;
+			}(args, berry), 'mm');
+		}, this, args))
+		return 'mm';
 	}
 };

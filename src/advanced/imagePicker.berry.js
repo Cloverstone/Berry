@@ -23,7 +23,7 @@
           }
         } }).on('save', function(){
           this.update({value:this.modal.fields.image.toJSON()})
-          this.modal.trigger('cancel');
+          this.modal.trigger('close');
         }, this)
       },this));
     },

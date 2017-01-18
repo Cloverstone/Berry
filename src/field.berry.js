@@ -19,6 +19,7 @@ Berry.field = function(item, owner) {
 			},this));
 		} else if(typeof this.item.value === 'string' && this.item.value.indexOf('=') === 0 && typeof math !== 'undefined') {
 			this.formula = this.item.value.substr(1);
+			this.enabled = false;
 			this.liveValue = function() {
 				try {
 					var temp = math.eval(this.formula, this.owner.toJSON());
@@ -147,7 +148,7 @@ $.extend(Berry.field.prototype, {
 	initialize: function() {
 		this.setup();
 		if(typeof this.show !== 'undefined') {
-			this.isVisible = (typeof this.show == 'undefined');
+			this.isVisible = (typeof this.show == 'undefined' || $.isEmptyObject(this.show));
 		    this.self.toggle(this.isVisible);
 		  //  this.update({}, true);
 
@@ -156,15 +157,16 @@ $.extend(Berry.field.prototype, {
 					if(typeof bool == 'boolean') {
 					   // var temp = this.isVisible;
 						this.showConditions[token] = bool;
-						this.self.show();
+						// this.self.show();
 						this.isVisible = true;
 						for(var c in this.showConditions) {
 							if(!this.showConditions[c]) {
 								this.isVisible = false;
-								this.self.hide();
+								// this.self.hide();
 								break;
 							}
 						}
+						this.self.toggle(this.isVisible);
 					}
 				}
 			);
