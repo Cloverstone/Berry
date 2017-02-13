@@ -21,7 +21,11 @@
 			}
 		},
 		setValue: function(value) {
-			if(typeof _.findWhere(this.options, {value: value}) !== 'undefined'){
+			if(typeof value !== 'object' && this.item.waiting || (typeof _.findWhere(this.options, {value:  value}) !== 'undefined' || typeof _.findWhere(this.options, {value:  value+=''}) !== 'undefined') ){
+				if(typeof this.lastSaved === 'undefined'){
+					this.lastSaved = value;
+				}
+			//if(typeof _.findWhere(this.options, {value: value}) !== 'undefined'){
 				this.value = value;
 				this.self.find('[value="' + this.value + '"]').prop('checked', true);
 			}

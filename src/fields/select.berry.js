@@ -23,7 +23,7 @@
 			}
 		},
 		setValue: function(value){
-			if(typeof value !== 'object' && (typeof _.findWhere(this.options, {value:  value}) !== 'undefined' || typeof _.findWhere(this.options, {value:  value+=''}) !== 'undefined') ){
+			if(typeof value !== 'object' && this.item.waiting || (typeof _.findWhere(this.options, {value:  value}) !== 'undefined' || typeof _.findWhere(this.options, {value:  value+=''}) !== 'undefined') ){
 				if(typeof this.lastSaved === 'undefined'){
 					this.lastSaved = value;
 				}

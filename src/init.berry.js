@@ -74,12 +74,13 @@ Berry.processOpts = function(item, object) {
 						type: 'get',
 						success: function(data) {
 							Berry.collections[item.choices] = data;
+							item.waiting = false;
 							object.update({choices: data, value: Berry.search(object.owner.options.attributes, object.getPath())});
 						}
 					});
 				}
 				getAttributes(object);
-
+				item.waiting = true;
 				item.options = [];
 				return item;
 			} else {
