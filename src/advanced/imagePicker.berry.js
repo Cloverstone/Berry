@@ -31,6 +31,6 @@
       if(this.value != value) {
         this.update({value:value})
       }
-    },
+    }
   });
 })(Berry,jQuery);

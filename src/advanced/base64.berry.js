@@ -20,7 +20,6 @@
 			      reader.readAsDataURL(fileToRead);
 			      reader.onload = function (event) {
 			      	// event.target.result;
-			      	debugger;
 				    	this.set(event.target.result);//.split(',').pop());
 
 				    }.bind(field)
@@ -47,12 +46,8 @@
 			}
 			return this.value;
 		},	
-		getValue: function() { return this.value; },
-
-
-
+		getValue: function() { return this.value; }
 	});
 })(Berry,jQuery);
 
 
-	

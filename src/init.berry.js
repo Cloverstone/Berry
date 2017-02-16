@@ -42,11 +42,34 @@ Berry.search = function(o, s) {
 		}
 		return o;
 	}
+Berry.collection = function(Berry){
+	var collections = {};
+	this.events = {initialize: []};
+	this.addSub = Berry.prototype.addSub;
+	this.on = Berry.prototype.on;
+	this.off = Berry.prototype.off;
+	this.trigger = Berry.prototype.trigger;
+	return {
+		add: function(name, data){
+			collections[name] = data;
+		},
+		get: function(name){
+			return collections[name];
+		},
+		update: function(name, data){
+			collections[name] = data;
+			this.trigger(name);
+		}.bind(this),
+		on: this.on.bind(this),
+		off: this.off.bind(this)
+	}
+}(Berry)
+
+
 Berry.processOpts = function(item, object) {
  
 	// If max is set on the item, assume a number set is desired. 
 	// min defaults to 0 and the step defaults to 1.
-
 	if(typeof item.max !== 'undefined') {
 		item.min = (item.min || 0);
 		item.choices = (item.choices || []);
@@ -66,16 +89,32 @@ Berry.processOpts = function(item, object) {
 	}
 
 	if(typeof item.choices !== 'undefined' && item.choices.length > 0) {
-		if(typeof item.choices === 'string') {
-			if(typeof Berry.collections[item.choices] === 'undefined') {
-				var getAttributes = function(object){
+		if(typeof item.choices === 'string' ) {
+
+			item.optionPath = item.choices;
+			// if(typeof Berry.collections[item.choices] === 'undefined') {
+			if(typeof Berry.collection.get(item.optionPath) === 'undefined'){// && Berry.collection.get(item.choices) !== 'pending') {
+				// Berry.collections[item.choices] = [];
+				Berry.collection.add(item.choices, []);
+				var getAttributes = function(object) {
 					$.ajax({
-						url: item.choices,
+						url: item.optionPath,
 						type: 'get',
 						success: function(data) {
-							Berry.collections[item.choices] = data;
+							// Berry.collections[item.choices] = data;
+							// debugger;
+
+
 							item.waiting = false;
-							object.update({choices: data, value: Berry.search(object.owner.options.attributes, object.getPath())});
+								Berry.collection.on(item.optionPath,function(item,path){
+									this.update({choices: Berry.collection.get(path)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
+								}.bind(object))
+								Berry.collection.update(item.optionPath, data);
+								if(typeof object.owner !== 'undefined') {
+									object.update({value: Berry.search(object.owner.options.attributes, object.getPath())});
+								}
+
+
 						}
 					});
 				}
@@ -84,7 +123,11 @@ Berry.processOpts = function(item, object) {
 				item.options = [];
 				return item;
 			} else {
-				item.choices = Berry.collections[item.choices];
+				Berry.collection.on(item.optionPath,function(){
+					this.update({choices: Berry.collection.get(item.optionPath)});
+				}.bind(object))
+				//item.choices = Berry.collections[item.choices];
+				item.choices = Berry.collection.get(item.optionPath);
 			}
 		}
 
@@ -219,6 +262,7 @@ Berry.register({
 	},
 	isContainer: true
 });
+
 
 Berry.renderers = {
 	base: function(owner) {

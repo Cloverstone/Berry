@@ -40,7 +40,7 @@
 		getValue: function(){
 			return this.editor.getContent()
 			// return this.$el.html();
-		},
+		}
 		// destroy: function(){
 		// 	this.editor.destroy();
 		// }

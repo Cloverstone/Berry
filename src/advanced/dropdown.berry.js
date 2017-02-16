@@ -1,5 +1,6 @@
 (function(b, $){
-	b.register({ type: 'dropdown',
+	b.register({
+		type: 'dropdown',
 		create: function() {
 			// return f.render('berry_dropdown', f.processOpts(this.item));
 			this.options = b.processOpts.call(this.owner, this.item, this).options;

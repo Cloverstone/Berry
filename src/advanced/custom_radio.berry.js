@@ -1,5 +1,6 @@
 (function(b, $){
-	b.register({ type: 'custom_radio',
+	b.register({
+		type: 'custom_radio',
 		create: function() {
 			this.options = b.processOpts.call(this.owner, this.item, this).options;
 			return b.render('berry_' + (this.elType || this.type), this);
@@ -25,7 +26,6 @@
 		},
 		setValue: function(val) {
 			return this.$el.children('[data-value="'+val+'"]').click();
-		},
-
+		}
 	});
 })(Berry,jQuery);

@@ -29,7 +29,6 @@
 		},
 		setValue: function(val) {
 			return this.$el.children('[data-value="'+val+'"]').click();
-		},
-
+		}
 	});
 })(Berry,jQuery);

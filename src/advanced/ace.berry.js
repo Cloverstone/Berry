@@ -12,7 +12,7 @@
 			}
 			this.$el.on('input', $.proxy(function(){this.trigger('change');},this));
 
-			this.editor = ace.edit(this.name+"container");
+			this.editor = ace.edit(this.id+"container");
 	    this.editor.setTheme(this.item.theme || "ace/theme/chrome");
 	    this.editor.getSession().setMode(this.item.mode || "ace/mode/handlebars");
 

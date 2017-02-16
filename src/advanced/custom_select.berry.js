@@ -1,5 +1,6 @@
 (function(b, $){
-	b.register({ type: 'custom_select',
+	b.register({
+		type: 'custom_select',
 		create: function() {
 			this.options = b.processOpts.call(this.owner, this.item, this).options;
 			if(this.reference){
@@ -26,7 +27,6 @@
 		},
 		setValue: function(val) {
 			return this.$el.children('[data-value="'+val+'"]').click();
-		},
-
+		}
 	});
 })(Berry,jQuery);
