@@ -1155,8 +1155,9 @@ Berry.processOpts = function(item, object) {
 			// if(typeof Berry.collections[item.choices] === 'undefined') {
 			if(typeof Berry.collection.get(item.optionPath) === 'undefined'){// && Berry.collection.get(item.choices) !== 'pending') {
 				// Berry.collections[item.choices] = [];
-				Berry.collection.add(item.choices, []);
-				var getAttributes = function(object) {
+				Berry.collection.add(item.optionPath, []);
+				//var getAttributes = 
+				(function(object) {
 					$.ajax({
 						url: item.optionPath,
 						type: 'get',
@@ -1167,27 +1168,30 @@ Berry.processOpts = function(item, object) {
 
 							item.waiting = false;
 								Berry.collection.on(item.optionPath,function(item,path){
-									this.update({choices: Berry.collection.get(path)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
+									this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
 								}.bind(object))
 								Berry.collection.update(item.optionPath, data);
 								if(typeof object.owner !== 'undefined') {
 									object.update({value: Berry.search(object.owner.options.attributes, object.getPath())});
 								}
-
-
 						}
 					});
-				}
-				getAttributes(object);
+				}(object))
+				//getAttributes(object);
 				item.waiting = true;
 				item.options = [];
 				return item;
 			} else {
-				Berry.collection.on(item.optionPath,function(){
-					this.update({choices: Berry.collection.get(item.optionPath)});
+				Berry.collection.on(item.optionPath,function(item, path){
+					this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});
 				}.bind(object))
+
 				//item.choices = Berry.collections[item.choices];
-				item.choices = Berry.collection.get(item.optionPath);
+				if(Berry.collection.get(item.optionPath).length){
+					item.choices = Berry.collection.get(item.optionPath);
+				}
+				// item.options = Berry.collection.get(item.optionPath);
+
 			}
 		}
 
@@ -1205,10 +1209,11 @@ Berry.processOpts = function(item, object) {
 		// if(typeof item.default !== 'undefined') {
 		// 	item.choices.unshift(item.default);
 		// }
-
-		item.options = $.map(item.choices, function(value, index) {
-			return [value];
-		});
+		if(typeof item.choices === 'object'){
+			item.options = $.map(item.choices, function(value, index) {
+				return [value];
+			});
+		}
 	}
 	// else{
 	// 			// Insert the default value at the beginning 
@@ -1274,6 +1279,7 @@ Berry.processOpts = function(item, object) {
 	}
 	return item;
 }
+
 
 Berry.getUID = function() {
 	return 'b' + (Berry.counter++);
