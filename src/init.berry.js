@@ -1,7 +1,6 @@
 Berries = Berry.instances = {};
 Berry.counter = 0;
 Berry.types = {};
-Berry.collections = {};
 Berry.options = {
 	errorClass: 'has-error',
 	errorTextClass: 'font-xs.text-danger',
@@ -102,18 +101,17 @@ Berry.processOpts = function(item, object) {
 						url: item.optionPath,
 						type: 'get',
 						success: function(data) {
-							// Berry.collections[item.choices] = data;
-							// debugger;
+							Berry.collection.on(item.optionPath,function(item,path){
+								this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
 
-
-							item.waiting = false;
-								Berry.collection.on(item.optionPath,function(item,path){
-									this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
-								}.bind(object))
-								Berry.collection.update(item.optionPath, data);
-								if(typeof object.owner !== 'undefined') {
-									object.update({value: Berry.search(object.owner.options.attributes, object.getPath())});
+								if(this.parent && this.parent.multiple){
+									if(typeof this.owner !== 'undefined') {
+										this.update({value: Berry.search(this.owner.options.attributes, this.getPath())});
+									}
 								}
+								this.trigger('options');
+							}.bind(object))
+							Berry.collection.update(item.optionPath, data);
 						}
 					});
 				}(object))
@@ -124,14 +122,19 @@ Berry.processOpts = function(item, object) {
 			} else {
 				Berry.collection.on(item.optionPath,function(item, path){
 					this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});
+
+					if(this.parent && this.parent.multiple){
+						if(typeof this.owner !== 'undefined') {
+							this.update({value: Berry.search(this.owner.options.attributes, this.getPath())});
+						}
+					}
+					this.trigger('options');
+
 				}.bind(object))
 
-				//item.choices = Berry.collections[item.choices];
 				if(Berry.collection.get(item.optionPath).length){
 					item.choices = Berry.collection.get(item.optionPath);
 				}
-				// item.options = Berry.collection.get(item.optionPath);
-
 			}
 		}
 
