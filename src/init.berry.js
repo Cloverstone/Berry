@@ -109,7 +109,6 @@ Berry.processOpts = function(item, object) {
 										this.update({value: Berry.search(this.owner.options.attributes, this.getPath())});
 									}
 								}
-								this.trigger('options');
 							}.bind(object))
 							Berry.collection.update(item.optionPath, data);
 						}
@@ -128,8 +127,6 @@ Berry.processOpts = function(item, object) {
 							this.update({value: Berry.search(this.owner.options.attributes, this.getPath())});
 						}
 					}
-					this.trigger('options');
-
 				}.bind(object))
 
 				if(Berry.collection.get(item.optionPath).length){
