@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="Adam Smallcomb">
+		<link rel="icon" href="./assets/favicon.png">
+		
+		<title>Berry Fields - Test</title>
+
+		<link rel='stylesheet' type='text/css' href='//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'>
+		<link rel='stylesheet' type='text/css' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+		<link rel='stylesheet' type='text/css' href='assets/css/demo.css'>
+		<link rel='stylesheet' type='text/css' href='assets/css/cobler.css'>
+		<link rel='stylesheet' type='text/css' href='src/vendor/css/colorpicker.min.css'>
+
+	</head>
+
+	<body>		
+		<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="./" style="line-height: 40px;font-size:10px;">
+						<span style="color: #FFB62F;float:left ">
+							<div style="line-height: 10px;height: 0px;margin-top: 5px;"><i class="fa-white fa fa-circle-o"></i> <i class="fa-white fa fa-circle-o" style="color: #BA7D10;"></i></div>
+							<div style="line-height: 10px; height: 0px; margin-top: 10px;margin-left: -6px;"><i class="fa fa-circle-o" style="color: #BA7D10;"></i> <i class="fa fa-circle-o" style="color: #BA7D10;"></i> <i class="fa fa-circle-o"></i></div>
+							<div style="margin-top: -5px;height: 0px;"><i class="fa fa-circle-o" style="color: #BA7D10;"></i> <i class="fa fa-circle-o"></i></div>
+						</span> <span style="line-height: 40px;margin-left:10px;font-size: 20px;font-weight: 200;color: #cccccf;">Berry.js</span>
+					</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="./docs.html"><i class="fa fa-life-ring"></i> Docs</a></li>
+						<!-- <li class="active"><a href="./demo.html"><i class="fa fa-flask"></i> Demo</a></li> -->
+						<li class="dropdown ">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="fa fa-flask"></i> Demo <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+	              <li><a href="?demo=example" id="example">Example</a></li>
+								<li><a href="?demo=basic" id="basic">Basic</a></li>
+								<li><a href="?demo=conditional" id="conditional">Conditional</a></li>
+								<li><a href="?demo=duplicate" id="duplicate">Duplicate</a></li>
+								<li><a href="?demo=nonfields" id="nonfields">Non Fields</a></li>
+								<li><a href="?demo=auto" id="auto">Auto Types</a></li>
+								<li><a href="?demo=builder" id="builder">Builder</a></li>
+              </ul>
+            </li>
+						<!-- <li><a href="./editor.html"><i class="fa fa-check-square-o"></i> Editor</a></li> -->
+
+					</ul>
+<!-- 					<div class="dropdown pull-right" style="margin-top:7px">
+						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+							Sample Forms
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="?demo=example" id="example">Example</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="?demo=basic" id="basic">Basic</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="?demo=conditional" id="conditional">Conditional</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="?demo=duplicate" id="duplicate">Duplicate</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="?demo=nonfields" id="nonfields">Non Fields</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="?demo=auto" id="auto">Auto Types</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="?demo=builder" id="builder">Builder</a></li>
+						</ul>
+					</div> -->
+				</div><!-- /.nav-collapse -->
+			</div><!-- /.container -->
+		</div><!-- /.navbar -->
+		<div class="container" style="width:100%">
+			<div class="row">
+				<div class="col-md-6 col-sm-4 hidden-xs">
+					<div class="panel panel-default">
+					  <div class="panel-heading">
+							<div class="btn-group" role="group" aria-label="...">
+							  <button type="button" id="schema" class="active btn btn-default">Options</button>
+							  <button type="button" id="json" class="btn btn-default">Output</button>
+							  <button type="button" id="cobler" class="btn btn-default">Editor</button>
+							</div>
+					  </div>
+					  <div class="panel-body">
+							<div id="schema_editor" class="view view_schema"></div>		
+							<div class="hidden result view view_json"></div>	
+							<div class="hidden source view view_source" id="alt-sidebar">
+								<ul id="sortableList" class="list-group ">
+									<li class="list-group-item" data-type="textbox">Text</li>
+									<li class="list-group-item" data-type="select">Select</li>
+									<li class="list-group-item" data-type="checkbox">Checkbox</li>
+								</ul>			
+							<div id="form"></div>				
+							</div>
+					  </div>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-8 col-xs-12">
+					<div class="panel panel-success">
+					  <div class="panel-heading"><b>Form</b></div>
+					  <div class="panel-body">
+							<div class="target"></div>
+							<div id="editor" class="form-horizontal widget_container cobler_select"></div>
+				  	</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js" charset="utf-8"></script>
+
+		/<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+		<script type='text/javascript' src='//twitter.github.com/hogan.js/builds/3.0.1/hogan-3.0.1.js'></script>
+
+		<!-- // <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3//jquery-ui.min.js'></script> -->
+
+		<script type="text/javascript" src="assets/js/sortable.js"></script>
+		<script type='text/javascript' src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+		<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/autosize.js/1.18.13/jquery.autosize.min.js'></script>
+		
+		<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/mathjs/1.0.1/math.min.js'></script>
+		<script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
+		<script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/jStorage/0.4.4/jstorage.min.js"></script>
+
+		<script type="text/javascript" src="bin/full.berry.min.js"></script>
+		<!--
+		<script type='text/javascript' src='src/core.berry.js'></script>
+    <script type='text/javascript' src='src/field.berry.js'></script>
+    <script type='text/javascript' src='src/conditions.berry.js'></script>
+    <script type='text/javascript' src='src/events.berry.js'></script>
+    <script type='text/javascript' src='src/init.berry.js'></script>		
+   	<script type='text/javascript' src='src/duplicate.berry.js'></script>
+   	<script type='text/javascript' src='src/render/wizard.berry.js'></script>
+   	<script type='text/javascript' src='src/render/tabs.berry.js'></script>
+		<script type='text/javascript' src='src/fields/checkbox.berry.js'></script>
+		<script type='text/javascript' src='src/fields/text.berry.js'></script>
+		<script type='text/javascript' src='src/fields/select.berry.js'></script>
+		<script type='text/javascript' src='src/fields/radio.berry.js'></script>
+		<script type='text/javascript' src='src/fields/textarea.berry.js'></script>
+		<script type='text/javascript' src='src/advanced/imagePicker.berry.js'></script>
+		<script type='text/javascript' src='src/validations.berry.js'></script>
+		<script type='text/javascript' src='src/advanced/grid_select.berry.js'></script>
+		<script type='text/javascript' src='src/enhance/modal.berry.js'></script>
+		<script type='text/javascript' src='src/enhance/extract.berry.js'></script>
+	-->
+		
+		<!-- // <script type='text/javascript' src='assets/js/bootstrap.cobler.js'></script> -->
+		
+		<script type='text/javascript' src='assets/js/cob.js'></script>
+		<script type='text/javascript' src='assets/js/form.cob.js'></script>		
+		<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>
+
+
+
+		<script type='text/javascript' src='src/vendor/js/colorpicker.min.js'></script>
+		<script type='text/javascript' src='bin/bootstrap.full.berry.js'></script>
+		<script type='text/javascript' src='assets/js/demo.js'></script>
+
+		<script type='text/template' name="itemContainer">
+			<div class="cobler-li-content"></div>
+			<div class="btn-group parent-hover">
+				<span class="remove-item btn btn-danger fa fa-trash-o" data-title="Remove"></span>
+				<span class="duplicate-item btn btn-default fa fa-copy" data-title="Duplicate"></span>
+			</div>
+		</script>
+
+
+
+		<script type='text/javascript' >
+			templates['itemContainer'] = Hogan.compile(document.getElementsByName('itemContainer')[0].innerHTML)
+
+		</script>
+				<script type='text/javascript' >
+			// var cb = new Cobler({
+			// 	targets: [document.getElementById('sortableList2'), document.getElementById('sortableList3')],
+			// 	items: [
+			// 		[
+			// 			{
+			// 				wType: 'select',
+			// 				type: 'select',
+			// 				label: 'Name',
+			// 				name: 'name',
+			// 				options:[
+			// 					{label: 'First',value: '1'}
+			// 				]
+			// 			},			
+			// 			{
+			// 				wType: 'text',
+			// 				type: 'text',
+			// 				label: 'Name',
+			// 				name: 'name'
+			// 			},			
+			// 			{
+			// 				wType: 'checkbox',
+			// 				type: 'checkbox'
+			// 			}
+			// 		],
+			// 		[]
+			// 	]
+			// })
+
+			//This section establishes the list of addable items
+			// var list = document.getElementById('sortableList');
+			// cb.addSource(list);
+			// cb.on('activate', function(){
+			// 	if(list.className.indexOf('hidden') == -1){
+			// 		list.className += ' hidden';
+			// 	}
+			// })
+			// cb.on('deactivate', function(){
+			// 	list.className = list.className.replace('hidden', '');
+			// })
+			// document.getElementById('sortableList').addEventListener('click', function(e) {
+			// 	cb.collections[0].addItem(e.target.dataset.type);
+			// })
+
+
+
+			$('body').keydown(function(event) {
+				switch(event.keyCode) {
+					case 27://escape
+							cb.deactivate();
+						break;
+				}
+			});
+		</script>
+
+</body></html>
