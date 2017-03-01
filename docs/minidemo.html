@@ -57,7 +57,7 @@
 					$.extend({autoFocus: false, actions: ['save'], name: 'myForm', attributes: "" }, myfrom ) )
 				.on('change', function(){
 					$('.result').html("<pre>"+JSON.stringify(this.toJSON(), undefined, "\t")+"</pre>");
-				})
+				}).trigger('change')
 				} catch (e) {
 				return false;
 				}
