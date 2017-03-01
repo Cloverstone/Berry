@@ -37,7 +37,7 @@ options = {
 $('.myForm').berry(options);
 ```
 
-####See it live [here](http://cloverstone.github.io/Berry/sandbox.html)
+####See it live [here](http://cloverstone.github.io/Berry/demo.html)
 
 ======
 Berry is also built very modulerly, each field type is defined independently and allows for custom types to be created including types with no html spec analog if desired. The theme is completely separated out as well meaning themes could be created for any popular framework or custom for your own project. Also the way the form is rendered is modular, allowing the same definition to be rendered as a set of fieldsets, a table, tabs by fieldset, or a wizard by fieldset and more could be created as needed. Additionally the framework is able to be extended without modifying the main code, included are three example of this: creating the form in a modal by simply not passing a target, tying the form to a backbone model by passing a model with a schema defined for the form allowing for auto syncing and populating, and the third is a way to derive the fiels form a modified mustache template.

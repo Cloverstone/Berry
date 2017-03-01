@@ -91,9 +91,9 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       $('.target').berry(
         $.extend({autoFocus: false, actions: ['save'], name: 'myForm', attributes: QueryStringToHash(document.location.hash.substr(1) || "") }, forms[form] ) )
-      .delay('change', function(){
+      .on('change', function(){
         $('.result').html("<pre>"+JSON.stringify(this.toJSON(), undefined, "\t")+"</pre>");
-      }, true)
+      })
       .on('save', function(){
         if(this.validate()) { location.hash = '#'+$.param(this.toJSON());}}
       );
