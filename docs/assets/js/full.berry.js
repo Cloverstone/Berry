@@ -1221,7 +1221,7 @@ Berry.processOpts = function(item, object) {
 	// 		item.options.unshift(item.default);
 	// 	}
 	// }
-	if(typeof item.default !== 'undefined' && typeof item.options !== 'undefined' && item.options[0] != item.default) {
+	if(typeof item.default !== 'undefined' && typeof item.options !== 'undefined' && item.options[0] !== item.default) {
 		item.options.unshift(item.default);
 	}
 
