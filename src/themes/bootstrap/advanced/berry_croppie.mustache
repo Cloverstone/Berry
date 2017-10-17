@@ -1,0 +1,20 @@
+<div class="row clearfix form-group {{modifiers}} {{#multiple.duplicate}}dupable" data-min="{{multiple.min}}" data-max="{{multiple.max}}{{/multiple.duplicate}}" name="{{name}}" data-type="{{type}}">
+	{{>berry__label}}
+	{{#multiple.duplicate}}
+	<div class="duplicate add btn btn-default"><i class="fa fa-plus"></i></div>
+	<div class="btn btn-default remove"><i class="fa fa-minus"></i></div>
+	{{/multiple.duplicate}}
+	{{#label}}
+	{{#inline}}<div class="col-md-12">{{/inline}}
+	{{^inline}}<div class="col-md-8">{{/inline}}
+	{{/label}}
+	{{^label}}
+	<div class="col-md-12">
+	{{/label}}
+		<input {{^autocomplete}}autocomplete="off"{{/autocomplete}} class="form-control" style="display:none" {{^isEnabled}}readonly{{/isEnabled}} {{#maxLength}}maxlength="{{maxLength}}"{{/maxLength}}{{#min}} min="{{min}}"{{/min}}{{#max}} max="{{max}}"{{/max}} placeholder="{{placeholder}}" type="file" name="{{name}}" id="{{name}}" value="{{value}}" />
+		<span class="btn btn-default">Select File</span>
+    <div class="croppie" style="height:150px;margin-bottom: 50px;margin-top:10px"></div>
+
+		{{>berry__addons}}
+	</div>
+</div>

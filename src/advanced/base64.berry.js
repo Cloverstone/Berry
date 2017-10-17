@@ -49,5 +49,3 @@
 		getValue: function() { return this.value; }
 	});
 })(Berry,jQuery);
-
-

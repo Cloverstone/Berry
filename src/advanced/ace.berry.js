@@ -22,7 +22,7 @@
 				this.lastSaved = value;
 			}
 			this.value = value;
-			this.editor.setValue(value);
+			this.editor.session.setValue(value);
 			return this.$el;
 		},
 		getValue: function(){

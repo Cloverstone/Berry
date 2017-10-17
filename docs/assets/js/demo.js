@@ -216,7 +216,44 @@ forms = {
       {"label": "Age", "type": "number"},
       {"label": "Favorite Color", "type": "color"}
     ]
-  }
+  },
+  "fieldsets":{
+	"attributes": {
+		"first_name": "John",
+		"other":{
+		  "email": "demo@gmail.com"
+		}
+	},
+	"renderer": "tabs",
+	"flatten": false,
+	"fields": [
+		{
+			"label": "Info",
+			"hideLabel": true,
+			"fields": [
+				{
+					"label": "First Name"
+				}
+			]
+		},
+		{
+			"label": "More",
+			"hideLabel": true,
+			"fields": [
+				{
+					"label": "Other",
+					"type": "fieldset",
+					"fields": [
+						{
+							"label": "Email",
+							"name": "email"
+						}
+					]
+				}
+			]
+		}
+	]
+}
 }
 
 /*utils*/

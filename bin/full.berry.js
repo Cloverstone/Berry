@@ -1162,6 +1162,7 @@ Berry.processOpts = function(item, object) {
 						type: 'get',
 						success: function(data) {
 							Berry.collection.on(item.optionPath,function(item,path){
+								this.item.waiting = false;
 								this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
 
 								if(this.parent && this.parent.multiple){
@@ -1180,6 +1181,7 @@ Berry.processOpts = function(item, object) {
 				return item;
 			} else {
 				Berry.collection.on(item.optionPath,function(item, path){
+					this.item.waiting = false;					
 					this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});
 
 					if(this.parent && this.parent.multiple){
@@ -1833,6 +1835,9 @@ Berry.validations = {
 			this.$el.change($.proxy(function(){this.trigger('change');}, this));
 		},
 		getValue: function() {
+			if(this.item.waiting){
+				return this.value;
+			}
 			var selected = this.self.find('[type="radio"]:checked').data('label');
 			for(var i in this.item.options) {
 				if(this.item.options[i].label == selected) {
@@ -1841,7 +1846,7 @@ Berry.validations = {
 			}
 		},
 		setValue: function(value) {
-			if(typeof value !== 'object' && this.item.waiting || (typeof _.findWhere(this.options, {value:  value}) !== 'undefined' || typeof _.findWhere(this.options, {value:  value+=''}) !== 'undefined') ){
+			if(typeof value !== 'object' && this.item.waiting || (typeof _.findWhere(this.options, {value:  value}) !== 'undefined' || typeof _.findWhere(this.options, {value:  value+=''}) !== 'undefined' || typeof _.findWhere(this.options, {value:  parseInt(value, 10)}) !== 'undefined') ){
 				if(typeof this.lastSaved === 'undefined'){
 					this.lastSaved = value;
 				}
@@ -1884,14 +1889,20 @@ Berry.validations = {
 					return o[i].label;
 				}
 			}
+		},		
+		getValue: function() {
+			if(this.item.waiting){
+				return this.value;
+			}
+		 return this.$el.val(); 
 		},
 		setValue: function(value){
-			if(typeof value !== 'object' && this.item.waiting || (typeof _.findWhere(this.options, {value:  value}) !== 'undefined' || typeof _.findWhere(this.options, {value:  value+=''}) !== 'undefined') ){
+			if(typeof value !== 'object' && this.item.waiting || (typeof _.findWhere(this.options, {value:  value}) !== 'undefined' || typeof _.findWhere(this.options, {value:  value+=''}) !== 'undefined' || typeof _.findWhere(this.options, {value:  parseInt(value, 10)}) !== 'undefined') ){
 				if(typeof this.lastSaved === 'undefined'){
 					this.lastSaved = value;
 				}
 				this.value = value;
-				return this.$el.val(value);
+				this.$el.val(value);
 			}
 			return this.value;
 		}
@@ -2227,7 +2238,7 @@ Berry.prototype.events.initialize.push({
 			this.options.actionTarget = this.ref.find('.modal-footer');
 			this.$el = this.ref.find('.modal-body');
 
-			this.ref.modal();
+			this.ref.modal(this.options.modal);
 
 			this.ref.on('shown.bs.modal', $.proxy(function () {
 				if(this.options.autoFocus){
@@ -2286,7 +2297,7 @@ Berry.prototype.events.initialize.push({
 				this.lastSaved = value;
 			}
 			this.value = value;
-			this.editor.setValue(value);
+			this.editor.session.setValue(value);
 			return this.$el;
 		},
 		getValue: function(){
@@ -2350,8 +2361,6 @@ Berry.prototype.events.initialize.push({
 		getValue: function() { return this.value; }
 	});
 })(Berry,jQuery);
-
-
 (function(b, $){
 	b.register({
 		type: 'contenteditable',
@@ -2394,6 +2403,9 @@ Berry.prototype.events.initialize.push({
 		getValue: function(){
 			return this.editor.getContent()
 			// return this.$el.html();
+		},satisfied: function(){
+			this.value = this.getValue()
+			return (typeof this.value !== 'undefined' && this.value !== null && this.value !== '');
 		}
 		// destroy: function(){
 		// 	this.editor.destroy();

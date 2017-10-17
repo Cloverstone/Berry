@@ -102,6 +102,7 @@ Berry.processOpts = function(item, object) {
 						type: 'get',
 						success: function(data) {
 							Berry.collection.on(item.optionPath,function(item,path){
+								this.item.waiting = false;
 								this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
 
 								if(this.parent && this.parent.multiple){
@@ -120,6 +121,7 @@ Berry.processOpts = function(item, object) {
 				return item;
 			} else {
 				Berry.collection.on(item.optionPath,function(item, path){
+					this.item.waiting = false;					
 					this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});
 
 					if(this.parent && this.parent.multiple){

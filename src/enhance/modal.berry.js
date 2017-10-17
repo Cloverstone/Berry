@@ -14,7 +14,7 @@ Berry.prototype.events.initialize.push({
 			this.options.actionTarget = this.ref.find('.modal-footer');
 			this.$el = this.ref.find('.modal-body');
 
-			this.ref.modal();
+			this.ref.modal(this.options.modal);
 
 			this.ref.on('shown.bs.modal', $.proxy(function () {
 				if(this.options.autoFocus){

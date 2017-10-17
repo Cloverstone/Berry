@@ -40,6 +40,9 @@
 		getValue: function(){
 			return this.editor.getContent()
 			// return this.$el.html();
+		},satisfied: function(){
+			this.value = this.getValue()
+			return (typeof this.value !== 'undefined' && this.value !== null && this.value !== '');
 		}
 		// destroy: function(){
 		// 	this.editor.destroy();

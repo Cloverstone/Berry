@@ -21,14 +21,20 @@
 					return o[i].label;
 				}
 			}
+		},		
+		getValue: function() {
+			if(this.item.waiting){
+				return this.value;
+			}
+		 return this.$el.val(); 
 		},
 		setValue: function(value){
-			if(typeof value !== 'object' && this.item.waiting || (typeof _.findWhere(this.options, {value:  value}) !== 'undefined' || typeof _.findWhere(this.options, {value:  value+=''}) !== 'undefined') ){
+			if(typeof value !== 'object' && this.item.waiting || (typeof _.findWhere(this.options, {value:  value}) !== 'undefined' || typeof _.findWhere(this.options, {value:  value+=''}) !== 'undefined' || typeof _.findWhere(this.options, {value:  parseInt(value, 10)}) !== 'undefined') ){
 				if(typeof this.lastSaved === 'undefined'){
 					this.lastSaved = value;
 				}
 				this.value = value;
-				return this.$el.val(value);
+				this.$el.val(value);
 			}
 			return this.value;
 		}
