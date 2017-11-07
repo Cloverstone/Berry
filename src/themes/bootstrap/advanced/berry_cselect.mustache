@@ -1,0 +1,29 @@
+			<div class="row clearfix form-group {{modifiers}} {{#multiple.duplicate}}dupable" data-min="{{multiple.min}}" data-max="{{multiple.max}}{{/multiple.duplicate}}" name="{{name}}" data-type="{{type}}">
+				{{>berry__label}}
+				{{#multiple.duplicate}}
+				<div class="duplicate add btn btn-default"><i class="fa fa-plus"></i></div>
+				<div class="btn btn-default remove"><i class="fa fa-minus"></i></div>
+				{{/multiple.duplicate}}
+				{{#label}}
+				{{#inline}}<div class="col-md-12">{{/inline}}
+				{{^inline}}<div class="col-md-8">{{/inline}}
+				{{/label}}
+				{{^label}}
+				<div class="col-md-12">
+				{{/label}}
+
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							{{#value}}{{value}}{{/value}}{{^value}}Choose{{/value}}
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+													{{#options}}
+												<li><a href="javascript:void(0);" {{#value}}data-value="{{value}}"{{/value}}>{{{label}}}</a></li>
+											{{/options}}
+						</ul>
+					</div>
+						
+					{{>berry__addons}}
+				</div>
+			</div>

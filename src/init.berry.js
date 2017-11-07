@@ -96,25 +96,28 @@ Berry.processOpts = function(item, object) {
 				// Berry.collections[item.choices] = [];
 				Berry.collection.add(item.optionPath, []);
 				//var getAttributes = 
+
 				(function(object) {
 					$.ajax({
 						url: item.optionPath,
 						type: 'get',
 						success: function(data) {
-							Berry.collection.on(item.optionPath,function(item,path){
-								this.item.waiting = false;
-								this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
+							Berry.collection.on(item.optionPath,function(item){
+								item.waiting = false;
+								this.update({choices: Berry.collection.get(item.optionPath),options: Berry.collection.get(item.optionPath)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
 
 								if(this.parent && this.parent.multiple){
 									if(typeof this.owner !== 'undefined') {
 										this.update({value: Berry.search(this.owner.options.attributes, this.getPath())});
 									}
 								}
-							}.bind(object))
+							}.bind(object, item))
 							Berry.collection.update(item.optionPath, data);
 						}
 					});
 				}(object))
+
+
 				//getAttributes(object);
 				item.waiting = true;
 				item.options = [];
