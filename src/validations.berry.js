@@ -31,7 +31,7 @@ Berry.prototype.performValidate = function(target, pValue){
 					if(typeof item.validate[r] == 'string') {
 						estring = item.validate[r];
 					}
-					target.errors = estring.replace('{{label}}', item.label);
+					target.errors = estring.replace('{{label}}', item.label).replace('{{value}}', value);
 				}
 			}
 			target.self.toggleClass(target.owner.options.errorClass, !target.valid);
@@ -80,7 +80,7 @@ Berry.validations = {
 			}
 			return false;
 		},
-		message: 'The {{label}} field does not match the %s field.'
+		message: 'The {{label}} field does not match the {{value}} field.'
 	},
 	valid_email:{
 		method: function(value) {
@@ -107,7 +107,7 @@ Berry.validations = {
 			}
 			return (value.length >= parseInt(length, 10));
 		},
-		message: 'The {{label}} field must be at least %s characters in length.'
+		message: 'The {{label}} field must be at least {{value}} characters in length.'
 	},
 	max_length:{
 		method: function(value, length) {
@@ -116,7 +116,7 @@ Berry.validations = {
 			}
 			return (value.length <= parseInt(length, 10));
 		},
-		message: 'The {{label}} field must not exceed %s characters in length.'
+		message: 'The {{label}} field must not exceed {{value}} characters in length.'
 	},
 	exact_length:{
 		method: function(value, length) {
@@ -125,7 +125,7 @@ Berry.validations = {
 			}
 			return (value.length === parseInt(length, 10));
 		},
-		message: 'The {{label}} field must be exactly %s characters in length.'
+		message: 'The {{label}} field must be exactly {{value}} characters in length.'
 	},
 	greater_than:{
 		method: function(value, param) {
@@ -134,7 +134,7 @@ Berry.validations = {
 			}
 			return (parseFloat(value) > parseFloat(param));
 		},
-		message: 'The {{label}} field must contain a number greater than %s.'
+		message: 'The {{label}} field must contain a number greater than {{value}}.'
 	},
 	less_than:{
 		method: function(value, param) {
@@ -143,7 +143,7 @@ Berry.validations = {
 			}
 			return (parseFloat(value) < parseFloat(param));
 		},
-		message: 'The {{label}} field must contain a number less than %s.'
+		message: 'The {{label}} field must contain a number less than {{value}}.'
 	},
 	alpha:{
 		method: function(value) {

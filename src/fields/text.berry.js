@@ -1,6 +1,20 @@
 (function(b, $){
 	b.register({type: 'text' });
-	b.register({type: 'raw' });
+	b.register({type: 'raw' ,
+		setValue: function(value) {
+			if(typeof value !== 'object' || this.item.template){
+				if(typeof this.lastSaved === 'undefined'){
+					this.lastSaved = value;
+				}
+				this.value = value;
+				if(this.item.template){
+					this.value = Hogan.compile(this.item.template).render(this, templates);
+				}
+				this.render();
+			}
+			return this.value;
+		}
+	});
 	b.register({type: 'password' });
 	b.register({type: 'date' ,
 		setValue: function(value) {		
@@ -34,8 +48,13 @@
 			mask: '(999) 999-9999',
 			post: '<i class="fa fa-phone"></i>' ,
 			placeholder: '+1'
+		},
+		satisfied: function(){
+			this.value = this.getValue();
+			return (typeof this.value !== 'undefined' && this.value !== null && this.value !== '');
 		}
 	});
+	
 	b.register({ type: 'color',
 		defaults: {
 			pre: '<i></i>' ,

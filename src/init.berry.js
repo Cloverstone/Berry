@@ -104,7 +104,7 @@ Berry.processOpts = function(item, object) {
 						success: function(data) {
 							Berry.collection.on(item.optionPath,function(item){
 								item.waiting = false;
-								this.update({choices: Berry.collection.get(item.optionPath),options: Berry.collection.get(item.optionPath)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
+								this.update({choices: Berry.collection.get(item.optionPath),options: Berry.collection.get(item.optionPath)},true);//,value: Berry.search(object.owner.options.attributes, object.getPath())});
 
 								if(this.parent && this.parent.multiple){
 									if(typeof this.owner !== 'undefined') {
@@ -125,7 +125,7 @@ Berry.processOpts = function(item, object) {
 			} else {
 				Berry.collection.on(item.optionPath,function(item, path){
 					this.item.waiting = false;					
-					this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});
+					this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)},true);
 
 					if(this.parent && this.parent.multiple){
 						if(typeof this.owner !== 'undefined') {

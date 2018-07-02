@@ -1164,7 +1164,7 @@ Berry.processOpts = function(item, object) {
 						success: function(data) {
 							Berry.collection.on(item.optionPath,function(item){
 								item.waiting = false;
-								this.update({choices: Berry.collection.get(item.optionPath),options: Berry.collection.get(item.optionPath)});//,value: Berry.search(object.owner.options.attributes, object.getPath())});
+								this.update({choices: Berry.collection.get(item.optionPath),options: Berry.collection.get(item.optionPath)},true);//,value: Berry.search(object.owner.options.attributes, object.getPath())});
 
 								if(this.parent && this.parent.multiple){
 									if(typeof this.owner !== 'undefined') {
@@ -1185,7 +1185,7 @@ Berry.processOpts = function(item, object) {
 			} else {
 				Berry.collection.on(item.optionPath,function(item, path){
 					this.item.waiting = false;					
-					this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)});
+					this.update({choices: Berry.collection.get(path),options: Berry.collection.get(path)},true);
 
 					if(this.parent && this.parent.multiple){
 						if(typeof this.owner !== 'undefined') {
@@ -1535,7 +1535,7 @@ Berry.conditions = {
 		).lastToken;
 	},
 	multiMatch: function(Berry, args, func) {
-		berry.on('change:' + _.pluck(args, 'name').join(' change:'), $.proxy(function(args, local, topic) {
+		Berry.on('change:' + _.map(args, 'name').join(' change:'), $.proxy(function(args, local, topic) {
 			func.call(this, function(args,form){
 				var status = false;
 				for(var i in args) {
@@ -1550,7 +1550,7 @@ Berry.conditions = {
 					if(!status)break;
 				}
 				return status;
-			}(args, berry), 'mm');
+			}(args, Berry), 'mm');
 		}, this, args))
 		return 'mm';
 	}
@@ -1588,7 +1588,7 @@ Berry.prototype.performValidate = function(target, pValue){
 					if(typeof item.validate[r] == 'string') {
 						estring = item.validate[r];
 					}
-					target.errors = estring.replace('{{label}}', item.label);
+					target.errors = estring.replace('{{label}}', item.label).replace('{{value}}', value);
 				}
 			}
 			target.self.toggleClass(target.owner.options.errorClass, !target.valid);
@@ -1637,7 +1637,7 @@ Berry.validations = {
 			}
 			return false;
 		},
-		message: 'The {{label}} field does not match the %s field.'
+		message: 'The {{label}} field does not match the {{value}} field.'
 	},
 	valid_email:{
 		method: function(value) {
@@ -1664,7 +1664,7 @@ Berry.validations = {
 			}
 			return (value.length >= parseInt(length, 10));
 		},
-		message: 'The {{label}} field must be at least %s characters in length.'
+		message: 'The {{label}} field must be at least {{value}} characters in length.'
 	},
 	max_length:{
 		method: function(value, length) {
@@ -1673,7 +1673,7 @@ Berry.validations = {
 			}
 			return (value.length <= parseInt(length, 10));
 		},
-		message: 'The {{label}} field must not exceed %s characters in length.'
+		message: 'The {{label}} field must not exceed {{value}} characters in length.'
 	},
 	exact_length:{
 		method: function(value, length) {
@@ -1682,7 +1682,7 @@ Berry.validations = {
 			}
 			return (value.length === parseInt(length, 10));
 		},
-		message: 'The {{label}} field must be exactly %s characters in length.'
+		message: 'The {{label}} field must be exactly {{value}} characters in length.'
 	},
 	greater_than:{
 		method: function(value, param) {
@@ -1691,7 +1691,7 @@ Berry.validations = {
 			}
 			return (parseFloat(value) > parseFloat(param));
 		},
-		message: 'The {{label}} field must contain a number greater than %s.'
+		message: 'The {{label}} field must contain a number greater than {{value}}.'
 	},
 	less_than:{
 		method: function(value, param) {
@@ -1700,7 +1700,7 @@ Berry.validations = {
 			}
 			return (parseFloat(value) < parseFloat(param));
 		},
-		message: 'The {{label}} field must contain a number less than %s.'
+		message: 'The {{label}} field must contain a number less than {{value}}.'
 	},
 	alpha:{
 		method: function(value) {
@@ -1912,7 +1912,21 @@ Berry.validations = {
 	});
 })(Berry, jQuery);(function(b, $){
 	b.register({type: 'text' });
-	b.register({type: 'raw' });
+	b.register({type: 'raw' ,
+		setValue: function(value) {
+			if(typeof value !== 'object' || this.item.template){
+				if(typeof this.lastSaved === 'undefined'){
+					this.lastSaved = value;
+				}
+				this.value = value;
+				if(this.item.template){
+					this.value = Hogan.compile(this.item.template).render(this, templates);
+				}
+				this.render();
+			}
+			return this.value;
+		}
+	});
 	b.register({type: 'password' });
 	b.register({type: 'date' ,
 		setValue: function(value) {		
@@ -1946,8 +1960,13 @@ Berry.validations = {
 			mask: '(999) 999-9999',
 			post: '<i class="fa fa-phone"></i>' ,
 			placeholder: '+1'
+		},
+		satisfied: function(){
+			this.value = this.getValue();
+			return (typeof this.value !== 'undefined' && this.value !== null && this.value !== '');
 		}
 	});
+	
 	b.register({ type: 'color',
 		defaults: {
 			pre: '<i></i>' ,
@@ -2409,6 +2428,21 @@ Berry.prototype.events.initialize.push({
 	});
 })(Berry,jQuery);
 (function(b, $){
+
+// 	var oldEditor = $.summernote.options.modules.editor;
+// $.summernote.options.modules.editor = function() {
+//     oldEditor.apply(this, arguments);
+//     var oldCreateRange = this.createRange;
+//     var oldFocus = this.focus;
+
+//     this.createRange = function () {
+//         this.focus = function() {};
+//         var result = oldCreateRange.apply(this, arguments);
+//         this.focus = oldFocus;
+//         return result;
+//     };
+// };
+
 	b.register({
 		type: 'contenteditable',
 		create: function() {
@@ -2420,7 +2454,31 @@ Berry.prototype.events.initialize.push({
 			if(this.onchange !== undefined) {
 				this.$el.on('input', this.onchange);
 			}
-			this.$el.on('input', $.proxy(function(){this.trigger('change');},this));
+			// this.$el.on('input', $.proxy(function(){this.trigger('change');},this));
+			this.$el.summernote({
+				disableDragAndDrop: true,
+		    dialogsInBody: true,
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['bold', 'italic', 'underline', 'clear']],
+			    ['link', ['linkDialogShow', 'unlink']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['view', ['fullscreen']]
+				]
+			});
+			this.$el.on('summernote.change', $.proxy(function(){this.trigger('change');},this));
+
+// this.$el.on('summernote.blur', $.proxy(function() {
+//   this.$el.summernote('saveRange');
+// },this));
+
+// this.$el.on('summernote.focus', $.proxy(function() {
+//   this.$el.summernote('restoreRange');
+// },this));
 
 		 //  this.editor = new Pen({
 		 //  	editor: this.$el[0], // {DOM Element} [required]
@@ -2428,32 +2486,39 @@ Berry.prototype.events.initialize.push({
 		 //  	//list: ['bold', 'italic', 'underline'] // editor menu list
 			// });
 
-			tinymce.init({
-			  selector: '.formcontrol > div',  // change this value according to your HTML
-			  plugins: ['autolink link code image'],      
-			  inline: true,
-			  toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-			});
+			// tinymce.init({
+			//   selector: '.formcontrol > div',  // change this value according to your HTML
+			//   plugins: ['autolink link code image'],      
+			//   inline: true,
+			//   toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+			// });
 
-			this.editor = tinyMCE.editors[tinyMCE.editors.length-1];
+			// this.editor = tinyMCE.editors[tinyMCE.editors.length-1];
 		},
 		setValue: function(value){
 			if(typeof this.lastSaved === 'undefined'){
 				this.lastSaved = value;
 			}
-			this.editor.setContent(value)
+			// this.editor.setContent(value)
+			this.$el.summernote('code', value)
 			this.value = value;
-			this.$el.html(value)
+			// this.$el.html(value)
 
 			return this.$el;
 		},
 		getValue: function(){
-			return this.editor.getContent()
+			return this.$el.summernote('code')
+			// return this.editor.getContent()
 			// return this.$el.html();
 		},satisfied: function(){
 			this.value = this.getValue()
-			return (typeof this.value !== 'undefined' && this.value !== null && this.value !== '');
+			return (typeof this.value !== 'undefined' && this.value !== null && this.value !== '' && this.value !== "<p><br></p>");
+		},	destroy: function() {
+		this.$el.summernote('destroy');
+		if(this.$el){
+			this.$el.off();
 		}
+ }
 		// destroy: function(){
 		// 	this.editor.destroy();
 		// }
@@ -2463,12 +2528,20 @@ Berry.prototype.events.initialize.push({
 		// }
 	});
 })(Berry,jQuery);
-
 $(document).on('focusin', function(e) {
-    if ($(e.target).closest(".mce-window").length) {
+    if ($(e.target).closest(".note-editable").length) {
         e.stopImmediatePropagation();
+			
     }
-});(function(b, $){
+});
+$(document).on('click', function(e) {
+    if ($(e.target).hasClass(".note-editor")) {
+        e.stopImmediatePropagation();
+
+			$(e.target).find('.open').removeClass('open')
+    }
+});
+(function(b, $){
 	b.register({
 		type: 'custom_radio',
 		create: function() {
